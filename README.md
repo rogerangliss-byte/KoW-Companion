@@ -1,17 +1,18 @@
-# KoW Companion v3.1.0 Integrated Edition
+# KoW Companion v3.2.0 Modular
 
-This build preserves the full Officer Companion and adds an editable Officer Database.
+This release preserves the complete Officer Companion while splitting the code into smaller files.
 
-## Included
-- Dashboard
-- Officer selection and automatic voucher costs
-- Star planner
-- Officer Development
-- Officer XP Books and level targets
-- Goals Planner
-- Editable Officer Database
-- CSV import/export
-- App-name and background settings
-- Local saving and PWA support
+## Upload to GitHub
 
-Upload every file in this folder to the root of the GitHub repository.
+Upload every file and folder in this package to the repository root, replacing the previous version.
+
+Important files:
+- `index.html`
+- `css/app.css`
+- `js/app.js`
+- `service-worker.js`
+- `manifest.json`
+- `icon.svg`
+- `officers.csv`
+
+Use GitHub Pages with `main` and `/(root)`.

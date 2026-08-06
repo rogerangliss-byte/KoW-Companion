@@ -1,17 +1,9 @@
 # Changelog
 
-## v3.1.1
-- Fixed conversion of held Officer Readiness Vouchers into Officer Badges.
-- Added a dedicated `Badges From Held ORV` result.
-- Shows unused ORV remaining after whole badges are generated.
-- Corrected Officer Development labels and required-resource calculations.
-
-
-## v3.1.0 Integrated
-- Preserved the complete Officer Companion
-- Added Officer Database screen
-- Added editable table, add, duplicate and delete
-- Added search and season filtering
-- Added CSV import/export and validation
-- Connected officer selection to the editable database
-- Added app-name and background settings
+## v3.2.0 Modular
+- Split styling into `css/app.css`.
+- Split application logic into `js/app.js`.
+- Reduced `index.html` size for easier GitHub uploads and maintenance.
+- Preserved the full Officer Companion functionality.
+- Preserved Officer Database, ORV badge conversion, and SRV Exclusive Star conversion.
+- Rebuilt the service worker with a clean cache version.
