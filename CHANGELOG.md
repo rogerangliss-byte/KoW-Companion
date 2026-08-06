@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.0.1
+- Added separate Portrait and Landscape background images.
+- Automatically switches backgrounds using screen orientation.
+- Added Portrait Background and Landscape Background selectors under Settings.
+- Included the supplied 371 portrait artwork and the new 1920×1080 landscape artwork as defaults.
+- Added desktop background positioning for wide screens.
+- Updated service-worker cache to v4.0.1.
+
+
 ## v4.0.0
 - Clean integrated rebuild.
 - Restored full bottom navigation.
