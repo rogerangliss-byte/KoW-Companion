@@ -2,119 +2,157 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KoW Companion v3.2.0</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<title>KoW Companion v4.0</title>
+<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="css/app.css">
-
-<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#111111"><link rel="icon" href="icon.svg" type="image/svg+xml">
 </head>
 <body>
-<div class="app">
-<header><h1 id="appTitle">⚔ GODS OF WAR 371</h1><p>Officer Companion v3.2.0 Modular</p></header>
+<header class="topbar">
+  <div>
+    <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
+    <p>Officer Companion v4.0.0</p>
+  </div>
+</header>
 
-<section id="dashboard" class="screen active"><div class="grid">
-<div class="card full"><h2>Active Officer</h2><div class="stat"><span id="dOfficer">S7 Liora</span><b id="overall">0.0%</b></div><div class="progress"><span id="overallBar"></span></div></div>
-<div class="card"><h2>Stars</h2><div class="stat"><span>Held</span><b id="dStars">0</b></div><div class="stat"><span>Remaining</span><b id="dStarsRem">98,000</b></div></div>
-<div class="card"><h2>Development</h2><div class="stat"><span>Badges from Held ORV</span><b id="dBadges">0</b></div><div class="stat"><span>Remaining</span><b id="dBadgesRem">1,600</b></div></div>
-<div class="card full"><h2>Officer XP</h2><div class="stat"><span>Total</span><b id="dXp">0</b></div><div class="progress"><span id="dXpBar"></span></div></div>
-</div></section>
+<main class="app">
+  <section id="dashboard" class="view active">
+    <div class="grid">
+      <article class="card wide">
+        <span class="eyebrow">ACTIVE OFFICER</span>
+        <h2 id="dashOfficer">S7 Liora</h2>
+        <div class="big" id="overallPct">0.0%</div>
+        <div class="progress"><span id="overallBar"></span></div>
+      </article>
+      <article class="card"><h2>⭐ Stars</h2><div class="stat"><span>Held</span><b id="dashStarsHeld">0</b></div><div class="stat"><span>Required</span><b id="dashStarsRequired">98,000</b></div></article>
+      <article class="card"><h2>🏅 Development</h2><div class="stat"><span>Badges from held ORV</span><b id="dashBadgesFromOrv">0</b></div><div class="stat"><span>Required</span><b id="dashBadgesRequired">1,600</b></div></article>
+      <article class="card wide"><h2>📘 Officer XP</h2><div class="stat"><span>Held</span><b id="dashXpHeld">0</b></div><div class="stat"><span>Required</span><b id="dashXpRequired">199,646,700</b></div></article>
+    </div>
+  </section>
 
-<section id="officer" class="screen"><div class="card"><h2>Officer Selection</h2>
-<label>Officer</label><select id="officerSelect"></select>
-<div class="row"><div><label>ORV per Officer Badge</label><input id="orv" readonly></div><div><label>SRV per Exclusive Star</label><input id="srv" readonly></div></div>
-</div></section>
+  <section id="officer" class="view">
+    <article class="card">
+      <h2>👤 Officer Selection</h2>
+      <label>Officer</label><select id="officerSelect"></select>
+      <div class="two">
+        <div><label>ORV per Officer Badge</label><input id="orvCost" readonly></div>
+        <div><label>SRV per Exclusive Star</label><input id="srvCost" readonly></div>
+      </div>
+    </article>
+  </section>
 
-<section id="stars" class="screen"><div class="card"><h2>Star Progress</h2>
-<div class="row"><div><label>Current Star</label><select id="currentStar"><option value="0">0★</option><option value="1">1★</option><option value="2">2★</option><option value="3">3★</option><option value="4">4★</option><option value="5">5★</option></select></div>
-<div><label>Target Star</label><select id="targetStar"><option value="1">1★</option><option value="2">2★</option><option value="3">3★</option><option value="4">4★</option><option value="5" selected>5★</option></select></div></div>
-<div class="row"><div><label>Legendary Star I (110)</label><input id="ls1" type="number" value="0"></div><div><label>Legendary Star II (420)</label><input id="ls2" type="number" value="0"></div></div>
-<label>Legendary Star III (960)</label><input id="ls3" type="number" min="0" step="1" inputmode="numeric" value="0">
-<label>Star Readiness Vouchers Held</label><input id="srvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
-<div class="stat"><span>Exclusive Stars From Held SRV</span><b id="exclusiveFromSrv">0</b></div>
-<div class="stat"><span>Officer Stars From Held SRV</span><b id="officerStarsFromSrv">0</b></div>
-<div class="stat"><span>SRV Remaining</span><b id="srvRemainder">0</b></div>
-<div class="stat"><span>Invested</span><b id="starInvested">0</b></div><div class="stat"><span>Held</span><b id="starHeld">0</b></div><div class="stat"><span>Remaining</span><b id="starRemaining">98,000</b></div>
-<div class="progress"><span id="starBar"></span></div></div></section>
+  <section id="stars" class="view">
+    <article class="card">
+      <h2>⭐ Star Planner</h2>
+      <div class="two">
+        <div><label>Current Star Level</label><select id="currentStar"></select></div>
+        <div><label>Target Star Level</label><select id="targetStar"></select></div>
+      </div>
+      <div class="two">
+        <div><label>Legendary Star I (110)</label><input id="ls1" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
+        <div><label>Legendary Star II (420)</label><input id="ls2" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
+      </div>
+      <label>Legendary Star III (960)</label><input id="ls3" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <label>Star Readiness Vouchers Held</label><input id="srvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <div class="stat"><span>Exclusive Stars from held SRV</span><b id="exclusiveFromSrv">0</b></div>
+      <div class="stat"><span>Officer Stars from held SRV</span><b id="officerStarsFromSrv">0</b></div>
+      <div class="stat"><span>SRV remaining</span><b id="srvRemainder">0</b></div>
+      <div class="stat"><span>Stars used</span><b id="starsUsed">0</b></div>
+      <div class="stat"><span>Stars held</span><b id="starsHeld">0</b></div>
+      <div class="stat"><span>Stars required</span><b id="starsRequired">98,000</b></div>
+      <div class="progress"><span id="starBar"></span></div>
+    </article>
+  </section>
 
-<section id="development" class="screen"><div class="card"><h2>Officer Development</h2>
-<label><input id="unlocked" type="checkbox" style="width:auto"> Officer unlocked</label>
-<label>Skills 1–16</label><div id="skills" class="skills"></div>
-<label>Training Level: <b id="trainingLabel">0</b> / 180</label><input id="training" type="range" min="0" max="180" value="0">
-<label>Officer Badges Held</label><input id="badgeInv" type="number" min="0" step="1" inputmode="numeric" value="0">
-<label>Officer Readiness Vouchers Held</label><input id="orvHeld" type="number" value="0">
-<div class="stat"><span>Badges Used</span><b id="badgeInvested">0</b></div><div class="stat"><span>Officer Badges Held</span><b id="badgeHeld">0</b></div><div class="stat"><span>Badges From Held ORV</span><b id="badgesFromOrv">0</b></div><div class="stat"><span>Badges Required</span><b id="badgeRequired">1,600</b></div><div class="stat"><span>ORV Required</span><b id="orvNeeded">0</b></div>
-<div class="progress"><span id="badgeBar"></span></div></div></section>
+  <section id="development" class="view">
+    <article class="card">
+      <h2>🏅 Officer Development</h2>
+      <label class="check"><input id="unlocked" type="checkbox"> Officer unlocked (10 badges)</label>
+      <label>Skills 1–16</label><div id="skillGrid" class="skills"></div>
+      <label>Training Level: <b id="trainingLabel">0</b> / 180</label>
+      <input id="training" type="range" min="0" max="180" value="0">
+      <label>Officer Badges Held</label><input id="badgeHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <label>Officer Readiness Vouchers Held</label><input id="orvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <div class="stat"><span>Badges used</span><b id="badgesUsed">0</b></div>
+      <div class="stat"><span>Badges from held ORV</span><b id="badgesFromOrv">0</b></div>
+      <div class="stat"><span>ORV remaining after whole badges</span><b id="orvRemainder">0</b></div>
+      <div class="stat"><span>Badges required</span><b id="badgesRequired">1,600</b></div>
+      <div class="stat"><span>ORV required</span><b id="orvRequired">0</b></div>
+      <div class="progress"><span id="badgeBar"></span></div>
+    </article>
+  </section>
 
-<section id="xp" class="screen"><div class="card"><h2>Officer XP Books</h2>
-<div class="row">
-  <div><label>Current Officer Level</label><input id="currentLevel" type="number" min="1" max="70" step="1" inputmode="numeric" value="1"></div>
-  <div><label>Target Officer Level</label><input id="targetLevel" type="number" min="1" max="70" step="1" inputmode="numeric" value="70"></div>
-</div>
-<div class="notice" style="margin:10px 0">
-  <b>Gold Officer XP Requirements</b><br>
-  Levels 1–40: 5,806,700 XP<br>
-  Levels 41–50: 16,960,000 XP<br>
-  Levels 51–60: 53,430,000 XP<br>
-  Levels 61–70: 123,450,000 XP<br>
-  Total Levels 1–70: 199,646,700 XP
-</div>
-<table>
-<thead><tr><th>Levels</th><th>Band XP</th><th>Cumulative XP</th></tr></thead>
-<tbody>
-<tr><td>1–40</td><td>5,806,700</td><td>5,806,700</td></tr>
-<tr><td>41–50</td><td>16,960,000</td><td>22,766,700</td></tr>
-<tr><td>51–60</td><td>53,430,000</td><td>76,196,700</td></tr>
-<tr><td>61–70</td><td>123,450,000</td><td>199,646,700</td></tr>
-</tbody>
-</table>
-<div id="xpInputs" class="grid" style="margin-top:12px"></div>
-<div class="stat"><span>XP Held in Books</span><b id="xpTotal">0</b></div>
-<div class="stat"><span>XP Required for Selected Levels</span><b id="xpRequiredLevels">199,646,700</b></div>
-<div class="stat"><span>XP Shortfall</span><b id="xpRemaining">199,646,700</b></div>
-<div class="progress"><span id="xpBar"></span></div>
-</div></section>
+  <section id="xp" class="view">
+    <article class="card">
+      <h2>📘 Officer XP</h2>
+      <div class="two">
+        <div><label>Current Level</label><input id="currentLevel" type="number" min="1" max="70" step="1" inputmode="numeric" value="1"></div>
+        <div><label>Target Level</label><input id="targetLevel" type="number" min="1" max="70" step="1" inputmode="numeric" value="70"></div>
+      </div>
+      <div class="notice">1–40: 5,806,700 · 41–50: 16,960,000 · 51–60: 53,430,000 · 61–70: 123,450,000</div>
+      <div id="xpBooks" class="xp-grid"></div>
+      <div class="stat"><span>XP held in books</span><b id="xpHeld">0</b></div>
+      <div class="stat"><span>XP required for selected levels</span><b id="xpRequired">199,646,700</b></div>
+      <div class="stat"><span>XP shortfall</span><b id="xpShortfall">199,646,700</b></div>
+      <div class="progress"><span id="xpBar"></span></div>
+    </article>
+  </section>
 
-<section id="planner" class="screen"><div class="card"><h2>Goals Planner</h2>
-<label>Goal</label><select id="goal"><option value="max">Max Officer</option><option value="next">Next Star</option><option value="five">Reach 5★</option><option value="skills">Max Skills</option><option value="training">Max Training</option></select>
-<table><thead><tr><th>Resource</th><th>Required</th><th>Held</th><th>Shortfall</th></tr></thead><tbody id="rows"></tbody></table>
-<div class="notice" style="margin-top:12px"><b>Used</b> = already invested &nbsp;•&nbsp; <b>Held</b> = currently owned &nbsp;•&nbsp; <b>Required</b> = still needed</div><button class="save" id="saveBtn">Save Progress</button></div></section>
-<section id="database" class="screen"><div class="card">
-<h2>📋 Officer Database</h2>
-<div class="db-toolbar">
-  <input id="dbSearch" placeholder="Search officers">
-  <select id="dbSeason"><option value="">All seasons</option></select>
-  <button id="dbAdd">Add Officer</button>
-  <button id="dbSave">Save</button>
-  <button id="dbExport">Export CSV</button>
-  <label class="filebtn">Import CSV<input id="dbImport" type="file" accept=".csv,text/csv"></label>
-  <button id="dbRestore">Restore Defaults</button>
-</div>
-<div class="tablewrap">
-<table class="db-table">
-<thead><tr><th>Officer Name</th><th>Season</th><th>ORV / Badge</th><th>SRV / Exclusive Star</th><th>Notes</th><th>Actions</th></tr></thead>
-<tbody id="dbRows"></tbody>
-</table>
-</div>
-<div id="dbValidation" class="notice" style="margin-top:12px"></div>
-</div></section>
+  <section id="planner" class="view">
+    <article class="card">
+      <h2>🎯 Goals Planner</h2>
+      <label>Goal</label>
+      <select id="goalSelect">
+        <option value="max">Max Officer</option>
+        <option value="nextStar">Next Star</option>
+        <option value="fiveStar">Reach 5★</option>
+        <option value="maxSkills">Max Skills</option>
+        <option value="maxTraining">Max Training</option>
+      </select>
+      <div class="table-wrap"><table><thead><tr><th>Resource</th><th>Required</th><th>Held</th><th>Shortfall</th></tr></thead><tbody id="plannerRows"></tbody></table></div>
+      <button id="saveProgress" class="primary">Save Progress</button>
+    </article>
+  </section>
 
-<section id="settings" class="screen"><div class="card">
-<h2>⚙ Settings</h2>
-<label>App Name</label><input id="appName" type="text" value="GODS OF WAR 371">
-<label>Background Image</label><input id="backgroundPicker" type="file" accept="image/*">
-<button class="save" id="resetAppearance">Reset Appearance</button>
-<p class="muted">App name and background are saved in this browser.</p>
-</div></section>
+  <section id="database" class="view">
+    <article class="card">
+      <h2>📋 Officer Database</h2>
+      <div class="toolbar">
+        <input id="dbSearch" placeholder="Search officers">
+        <select id="dbSeason"><option value="">All seasons</option></select>
+        <button id="dbAdd">Add Officer</button>
+        <button id="dbSave">Save</button>
+        <button id="dbExport">Export CSV</button>
+        <label class="filebtn">Import CSV<input id="dbImport" type="file" accept=".csv,text/csv"></label>
+        <button id="dbRestore">Restore Defaults</button>
+      </div>
+      <div class="table-wrap"><table class="db-table"><thead><tr><th>Name</th><th>Season</th><th>ORV</th><th>SRV</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="dbRows"></tbody></table></div>
+      <div id="dbValidation" class="notice"></div>
+    </article>
+  </section>
 
-</div>
+  <section id="settings" class="view">
+    <article class="card">
+      <h2>⚙ Settings</h2>
+      <label>App Name</label><input id="appName" value="GODS OF WAR 371">
+      <label>Background Image</label><input id="backgroundPicker" type="file" accept="image/*">
+      <button id="resetAppearance" class="primary">Reset Appearance</button>
+    </article>
+  </section>
+</main>
 
-<nav class="tabs">
-<button class="tab active" data-screen="dashboard">🏠<br>Home</button><button class="tab" data-screen="officer">👤<br>Officer</button><button class="tab" data-screen="stars">⭐<br>Stars</button><button class="tab" data-screen="development">🏅<br>Develop</button><button class="tab" data-screen="xp">📘<br>XP</button><button class="tab" data-screen="planner">🎯<br>Planner</button><button class="tab" data-screen="database">📋<br>Database</button><button class="tab" data-screen="settings">⚙️<br>Settings</button>
+<nav class="bottom-nav">
+  <button data-view="dashboard" class="active">🏠<span>Home</span></button>
+  <button data-view="officer">👤<span>Officer</span></button>
+  <button data-view="stars">⭐<span>Stars</span></button>
+  <button data-view="development">🏅<span>Develop</span></button>
+  <button data-view="xp">📘<span>XP</span></button>
+  <button data-view="planner">🎯<span>Planner</span></button>
+  <button data-view="database">📋<span>Database</span></button>
+  <button data-view="settings">⚙️<span>Settings</span></button>
 </nav>
 
-<script src="js/app.js" defer></script>
-
-<script>
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(console.error));}
-</script>
-</body></html>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

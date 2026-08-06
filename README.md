@@ -1,18 +1,7 @@
-# KoW Companion v3.2.0 Modular
+# KoW Companion v4.0.0
 
-This release preserves the complete Officer Companion while splitting the code into smaller files.
+Clean integrated officer-focused rebuild.
 
-## Upload to GitHub
+Includes Dashboard, Officer Selection, Star Planner, Officer Development, XP, Goals Planner, editable Officer Database, CSV import/export, settings, ORV-to-badge conversion and SRV-to-Exclusive-Star conversion.
 
-Upload every file and folder in this package to the repository root, replacing the previous version.
-
-Important files:
-- `index.html`
-- `css/app.css`
-- `js/app.js`
-- `service-worker.js`
-- `manifest.json`
-- `icon.svg`
-- `officers.csv`
-
-Use GitHub Pages with `main` and `/(root)`.
+Upload all files and folders to the root of the GitHub repository. GitHub Pages should use `main` and `/(root)`.
