@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KoW Companion v3.1 Integrated</title>
+<title>KoW Companion v3.1.1</title>
 <style>
 :root{--gold:#e1b84a;--panel:rgba(17,19,22,.88);--line:rgba(225,184,74,.35);--text:#fff7df;--muted:#c9c1ad}
 *{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;color:var(--text);background:#090b0c}
@@ -42,7 +42,7 @@ button.save{width:100%;margin-top:12px;padding:11px;border-radius:10px;border:1p
 </head>
 <body>
 <div class="app">
-<header><h1 id="appTitle">⚔ GODS OF WAR 371</h1><p>Officer Companion v3.1 Integrated</p></header>
+<header><h1 id="appTitle">⚔ GODS OF WAR 371</h1><p>Officer Companion v3.1.1</p></header>
 
 <section id="dashboard" class="screen active"><div class="grid">
 <div class="card full"><h2>Active Officer</h2><div class="stat"><span id="dOfficer">S7 Liora</span><b id="overall">0.0%</b></div><div class="progress"><span id="overallBar"></span></div></div>
@@ -68,9 +68,9 @@ button.save{width:100%;margin-top:12px;padding:11px;border-radius:10px;border:1p
 <label><input id="unlocked" type="checkbox" style="width:auto"> Officer unlocked</label>
 <label>Skills 1–16</label><div id="skills" class="skills"></div>
 <label>Training Level: <b id="trainingLabel">0</b> / 180</label><input id="training" type="range" min="0" max="180" value="0">
-<label>Officer Officer Badges From Held ORV</label><input id="badgeInv" type="number" value="0">
+<label>Officer Badges Held</label><input id="badgeInv" type="number" min="0" step="1" inputmode="numeric" value="0">
 <label>Officer Readiness Vouchers Held</label><input id="orvHeld" type="number" value="0">
-<div class="stat"><span>Badges Used</span><b id="badgeInvested">0</b></div><div class="stat"><span>Held</span><b id="badgeHeld">0</b></div><div class="stat"><span>Required</span><b id="badgeRequired">1,600</b></div><div class="stat"><span>ORV needed</span><b id="orvNeeded">0</b></div>
+<div class="stat"><span>Badges Used</span><b id="badgeInvested">0</b></div><div class="stat"><span>Officer Badges Held</span><b id="badgeHeld">0</b></div><div class="stat"><span>Badges From Held ORV</span><b id="badgesFromOrv">0</b></div><div class="stat"><span>Badges Required</span><b id="badgeRequired">1,600</b></div><div class="stat"><span>ORV Required</span><b id="orvNeeded">0</b></div>
 <div class="progress"><span id="badgeBar"></span></div></div></section>
 
 <section id="xp" class="screen"><div class="card"><h2>Officer XP Books</h2>
@@ -345,8 +345,21 @@ function calc(){
  let cs=+$('currentStar').value,ts=+$('targetStar').value;if(ts<cs){ts=cs;$('targetStar').value=ts}
  let invested=STAR[cs], inv=+$('ls1').value*110 + +$('ls2').value*420 + +$('ls3').value*960, available=invested+inv, needed=Math.max(0,STAR[ts]-available);
  $('starInvested').textContent=fmt(invested);$('starHeld').textContent=fmt(inv);$('starRemaining').textContent=fmt(needed);$('starBar').style.width=pct(available,STAR[ts]||1)+'%';
- let bInv=+$('badgeInv').value, bSpent=($('unlocked').checked?10:0)+skillState.reduce((s,on,i)=>s+(on?SK[i]:0),0)+ +$('training').value*5, bAvail=bInv+bSpent, bRem=Math.max(0,MAXBADGE-bAvail);
- $('trainingLabel').textContent=$('training').value;let orvInv=+$('orvHeld').value, orvReq=bRem*o.orv, orvShort=Math.max(0,orvReq-orvInv);$('badgeInvested').textContent=fmt(bSpent);$('badgeHeld').textContent=fmt(bAvail);$('badgeRequired').textContent=fmt(bRem);$('orvNeeded').textContent=fmt(orvReq)+' required · '+fmt(orvInv)+' held · '+fmt(orvShort)+' short';$('badgeBar').style.width=pct(bAvail,MAXBADGE)+'%';
+ let bInv=+$('badgeInv').value;
+ let bSpent=($('unlocked').checked?10:0)+skillState.reduce((s,on,i)=>s+(on?SK[i]:0),0)+ +$('training').value*5;
+ let orvInv=+$('orvHeld').value;
+ let badgesFromOrv=o.orv>0?Math.floor(orvInv/o.orv):0;
+ let orvRemainder=o.orv>0?orvInv-(badgesFromOrv*o.orv):orvInv;
+ let bAvail=bSpent+bInv+badgesFromOrv;
+ let bRem=Math.max(0,MAXBADGE-bAvail);
+ let orvReq=bRem*o.orv;
+ $('trainingLabel').textContent=$('training').value;
+ $('badgeInvested').textContent=fmt(bSpent);
+ $('badgeHeld').textContent=fmt(bInv);
+ $('badgesFromOrv').textContent=fmt(badgesFromOrv)+' badges · '+fmt(orvRemainder)+' ORV left';
+ $('badgeRequired').textContent=fmt(bRem);
+ $('orvNeeded').textContent=fmt(orvReq);
+ $('badgeBar').style.width=pct(bAvail,MAXBADGE)+'%';
  let xp=0;XP.forEach(v=>xp+=+(($('xp'+v)||{value:0}).value)*v);
  let currentRaw=$('currentLevel').value;
  let targetRaw=$('targetLevel').value;
@@ -360,8 +373,8 @@ function calc(){
  $('xpRemaining').textContent=fmt(xpShort);
  $('xpBar').style.width=pct(xp,xpRequired||1)+'%';
  let overall=(pct(available,MAXSTAR)+pct(bAvail,MAXBADGE)+pct(xp,MAXXP))/3;$('overall').textContent=overall.toFixed(1)+'%';$('overallBar').style.width=overall+'%';
- $('dStars').textContent=fmt(available);$('dStarsRem').textContent=fmt(MAXSTAR-available);$('dBadges').textContent=fmt(bAvail);$('dBadgesRem').textContent=fmt(MAXBADGE-bAvail);$('dXp').textContent=fmt(xp);$('dXpBar').style.width=pct(xp,xpRequired||1)+'%';
- planner(o,cs,invested,inv,bSpent,bInv,xp,+$('orvHeld').value);
+ $('dStars').textContent=fmt(available);$('dStarsRem').textContent=fmt(MAXSTAR-available);$('dBadges').textContent=fmt(badgesFromOrv);$('dBadgesRem').textContent=fmt(bRem);$('dXp').textContent=fmt(xp);$('dXpBar').style.width=pct(xp,xpRequired||1)+'%';
+ planner(o,cs,invested,inv,bSpent,bInv,xp,+$('orvHeld').value,xpRequired);
 }
 function planner(o,cs,invested,inv,bSpent,bInv,xp,orvInv,xpRequiredSelected){
  let g=$('goal').value, starReq=0,badgeReq=0,xpReq=0;

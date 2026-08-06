@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.1.1
+- Fixed conversion of held Officer Readiness Vouchers into Officer Badges.
+- Added a dedicated `Badges From Held ORV` result.
+- Shows unused ORV remaining after whole badges are generated.
+- Corrected Officer Development labels and required-resource calculations.
+
+
 ## v3.1.0 Integrated
 - Preserved the complete Officer Companion
 - Added Officer Database screen
