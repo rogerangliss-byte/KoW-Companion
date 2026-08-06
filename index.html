@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KoW Companion v3.1.1</title>
+<title>KoW Companion v3.1.2</title>
 <style>
 :root{--gold:#e1b84a;--panel:rgba(17,19,22,.88);--line:rgba(225,184,74,.35);--text:#fff7df;--muted:#c9c1ad}
 *{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;color:var(--text);background:#090b0c}
@@ -42,7 +42,7 @@ button.save{width:100%;margin-top:12px;padding:11px;border-radius:10px;border:1p
 </head>
 <body>
 <div class="app">
-<header><h1 id="appTitle">⚔ GODS OF WAR 371</h1><p>Officer Companion v3.1.1</p></header>
+<header><h1 id="appTitle">⚔ GODS OF WAR 371</h1><p>Officer Companion v3.1.2</p></header>
 
 <section id="dashboard" class="screen active"><div class="grid">
 <div class="card full"><h2>Active Officer</h2><div class="stat"><span id="dOfficer">S7 Liora</span><b id="overall">0.0%</b></div><div class="progress"><span id="overallBar"></span></div></div>
@@ -60,7 +60,11 @@ button.save{width:100%;margin-top:12px;padding:11px;border-radius:10px;border:1p
 <div class="row"><div><label>Current Star</label><select id="currentStar"><option value="0">0★</option><option value="1">1★</option><option value="2">2★</option><option value="3">3★</option><option value="4">4★</option><option value="5">5★</option></select></div>
 <div><label>Target Star</label><select id="targetStar"><option value="1">1★</option><option value="2">2★</option><option value="3">3★</option><option value="4">4★</option><option value="5" selected>5★</option></select></div></div>
 <div class="row"><div><label>Legendary Star I (110)</label><input id="ls1" type="number" value="0"></div><div><label>Legendary Star II (420)</label><input id="ls2" type="number" value="0"></div></div>
-<label>Legendary Star III (960)</label><input id="ls3" type="number" value="0">
+<label>Legendary Star III (960)</label><input id="ls3" type="number" min="0" step="1" inputmode="numeric" value="0">
+<label>Star Readiness Vouchers Held</label><input id="srvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+<div class="stat"><span>Exclusive Stars From Held SRV</span><b id="exclusiveFromSrv">0</b></div>
+<div class="stat"><span>Officer Stars From Held SRV</span><b id="officerStarsFromSrv">0</b></div>
+<div class="stat"><span>SRV Remaining</span><b id="srvRemainder">0</b></div>
 <div class="stat"><span>Invested</span><b id="starInvested">0</b></div><div class="stat"><span>Held</span><b id="starHeld">0</b></div><div class="stat"><span>Remaining</span><b id="starRemaining">98,000</b></div>
 <div class="progress"><span id="starBar"></span></div></div></section>
 
@@ -343,7 +347,18 @@ function cumulativeXpForLevel(level){
 function calc(){
  let o=OFFICERS[+$('officerSelect').value]||OFFICERS[0]||{name:'Officer',orv:0,srv:0};$('orv').value=o.orv;$('srv').value=o.srv;$('dOfficer').textContent=o.name;
  let cs=+$('currentStar').value,ts=+$('targetStar').value;if(ts<cs){ts=cs;$('targetStar').value=ts}
- let invested=STAR[cs], inv=+$('ls1').value*110 + +$('ls2').value*420 + +$('ls3').value*960, available=invested+inv, needed=Math.max(0,STAR[ts]-available);
+ let invested=STAR[cs];
+ let legendaryHeld=+$('ls1').value*110 + +$('ls2').value*420 + +$('ls3').value*960;
+ let srvHeld=+$('srvHeld').value;
+ let exclusiveFromSrv=o.srv>0?Math.floor(srvHeld/o.srv):0;
+ let srvRemainder=o.srv>0?srvHeld-(exclusiveFromSrv*o.srv):srvHeld;
+ let officerStarsFromSrv=exclusiveFromSrv*110;
+ let inv=legendaryHeld+officerStarsFromSrv;
+ let available=invested+inv;
+ let needed=Math.max(0,STAR[ts]-available);
+ $('exclusiveFromSrv').textContent=fmt(exclusiveFromSrv);
+ $('officerStarsFromSrv').textContent=fmt(officerStarsFromSrv);
+ $('srvRemainder').textContent=fmt(srvRemainder);
  $('starInvested').textContent=fmt(invested);$('starHeld').textContent=fmt(inv);$('starRemaining').textContent=fmt(needed);$('starBar').style.width=pct(available,STAR[ts]||1)+'%';
  let bInv=+$('badgeInv').value;
  let bSpent=($('unlocked').checked?10:0)+skillState.reduce((s,on,i)=>s+(on?SK[i]:0),0)+ +$('training').value*5;
@@ -391,8 +406,8 @@ function planner(o,cs,invested,inv,bSpent,bInv,xp,orvInv,xpRequiredSelected){
  ['Officer XP',Math.max(0,xpReq),xp]];
  $('rows').innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${fmt(r[2])}</td><td>${fmt(Math.max(0,r[1]-r[2]))}</td></tr>`).join('');
 }
-function save(){let d={officer:$('officerSelect').value,current:$('currentStar').value,target:$('targetStar').value,ls1:$('ls1').value,ls2:$('ls2').value,ls3:$('ls3').value,unlocked:$('unlocked').checked,skills:skillState,training:$('training').value,badgeInv:$('badgeInv').value,orvHeld:$('orvHeld').value,goal:$('goal').value,currentLevel:$('currentLevel').value,targetLevel:$('targetLevel').value,xp:{}};XP.forEach(v=>d.xp[v]=$('xp'+v).value);localStorage.setItem('gow371_proto',JSON.stringify(d));alert('Saved on this device')}
-function load(){let r=localStorage.getItem('gow371_proto');if(!r)return;try{let d=JSON.parse(r);$('officerSelect').value=d.officer??3;$('currentStar').value=d.current??0;$('targetStar').value=d.target??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('unlocked').checked=!!d.unlocked;$('training').value=d.training??0;$('badgeInv').value=d.badgeInv??0;$('orvHeld').value=d.orvHeld??0;$('goal').value=d.goal??'max';$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;skillState=d.skills??skillState;document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skillState[i]));XP.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch(e){}}
+function save(){let d={officer:$('officerSelect').value,current:$('currentStar').value,target:$('targetStar').value,ls1:$('ls1').value,ls2:$('ls2').value,ls3:$('ls3').value,srvHeld:$('srvHeld').value,unlocked:$('unlocked').checked,skills:skillState,training:$('training').value,badgeInv:$('badgeInv').value,orvHeld:$('orvHeld').value,goal:$('goal').value,currentLevel:$('currentLevel').value,targetLevel:$('targetLevel').value,xp:{}};XP.forEach(v=>d.xp[v]=$('xp'+v).value);localStorage.setItem('gow371_proto',JSON.stringify(d));alert('Saved on this device')}
+function load(){let r=localStorage.getItem('gow371_proto');if(!r)return;try{let d=JSON.parse(r);$('officerSelect').value=d.officer??3;$('currentStar').value=d.current??0;$('targetStar').value=d.target??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('srvHeld').value=d.srvHeld??0;$('unlocked').checked=!!d.unlocked;$('training').value=d.training??0;$('badgeInv').value=d.badgeInv??0;$('orvHeld').value=d.orvHeld??0;$('goal').value=d.goal??'max';$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;skillState=d.skills??skillState;document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skillState[i]));XP.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch(e){}}
 init();
 </script>
 <script>

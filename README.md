@@ -1,4 +1,4 @@
-# KoW Companion v3.1.0 Integrated Edition 
+# KoW Companion v3.1.0 Integrated Edition
 
 This build preserves the full Officer Companion and adds an editable Officer Database.
 
