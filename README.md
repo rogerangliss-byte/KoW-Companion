@@ -1,16 +1,17 @@
-# KoW Companion v3.1.0
+# KoW Companion v3.1.0 Integrated Edition
 
-Officer-focused Kiss of War companion with an editable Officer Database Manager.
+This build preserves the full Officer Companion and adds an editable Officer Database.
 
-## Highlights
-- Spreadsheet-style officer editing
-- Add, edit, duplicate, delete
-- Search and season filter
+## Included
+- Dashboard
+- Officer selection and automatic voucher costs
+- Star planner
+- Officer Development
+- Officer XP Books and level targets
+- Goals Planner
+- Editable Officer Database
 - CSV import/export
-- Validation and browser auto-storage
-- Officer Planner integration
-- Custom app name and background
-- PWA / GitHub Pages ready
+- App-name and background settings
+- Local saving and PWA support
 
-## GitHub Pages
-Upload all files to the repository root, then enable Pages from `main` / `root`.
+Upload every file in this folder to the root of the GitHub repository.
