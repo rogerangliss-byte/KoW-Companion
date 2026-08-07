@@ -1,7 +1,12 @@
-# v4.0.5
-- Fullscreen background hardening: body now mirrors the responsive portrait/landscape background as a fallback behind the fixed background layer.
-- Added viewport overscan to prevent seams during mobile browser viewport resizing.
-- Preserves Settings portrait/landscape background selectors and automatic orientation switching.
+# Changelog
+
+## v4.0.6
+- Fixed Officer Database table rendering and refresh.
+- Database now reports how many officers are shown.
+- Replaced CSS background paint with real fixed image layers.
+- Fixed Reset Appearance & Backgrounds so it applies immediately.
+- Kept automatic portrait/landscape background switching.
+- Cache bumped to v4.0.6.
 
 # v4.0.4
 - Rebuilt the background as an independent fixed viewport layer.
@@ -9,7 +14,6 @@
 - Preserved automatic portrait/landscape background switching and Settings selectors.
 - Bumped service-worker cache to force the updated CSS to deploy.
 
-# Changelog
 
 ## v4.0.3
 - Replaced the body pseudo-element background with a dedicated fixed full-screen background layer.

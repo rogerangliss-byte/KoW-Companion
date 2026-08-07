@@ -1,11 +1,15 @@
-:root{--gold:#d5a72f;--gold2:#f2cf6b;--panel:rgba(14,16,19,.92);--line:rgba(213,167,47,.35);--text:#fff8e7;--muted:#c9c1ad;--portrait-bg:url('../assets/background-portrait.png');--landscape-bg:url('../assets/background-landscape.png')}
+
+:root{--gold:#d5a72f;--gold2:#f2cf6b;--panel:rgba(14,16,19,.92);--line:rgba(213,167,47,.35);--text:#fff8e7;--muted:#c9c1ad}
 *{box-sizing:border-box}
-html{margin:0;min-width:100%;min-height:100%;background:#090b0c}
-body{margin:0;min-width:100%;min-height:100vh;min-height:100dvh;font-family:Arial,sans-serif;color:var(--text);background-color:#090b0c;background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--portrait-bg);background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:fixed}
-/* v4.0.4: independent viewport background layer. Do not size this from page/tab content. */
-.app-background{position:fixed;top:0;right:0;bottom:0;left:0;width:auto;height:auto;min-height:100vh;min-height:100dvh;z-index:1;pointer-events:none;background-color:#090b0c;background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--portrait-bg);background-size:cover;background-position:center top;background-repeat:no-repeat;transform:none}
-@media (orientation:landscape){body{background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--landscape-bg);background-position:center center}.app-background{background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--landscape-bg);background-position:center center}}
-@media (min-width:1200px) and (orientation:landscape){.app-background{background-position:center 35%}}
+html,body{margin:0;width:100%;min-width:100%;min-height:100%;background:#090b0c}
+body{min-height:100vh;min-height:100dvh;font-family:Arial,sans-serif;color:var(--text);overflow-x:hidden}
+.app-background{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:0;overflow:hidden;pointer-events:none;background:#090b0c}
+.bg-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none}
+.bg-portrait{display:block;object-position:center top}
+.bg-landscape{display:none;object-position:center center}
+.bg-overlay{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78))}
+@media (orientation:landscape){.bg-portrait{display:none}.bg-landscape{display:block}}
+@media (min-width:1200px) and (orientation:landscape){.bg-landscape{object-position:center 35%}}
 .topbar{position:sticky;top:0;z-index:10;padding:18px;background:rgba(0,0,0,.82);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
 .topbar h1{margin:0;color:var(--gold);font-size:1.4rem}.topbar p{margin:5px 0 0;color:var(--muted)}
 .app{max-width:1000px;margin:auto;padding:14px 14px 100px}.view{display:none}.view.active{display:block}
@@ -27,14 +31,8 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 @media(max-width:760px){.grid,.two{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.bottom-nav{grid-template-columns:repeat(8,1fr)}}
 
 .background-status{display:flex;justify-content:space-between;gap:12px;margin:6px 0 14px;padding:9px 10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(0,0,0,.28);font-size:.82rem}.background-status span{color:var(--muted)}.background-status b{color:var(--gold2);text-align:right}
-
-/* v4.0.4: all UI is above the independent fixed background. */
 .topbar,.app,.bottom-nav{z-index:2}
 .topbar{position:sticky}
 .app{position:relative;min-height:calc(100vh - 90px);min-height:calc(100dvh - 90px)}
+.view.active{display:block;min-height:calc(100vh - 205px);min-height:calc(100dvh - 205px)}
 .bottom-nav{position:fixed}
-.view.active{min-height:0}
-
-/* v4.0.5: body fallback mirrors the fixed viewport layer. This prevents any exposed black area on short tabs or mobile browser viewport changes. */
-html,body{width:100%;min-height:100%;}
-.app-background{inset:-2px;min-width:calc(100vw + 4px);min-height:calc(100vh + 4px);min-height:calc(100dvh + 4px);}

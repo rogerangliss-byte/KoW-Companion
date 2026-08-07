@@ -9,7 +9,8 @@ const fmt=n=>Math.max(0,Math.round(Number(n)||0)).toLocaleString();
 const pct=(v,m)=>Math.min(100,Math.max(0,m?100*v/m:0));
 const clone=v=>JSON.parse(JSON.stringify(v));
 
-function loadOfficers(){try{const d=JSON.parse(localStorage.getItem('kow_officers_v4')||'null');officers=Array.isArray(d)&&d.length?d:clone(DEFAULT_OFFICERS)}catch{officers=clone(DEFAULT_OFFICERS)}}
+function normalizeOfficer(o){return {name:String(o?.name||'').trim(),season:String(o?.season||String(o?.name||'').match(/^S\d+/)?.[0]||'').trim(),orv:Number(o?.orv)||0,srv:Number(o?.srv)||0,notes:String(o?.notes||'')}}
+function loadOfficers(){try{const d=JSON.parse(localStorage.getItem('kow_officers_v4')||'null');officers=(Array.isArray(d)&&d.length?d:clone(DEFAULT_OFFICERS)).map(normalizeOfficer).filter(o=>o.name)}catch{officers=clone(DEFAULT_OFFICERS).map(normalizeOfficer)}}
 function saveOfficers(){localStorage.setItem('kow_officers_v4',JSON.stringify(officers))}
 function currentOfficer(){return officers[+$('officerSelect').value]||officers[0]||{name:'Officer',orv:0,srv:0}}
 function renderOfficerOptions(name){const s=$('officerSelect');const prev=name||s.options[s.selectedIndex]?.textContent||'S7 Liora';s.innerHTML=officers.map((o,i)=>`<option value="${i}">${esc(o.name)}</option>`).join('');const i=officers.findIndex(o=>o.name===prev);s.value=i>=0?i:0}
@@ -85,15 +86,21 @@ function renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHel
 
 function validateDb(list=officers){const e=[],seen=new Set();list.forEach((o,i)=>{const k=(o.name||'').trim().toLowerCase();if(!k)e.push(`Row ${i+1}: name required`);if(k&&seen.has(k))e.push(`Row ${i+1}: duplicate name`);if(k)seen.add(k);if(!Number.isInteger(+o.orv)||+o.orv<=0)e.push(`Row ${i+1}: invalid ORV`);if(!Number.isInteger(+o.srv)||+o.srv<=0)e.push(`Row ${i+1}: invalid SRV`)});return e}
 function renderDb(){
- const q=$('dbSearch').value.trim().toLowerCase(),season=$('dbSeason').value;
- const seasons=[...new Set(officers.map(o=>o.season).filter(Boolean))].sort();const old=$('dbSeason').value;$('dbSeason').innerHTML='<option value="">All seasons</option>'+seasons.map(s=>`<option>${esc(s)}</option>`).join('');$('dbSeason').value=old;
- const rows=officers.map((o,i)=>({...o,_i:i})).filter(o=>(!q||o.name.toLowerCase().includes(q))&&(!season||o.season===season));
- $('dbRows').innerHTML=rows.map(o=>`<tr data-i="${o._i}"><td><input data-f="name" value="${esc(o.name)}"></td><td><input data-f="season" value="${esc(o.season)}"></td><td><input data-f="orv" type="number" value="${o.orv}"></td><td><input data-f="srv" type="number" value="${o.srv}"></td><td><input data-f="notes" value="${esc(o.notes)}"></td><td class="actions"><button data-copy>Copy</button><button data-del>Delete</button></td></tr>`).join('');
- document.querySelectorAll('#dbRows input').forEach(x=>x.oninput=e=>{const tr=e.target.closest('tr'),i=+tr.dataset.i,f=e.target.dataset.f;officers[i][f]=(f==='orv'||f==='srv')?Number(e.target.value):e.target.value;$('dbValidation').textContent=validateDb().join(' · ')||'Database validation passed.'});
- document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=e=>{const i=+e.target.closest('tr').dataset.i;officers.splice(i+1,0,{...officers[i],name:officers[i].name+' Copy'});renderDb();renderOfficerOptions();calculate()});
- document.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{const i=+e.target.closest('tr').dataset.i;if(officers.length>1)officers.splice(i,1);renderDb();renderOfficerOptions();calculate()});
- $('dbValidation').textContent=validateDb().join(' · ')||'Database validation passed.';
+ const search=$('dbSearch');const filter=$('dbSeason');const tbody=$('dbRows');if(!search||!filter||!tbody)return;
+ const q=String(search.value||'').trim().toLowerCase();
+ const seasons=[...new Set(officers.map(o=>String(o.season||'').trim()).filter(Boolean))].sort();
+ const requested=filter.value||'';
+ filter.innerHTML='<option value="">All seasons</option>'+seasons.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+ filter.value=seasons.includes(requested)?requested:'';
+ const season=filter.value;
+ const rows=officers.map((o,i)=>({...normalizeOfficer(o),_i:i})).filter(o=>(!q||o.name.toLowerCase().includes(q))&&(!season||o.season===season));
+ tbody.innerHTML=rows.map(o=>`<tr data-i="${o._i}"><td><input data-f="name" value="${esc(o.name)}"></td><td><input data-f="season" value="${esc(o.season)}"></td><td><input data-f="orv" type="number" min="1" step="1" value="${o.orv}"></td><td><input data-f="srv" type="number" min="1" step="1" value="${o.srv}"></td><td><input data-f="notes" value="${esc(o.notes)}"></td><td class="actions"><button data-copy>Copy</button><button data-del>Delete</button></td></tr>`).join('');
+ tbody.querySelectorAll('input').forEach(x=>x.oninput=e=>{const tr=e.target.closest('tr'),i=+tr.dataset.i,f=e.target.dataset.f;officers[i][f]=(f==='orv'||f==='srv')?Number(e.target.value):e.target.value;$('dbValidation').textContent=validateDb().join(' · ')||`${rows.length} officers shown · Database validation passed.`});
+ tbody.querySelectorAll('[data-copy]').forEach(b=>b.onclick=e=>{const i=+e.target.closest('tr').dataset.i;officers.splice(i+1,0,{...officers[i],name:officers[i].name+' Copy'});renderDb();renderOfficerOptions();calculate()});
+ tbody.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{const i=+e.target.closest('tr').dataset.i;if(officers.length>1)officers.splice(i,1);renderDb();renderOfficerOptions();calculate()});
+ $('dbValidation').textContent=validateDb().join(' · ')||`${rows.length} officers shown · Database validation passed.`;
 }
+
 function exportCsv(){const escCsv=v=>`"${String(v??'').replaceAll('"','""')}"`;const rows=[['Officer Name','Season','ORV per Badge','SRV per Exclusive Star','Notes'],...officers.map(o=>[o.name,o.season,o.orv,o.srv,o.notes])];const blob=new Blob([rows.map(r=>r.map(escCsv).join(',')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='officers.csv';a.click();URL.revokeObjectURL(a.href)}
 function parseCsv(text){const lines=text.trim().split(/\r?\n/).slice(1);return lines.map(line=>{const p=line.match(/("([^"]|"")*"|[^,]*)(,|$)/g)?.map(x=>x.replace(/,$/,'').replace(/^"|"$/g,'').replaceAll('""','"'))||[];return{name:p[0]||'',season:p[1]||'',orv:Number(p[2]),srv:Number(p[3]),notes:p[4]||''}})}
 
@@ -106,7 +113,7 @@ function init(){
  SKILL_COSTS.forEach((c,i)=>{const b=document.createElement('button');b.className='skill';b.textContent=`${i+1} · ${c}`;b.onclick=()=>{skills[i]=!skills[i];b.classList.toggle('active',skills[i]);calculate()};$('skillGrid').appendChild(b)});
  XP_DENOMS.forEach(v=>{const d=document.createElement('div');d.className='xp-item';d.innerHTML=`<label>${v.toLocaleString()} XP</label><input id="xp${v}" type="number" min="0" step="1" inputmode="numeric" value="0">`;$('xpBooks').appendChild(d)});
  document.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',calculate));
- document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.view).classList.add('active')});
+ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.view).classList.add('active');if(b.dataset.view==='database')renderDb()});
 
  $('saveProgress').onclick=saveProgress;
  $('dbSearch').oninput=renderDb;$('dbSeason').onchange=renderDb;$('dbAdd').onclick=()=>{officers.push({name:'New Officer',season:'S8',orv:1,srv:1,notes:''});renderDb();renderOfficerOptions('New Officer');calculate()};
@@ -118,13 +125,20 @@ function init(){
  const savedName=localStorage.getItem('kow_app_name_v4');if(savedName){$('appName').value=savedName;$('appTitle').textContent=savedName;document.title=savedName}
  const savedPortrait=localStorage.getItem('kow_bg_portrait_v401');
  const savedLandscape=localStorage.getItem('kow_bg_landscape_v401');
- if(savedPortrait){document.documentElement.style.setProperty('--portrait-bg',`url('${savedPortrait}')`);$('portraitBgStatus').textContent='Custom portrait'}
- if(savedLandscape){document.documentElement.style.setProperty('--landscape-bg',`url('${savedLandscape}')`);$('landscapeBgStatus').textContent='Custom landscape'}
+ if(savedPortrait){$('portraitBgImage').src=savedPortrait;$('portraitBgStatus').textContent='Custom portrait'}
+ if(savedLandscape){$('landscapeBgImage').src=savedLandscape;$('landscapeBgStatus').textContent='Custom landscape'}
  $('appName').oninput=e=>{const n=e.target.value||'GODS OF WAR 371';localStorage.setItem('kow_app_name_v4',n);$('appTitle').textContent=n;document.title=n};
- const setBackground=(inputId,key,cssVar,statusId,label)=>{$(inputId).onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{localStorage.setItem(key,r.result);document.documentElement.style.setProperty(cssVar,`url('${r.result}')`);$(statusId).textContent=label+' · '+f.name}catch(err){alert('This image is too large for browser storage. Try a smaller JPG or PNG.')}};r.readAsDataURL(f)}};
- setBackground('portraitBackgroundPicker','kow_bg_portrait_v401','--portrait-bg','portraitBgStatus','Custom portrait');
- setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','--landscape-bg','landscapeBgStatus','Custom landscape');
- $('resetAppearance').onclick=()=>{localStorage.removeItem('kow_app_name_v4');localStorage.removeItem('kow_bg_v4');localStorage.removeItem('kow_bg_portrait_v401');localStorage.removeItem('kow_bg_landscape_v401');location.reload()};
+ const setBackground=(inputId,key,imageId,statusId,label)=>{$(inputId).onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{localStorage.setItem(key,r.result);$(imageId).src=r.result;$(statusId).textContent=label+' · '+f.name}catch(err){alert('This image is too large for browser storage. Try a smaller JPG or PNG.')}};r.readAsDataURL(f)}};
+ setBackground('portraitBackgroundPicker','kow_bg_portrait_v401','portraitBgImage','portraitBgStatus','Custom portrait');
+ setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgImage','landscapeBgStatus','Custom landscape');
+ $('resetAppearance').onclick=()=>{
+  ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.0.6';
+  $('portraitBgImage').src='assets/background-portrait.png';$('landscapeBgImage').src='assets/background-landscape.png';
+  $('portraitBgStatus').textContent='Built-in 371 portrait';$('landscapeBgStatus').textContent='Built-in 371 landscape';
+  $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
+  alert('Appearance and backgrounds restored to defaults.');
+ };
 
  loadProgress();document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));renderDb();calculate();
  if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
