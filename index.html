@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.2.0</title>
+<title>KoW Companion v4.2.1</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -127,7 +127,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
-    <p>Officer Companion v4.2.0</p>
+    <p>Officer Companion v4.2.1</p>
   </div>
 </header>
 
@@ -344,7 +344,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <button id="resetAppearance" class="primary">Reset Appearance & Backgrounds</button>
       <h3>App Updates</h3>
       <div class="notice">
-        <div><b>Installed version:</b> <span id="installedVersion">v4.2.0</span></div>
+        <div><b>Installed version:</b> <span id="installedVersion">v4.2.1</span></div>
         <div id="updateStatus">Tap Check for Updates to compare with the latest GitHub Pages version.</div>
       </div>
       <div class="two">
@@ -371,7 +371,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 </nav>
 
 <script type="module">
-const DEFAULT_OFFICERS=[{"name": "S7 Roisin", "season": "S7", "orv": 600, "srv": 300, "notes": ""}, {"name": "S7 Barbara", "season": "S7", "orv": 600, "srv": 300, "notes": ""}, {"name": "S7 Romana", "season": "S7", "orv": 500, "srv": 250, "notes": ""}, {"name": "S7 Liora", "season": "S7", "orv": 500, "srv": 250, "notes": ""}, {"name": "S7 Stella", "season": "S7", "orv": 416, "srv": 208, "notes": ""}, {"name": "S7 Klara", "season": "S7", "orv": 416, "srv": 208, "notes": ""}, {"name": "S7 Code", "season": "S7", "orv": 346, "srv": 173, "notes": ""}, {"name": "S7 Kamila", "season": "S7", "orv": 346, "srv": 173, "notes": ""}, {"name": "S6 Regina", "season": "S6", "orv": 289, "srv": 144, "notes": ""}, {"name": "S6 Veronica", "season": "S6", "orv": 289, "srv": 144, "notes": ""}, {"name": "S6 Silverhand", "season": "S6", "orv": 240, "srv": 120, "notes": ""}, {"name": "S6 Red Queen", "season": "S6", "orv": 240, "srv": 120, "notes": ""}, {"name": "S6 Samantha", "season": "S6", "orv": 200, "srv": 100, "notes": ""}, {"name": "S6 Saoirse", "season": "S6", "orv": 200, "srv": 100, "notes": ""}, {"name": "S6 Emily", "season": "S6", "orv": 167, "srv": 84, "notes": ""}, {"name": "S6 Zoya", "season": "S6", "orv": 167, "srv": 84, "notes": ""}];
+const DEFAULT_OFFICERS=[{"name": "S7 Roisin", "role": "Tank", "season": "S7", "orv": 600, "srv": 300, "notes": ""}, {"name": "S7 Barbara", "role": "Tank", "season": "S7", "orv": 600, "srv": 300, "notes": ""}, {"name": "S7 Romana", "season": "S7", "orv": 500, "srv": 250, "notes": ""}, {"name": "S7 Liora", "season": "S7", "orv": 500, "srv": 250, "notes": ""}, {"name": "S7 Stella", "role": "Tank", "season": "S7", "orv": 416, "srv": 208, "notes": ""}, {"name": "S7 Klara", "role": "Tank", "season": "S7", "orv": 416, "srv": 208, "notes": ""}, {"name": "S7 Code", "role": "Tank", "season": "S7", "orv": 346, "srv": 173, "notes": ""}, {"name": "S7 Kamila", "role": "Tank", "season": "S7", "orv": 346, "srv": 173, "notes": ""}, {"name": "S6 Regina", "role": "Tank", "season": "S6", "orv": 289, "srv": 144, "notes": ""}, {"name": "S6 Veronica", "role": "Tank", "season": "S6", "orv": 289, "srv": 144, "notes": ""}, {"name": "S6 Silverhand", "season": "S6", "orv": 240, "srv": 120, "notes": ""}, {"name": "S6 Red Queen", "season": "S6", "orv": 240, "srv": 120, "notes": ""}, {"name": "S6 Samantha", "season": "S6", "orv": 200, "srv": 100, "notes": ""}, {"name": "S6 Saoirse", "season": "S6", "orv": 200, "srv": 100, "notes": ""}, {"name": "S6 Emily", "season": "S6", "orv": 167, "srv": 84, "notes": ""}, {"name": "S6 Zoya", "season": "S6", "orv": 167, "srv": 84, "notes": ""}];
 const STAR_CUM=[0,500,1500,8000,33000,98000];
 const SKILL_COSTS=[10,10,15,15,30,30,40,40,45,45,50,50,75,75,80,80];
 const XP_DENOMS=[50,100,500,1000,5000,10000,20000,50000];
@@ -392,7 +392,7 @@ const clone=v=>JSON.parse(JSON.stringify(v));
 
 function normalizeOfficer(o){
  const season=String(o?.season||String(o?.name||'').match(/^S\d+/)?.[0]||'').trim();
- return {name:String(o?.name||'').trim(),season,orv:Number(o?.orv)||0,srv:Number(o?.srv)||0,notes:String(o?.notes||''),readinessEligible:season.toLowerCase()!=='original'&&o?.readinessEligible!==false}
+ return {name:String(o?.name||'').trim(),season,orv:Number(o?.orv)||0,srv:Number(o?.srv)||0,role:String(o?.role||'').trim(),notes:String(o?.notes||''),readinessEligible:season.toLowerCase()!=='original'&&o?.readinessEligible!==false}
 }
 async function loadOfficers(){
  let published=clone(DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);
@@ -411,9 +411,12 @@ async function loadOfficers(){
      const names=new Set(merged.map(o=>o.name.toLowerCase()));
      published.forEach(o=>{
        const key=o.name.toLowerCase();
-       if(!names.has(key)){
+       const existing=merged.find(x=>x.name.toLowerCase()===key);
+       if(!existing){
          merged.push(o);
          names.add(key);
+       }else if(!existing.role && o.role){
+         existing.role=o.role;
        }
      });
      officers=merged;
@@ -428,12 +431,12 @@ async function loadOfficers(){
  }
 }
 function saveOfficers(){localStorage.setItem('kow_officers_v4',JSON.stringify(officers))}
-function currentOfficer(){return officers[+$('officerSelect').value]||officers[0]||{name:'Officer',season:'',orv:0,srv:0,readinessEligible:true}}
+function currentOfficer(){const s=$('officerSelect');if(s&&s.value==='')return null;return officers[+s?.value]||officers[0]||{name:'Officer',season:'',orv:0,srv:0,readinessEligible:true}}
 function officerPortraitFilename(name){
  return 'officer-'+String(name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.jpg';
 }
 function officerRole(o){
- return String(o?.notes||'').trim()||'Unspecified';
+ return String(o?.role||'').trim()||'Unspecified';
 }
 function seasonSort(a,b){
  if(a==='Original')return -1;if(b==='Original')return 1;
@@ -465,9 +468,20 @@ function renderOfficerOptions(name){
  s.innerHTML=rows.map(({o,i})=>`<option value="${i}">${esc(o.name)}</option>`).join('');
  let chosen=rows.find(({o})=>o.name===prev);
  if(!chosen)chosen=rows[0];
- if(chosen)s.value=chosen.i;
- $('officerFilterCount').textContent=rows.length;
- updateOfficerExperience();
+ if(chosen){
+   s.value=chosen.i;
+   $('officerFilterCount').textContent=rows.length;
+   updateOfficerExperience();
+ }else{
+   s.innerHTML='<option value="">No Officers match these filters</option>';
+   $('officerFilterCount').textContent='0';
+   if($('officerSeasonValue'))$('officerSeasonValue').textContent='—';
+   if($('officerRoleValue'))$('officerRoleValue').textContent='—';
+   if($('orvCost'))$('orvCost').value='';
+   if($('srvCost'))$('srvCost').value='';
+   if($('officerPortrait'))$('officerPortrait').style.display='none';
+   if($('officerPortraitPlaceholder'))$('officerPortraitPlaceholder').style.display='flex';
+ }
 }
 function updateOfficerExperience(){
  const o=currentOfficer();if(!o)return;
@@ -513,6 +527,7 @@ function latestSeasonOrvCost(){
 
 function calculate(){
  const o=currentOfficer();
+ if(!o)return;
  const readinessEligible=o.readinessEligible!==false&&String(o.season||'').toLowerCase()!=='original';
  $('orvCost').value=readinessEligible?o.orv:'N/A';$('srvCost').value=readinessEligible?o.srv:'N/A';$('dashOfficer').textContent=o.name;updateOfficerExperience();
  $('orvHeld').disabled=!readinessEligible;$('srvHeld').disabled=!readinessEligible;
@@ -612,7 +627,7 @@ function saveProgress(){const d={officer:$('officerSelect').value,currentStar:$(
 function loadProgress(){try{const d=JSON.parse(localStorage.getItem('kow_progress_v4')||'null');if(!d)return;$('officerSelect').value=d.officer??0;$('currentStar').value=d.currentStar??0;$('targetStar').value=d.targetStar??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('srvHeld').value=d.srvHeld??0;$('unlocked').checked=!!d.unlocked;skills=Array.isArray(d.skills)?d.skills:skills;$('training').value=d.training??0;$('badgeHeld').value=d.badgeHeld??0;$('universalBadgeHeld').value=d.universalBadgeHeld??0;$('legendaryBadgeChestHeld').value=d.legendaryBadgeChestHeld??0;$('legendaryBadgeChestMode').value=d.legendaryBadgeChestMode??'badge';$('orvHeld').value=d.orvHeld??0;$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;$('goalSelect').value=d.goal??'max';XP_DENOMS.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch{}}
 
 
-const APP_VERSION='4.2.0';
+const APP_VERSION='4.2.1';
 
 function parseVersion(v){
  return String(v||'').replace(/^v/i,'').split('.').map(n=>parseInt(n,10)||0);
@@ -688,7 +703,7 @@ async function init(){
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.2.0';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.2.1';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();

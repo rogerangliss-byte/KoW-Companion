@@ -4,14 +4,16 @@
     "season": "S7",
     "orv": 600,
     "srv": 300,
-    "notes": "Tank Destroyer"
+    "notes": "Tank Destroyer",
+    "role": "Tank"
   },
   {
     "name": "S7 Barbara",
     "season": "S7",
     "orv": 600,
     "srv": 300,
-    "notes": "Tank Destroyer"
+    "notes": "Tank Destroyer",
+    "role": "Tank"
   },
   {
     "name": "S7 Romana",
@@ -32,42 +34,48 @@
     "season": "S7",
     "orv": 416,
     "srv": 208,
-    "notes": "Infantry"
+    "notes": "Infantry",
+    "role": "Tank"
   },
   {
     "name": "S7 Klara",
     "season": "S7",
     "orv": 416,
     "srv": 208,
-    "notes": "Infantry"
+    "notes": "Infantry",
+    "role": "Tank"
   },
   {
     "name": "S7 Code",
     "season": "S7",
     "orv": 346,
     "srv": 173,
-    "notes": "Rally"
+    "notes": "Rally",
+    "role": "Tank"
   },
   {
     "name": "S7 Kamila",
     "season": "S7",
     "orv": 346,
     "srv": 173,
-    "notes": "Garrison"
+    "notes": "Garrison",
+    "role": "Tank"
   },
   {
     "name": "S6 Regina",
     "season": "S6",
     "orv": 289,
     "srv": 144,
-    "notes": "Tank Destroyer"
+    "notes": "Tank Destroyer",
+    "role": "Tank"
   },
   {
     "name": "S6 Veronica",
     "season": "S6",
     "orv": 289,
     "srv": 144,
-    "notes": "Tank Destroyer"
+    "notes": "Tank Destroyer",
+    "role": "Tank"
   },
   {
     "name": "S6 Silverhand",
