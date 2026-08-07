@@ -133,8 +133,8 @@ function init(){
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgImage','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.0.6';
-  $('portraitBgImage').src='assets/background-portrait.png';$('landscapeBgImage').src='assets/background-landscape.png';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.0.7';
+  $('portraitBgImage').src='assets/background-portrait.png?v=407';$('landscapeBgImage').src='assets/background-landscape.png?v=407';
   $('portraitBgStatus').textContent='Built-in 371 portrait';$('landscapeBgStatus').textContent='Built-in 371 landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
   alert('Appearance and backgrounds restored to defaults.');

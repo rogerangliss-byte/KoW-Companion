@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.0.7
+- Replaced the built-in portrait background with the approved portrait artwork.
+- Replaced the built-in landscape background with the approved 16:9 landscape artwork.
+- Removed legacy duplicate background files.
+- Standardised all default background references to only `assets/background-portrait.png` and `assets/background-landscape.png`.
+- Added background cache-busting and bumped the service-worker cache to v4.0.7.
+- Reset Appearance now restores these exact default files.
+
+
 ## v4.0.6
 - Fixed Officer Database table rendering and refresh.
 - Database now reports how many officers are shown.
