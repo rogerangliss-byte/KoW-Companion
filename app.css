@@ -1,9 +1,9 @@
 
 :root{--gold:#d5a72f;--gold2:#f2cf6b;--panel:rgba(14,16,19,.92);--line:rgba(213,167,47,.35);--text:#fff8e7;--muted:#c9c1ad}
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;min-width:100%;min-height:100%;background:#090b0c}
+html,body{min-height:100%;font-family:Arial,sans-serif;color:var(--text);overflow-x:hidden;background:transparent}
 body{min-height:100vh;min-height:100dvh;font-family:Arial,sans-serif;color:var(--text);overflow-x:hidden}
-.app-background{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:0;overflow:hidden;pointer-events:none;background:#090b0c}
+.app-background{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#090b0c}
 .bg-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none}
 .bg-portrait{display:block;object-position:center top}
 .bg-landscape{display:none;object-position:center center}

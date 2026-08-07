@@ -1,58 +1,9 @@
 # Changelog
 
-## v4.0.7
-- Replaced the built-in portrait background with the approved portrait artwork.
-- Replaced the built-in landscape background with the approved 16:9 landscape artwork.
-- Removed legacy duplicate background files.
-- Standardised all default background references to only `assets/background-portrait.png` and `assets/background-landscape.png`.
-- Added background cache-busting and bumped the service-worker cache to v4.0.7.
-- Reset Appearance now restores these exact default files.
-
-
-## v4.0.6
-- Fixed Officer Database table rendering and refresh.
-- Database now reports how many officers are shown.
-- Replaced CSS background paint with real fixed image layers.
-- Fixed Reset Appearance & Backgrounds so it applies immediately.
-- Kept automatic portrait/landscape background switching.
-- Cache bumped to v4.0.6.
-
-# v4.0.4
-- Rebuilt the background as an independent fixed viewport layer.
-- Removed tab/view height dependency from background rendering.
-- Preserved automatic portrait/landscape background switching and Settings selectors.
-- Bumped service-worker cache to force the updated CSS to deploy.
-
-
-## v4.0.3
-- Replaced the body pseudo-element background with a dedicated fixed full-screen background layer.
-- Background now fills the entire viewport on short tabs such as Officer, Planner, Database and Settings.
-- Portrait/Landscape automatic switching retained.
-- Custom Portrait/Landscape backgrounds retained.
-- Updated service-worker cache to v4.0.3.
-
-
-## v4.0.2
-- Fixed portrait background ending part-way down long pages on Android/mobile browsers.
-- Background now uses a fixed full-viewport layer that remains visible while scrolling.
-- Fix applies to Officer, Planner, Database, Settings and all other tabs.
-- Portrait/Landscape automatic switching and custom background selectors are preserved.
-
-
-## v4.0.1
-- Added separate Portrait and Landscape background images.
-- Automatically switches backgrounds using screen orientation.
-- Added Portrait Background and Landscape Background selectors under Settings.
-- Included the supplied 371 portrait artwork and the new 1920×1080 landscape artwork as defaults.
-- Added desktop background positioning for wide screens.
-- Updated service-worker cache to v4.0.1.
-
-
-## v4.0.0
-- Clean integrated rebuild.
-- Restored full bottom navigation.
-- Added all officer planning screens.
-- Added ORV to Officer Badge conversion.
-- Added SRV to Exclusive Star conversion.
-- Added editable Officer Database and CSV tools.
-- Added mobile-safe numeric inputs and local saving.
+## v4.0.8
+- Fixed the fullscreen background layer by using `position: fixed; inset: 0` without `100vh`/`100dvh`.
+- This avoids viewport-unit height clipping that caused the lower section to render black on short tabs.
+- Replaced the built-in defaults with zone-neutral tank backgrounds containing no 371 branding.
+- Added dedicated 1920×1080 landscape and 1080×1920 portrait defaults.
+- Zones can still upload their own portrait and landscape images from Settings.
+- Service-worker cache bumped to v4.0.8.
