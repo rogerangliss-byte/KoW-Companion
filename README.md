@@ -1,4 +1,4 @@
-# KoW Companion v4.0.1 Update 
+# KoW Companion v4.0.1
 
 Clean integrated officer-focused rebuild.
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.0.2
+- Fixed portrait background ending part-way down long pages on Android/mobile browsers.
+- Background now uses a fixed full-viewport layer that remains visible while scrolling.
+- Fix applies to Officer, Planner, Database, Settings and all other tabs.
+- Portrait/Landscape automatic switching and custom background selectors are preserved.
+
+
 ## v4.0.1
 - Added separate Portrait and Landscape background images.
 - Automatically switches backgrounds using screen orientation.
