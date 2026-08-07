@@ -5,6 +5,14 @@ const XP_DENOMS=[50,100,500,1000,5000,10000,20000,50000];
 const MAX_STAR=98000,MAX_BADGES=1600,MAX_XP=199646700;
 let officers=[],skills=Array(16).fill(false);
 const $=id=>document.getElementById(id);
+function applyResponsivePageBackground(){
+ const portrait=localStorage.getItem('kow_bg_portrait_v401');
+ const landscape=localStorage.getItem('kow_bg_landscape_v401');
+ const isLandscape=window.matchMedia('(orientation: landscape)').matches;
+ const chosen=isLandscape?landscape:portrait;
+ const fallback=isLandscape?'assets/background-landscape.jpg?v=409':'assets/background-portrait.jpg?v=409';
+ document.documentElement.style.setProperty('--page-bg',`url("${chosen||fallback}")`);
+}
 const fmt=n=>Math.max(0,Math.round(Number(n)||0)).toLocaleString();
 const pct=(v,m)=>Math.min(100,Math.max(0,m?100*v/m:0));
 const clone=v=>JSON.parse(JSON.stringify(v));
@@ -127,20 +135,23 @@ function init(){
  const savedLandscape=localStorage.getItem('kow_bg_landscape_v401');
  if(savedPortrait){$('portraitBgImage').src=savedPortrait;$('portraitBgStatus').textContent='Custom portrait'}
  if(savedLandscape){$('landscapeBgImage').src=savedLandscape;$('landscapeBgStatus').textContent='Custom landscape'}
+ applyResponsivePageBackground();
  $('appName').oninput=e=>{const n=e.target.value||'GODS OF WAR 371';localStorage.setItem('kow_app_name_v4',n);$('appTitle').textContent=n;document.title=n};
- const setBackground=(inputId,key,imageId,statusId,label)=>{$(inputId).onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{localStorage.setItem(key,r.result);$(imageId).src=r.result;$(statusId).textContent=label+' · '+f.name}catch(err){alert('This image is too large for browser storage. Try a smaller JPG or PNG.')}};r.readAsDataURL(f)}};
+ const setBackground=(inputId,key,imageId,statusId,label)=>{$(inputId).onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{localStorage.setItem(key,r.result);$(imageId).src=r.result;$(statusId).textContent=label+' · '+f.name;applyResponsivePageBackground()}catch(err){alert('This image is too large for browser storage. Try a smaller JPG or PNG.')}};r.readAsDataURL(f)}};
  setBackground('portraitBackgroundPicker','kow_bg_portrait_v401','portraitBgImage','portraitBgStatus','Custom portrait');
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgImage','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.0.8';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.0.9';
   $('portraitBgImage').src='assets/background-portrait.jpg?v=408';$('landscapeBgImage').src='assets/background-landscape.jpg?v=408';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
+   applyResponsivePageBackground();
   alert('Appearance and backgrounds restored to defaults.');
  };
 
  loadProgress();document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));renderDb();calculate();
+ window.addEventListener('resize',applyResponsivePageBackground);
  if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
 }
 init();
