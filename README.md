@@ -1,7 +1,12 @@
-# KoW Companion v4.2.0
+# KoW Companion v4.1.7
 
-Adds Original Officer support:
+Adds two new badge resources:
 
-Katherine (Tank), Grace (Tank), Chloe (Rally), Ling (Tank Destroyer), Jessica (Tank Destroyer), Lilith (Tank Destroyer), Angel (Gatherer), Sakura (Infantry), Loubna (Infantry), Angelica (Infantry), Ophelia (Rally), Doireann (Garrison).
+1. Universal Legendary Badges
+   - Each is worth 1 Officer Badge for Legendary officers.
 
-Original Officers cannot use Officer Readiness or Star Readiness Vouchers.
+2. Legendary Officer Badge Selection Chests
+   - Each chest can be used as either 1 Universal Legendary Badge or as Officer Readiness Vouchers.
+   - The ORV value is linked automatically to the latest Season's highest Officer Readiness Voucher cost per badge.
+
+The user chooses how the held Selection Chests are valued in the Development tab.

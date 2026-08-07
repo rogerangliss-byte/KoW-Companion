@@ -1,12 +1,8 @@
 # Changelog
 
-## v4.2.0
-- Added officer portrait library for all 49 supplied officer screenshots.
-- Portrait crops exclude the in-game name/star strip and avoid the rank badge area.
-- Added placeholders for Roisin, Barbara, Stella, Klara, Code, Kamila and Veronica.
-- Officer portrait now updates automatically with the Officer selector.
-- Original Officer readiness restrictions remain unchanged.
-- Service-worker cache bumped to v4.2.0.
-
-## v4.1.6
-- Previous Original Officers build.
+## v4.1.7
+- Added in-app Help & Instructions tab.
+- Added recommended data-entry workflow.
+- Expanded Officer Readiness Voucher (ORV) and Star Readiness Voucher (SRV) terminology throughout key labels and instructions.
+- Added explanations of Save Progress, Database Export, Planner, Settings and app updates.
+- Added USER-GUIDE.md.

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.2.0</title>
+<title>KoW Companion v4.1.7</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -107,19 +107,13 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 @media (orientation:portrait){body{background-position:center top}}
 @media (orientation:landscape){body{background-position:center center}}
 
-
-/* v4.2.0 officer portrait library */
-.officer-profile{display:grid;grid-template-columns:112px 1fr;gap:14px;align-items:center;margin:8px 0 16px}
-.officer-portrait{width:112px;height:112px;object-fit:cover;border-radius:12px;border:2px solid rgba(224,190,112,.85);box-shadow:0 4px 16px rgba(0,0,0,.45);background:#20252b}
-.officer-meta{min-width:0}.officer-meta strong{display:block;font-size:1.15rem;margin-bottom:4px}.officer-meta small{opacity:.78}
-@media(max-width:420px){.officer-profile{grid-template-columns:92px 1fr}.officer-portrait{width:92px;height:92px}}
 </style>
 </head>
 <body>
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
-    <p>Officer Companion v4.2.0</p>
+    <p>Officer Companion v4.1.7</p>
   </div>
 </header>
 
@@ -133,7 +127,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
         <div class="progress"><span id="overallBar"></span></div>
       </article>
       <article class="card"><h2>⭐ Stars</h2><div class="stat"><span>Held</span><b id="dashStarsHeld">0</b></div><div class="stat"><span>Required</span><b id="dashStarsRequired">98,000</b></div></article>
-      <article class="card"><h2>🏅 Development</h2><div class="stat"><span>Badges from held ORV</span><b id="dashBadgesFromOrv">0</b></div><div class="stat"><span>Required</span><b id="dashBadgesRequired">1,600</b></div></article>
+      <article class="card"><h2>🏅 Development</h2><div class="stat"><span>Badges from held Officer Readiness Vouchers (ORV)</span><b id="dashBadgesFromOrv">0</b></div><div class="stat"><span>Required</span><b id="dashBadgesRequired">1,600</b></div></article>
       <article class="card wide"><h2>📘 Officer XP</h2><div class="stat"><span>Held</span><b id="dashXpHeld">0</b></div><div class="stat"><span>Required</span><b id="dashXpRequired">199,646,700</b></div></article>
     </div>
   </section>
@@ -141,14 +135,10 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
   <section id="officer" class="view">
     <article class="card">
       <h2>👤 Officer Selection</h2>
-      <div class="officer-profile">
-        <img id="officerPortrait" class="officer-portrait" alt="Selected officer portrait">
-        <div class="officer-meta"><strong id="officerPortraitName">Officer</strong><small id="officerPortraitInfo">Portrait library</small></div>
-      </div>
       <label>Officer</label><select id="officerSelect"></select>
       <div class="two">
         <div><label>ORV per Officer Badge</label><input id="orvCost" readonly></div>
-        <div><label>SRV per Exclusive Star</label><input id="srvCost" readonly></div>
+        <div><label>Star Readiness Vouchers (SRV) per Exclusive Star</label><input id="srvCost" readonly></div>
       </div>
     </article>
   </section>
@@ -165,10 +155,10 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
         <div><label>Legendary Star II (420)</label><input id="ls2" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
       </div>
       <label>Legendary Star III (960)</label><input id="ls3" type="number" min="0" step="1" inputmode="numeric" value="0">
-      <label>Star Readiness Vouchers Held</label><input id="srvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <label>Star Readiness Vouchers (SRV) Held</label><input id="srvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
       <div class="stat"><span>Exclusive Stars from held SRV</span><b id="exclusiveFromSrv">0</b></div>
       <div class="stat"><span>Officer Stars from held SRV</span><b id="officerStarsFromSrv">0</b></div>
-      <div class="stat"><span>SRV remaining</span><b id="srvRemainder">0</b></div>
+      <div class="stat"><span>Star Readiness Vouchers (SRV) remaining</span><b id="srvRemainder">0</b></div>
       <div class="stat"><span>Stars used</span><b id="starsUsed">0</b></div>
       <div class="stat"><span>Stars held</span><b id="starsHeld">0</b></div>
       <div class="stat"><span>Stars required</span><b id="starsRequired">98,000</b></div>
@@ -184,12 +174,26 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <label>Training Level: <b id="trainingLabel">0</b> / 180</label>
       <input id="training" type="range" min="0" max="180" value="0">
       <label>Officer Badges Held</label><input id="badgeHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
-      <label>Officer Readiness Vouchers Held</label><input id="orvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <label>Universal Legendary Badges Held</label><input id="universalBadgeHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <label>Legendary Officer Badge Selection Chests Held</label><input id="legendaryBadgeChestHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <div class="notice">
+        Each Selection Chest can be used as either <b>1 Universal Legendary Badge</b> or
+        <b><span id="selectionChestOrvValue">0</span> Officer Readiness Vouchers</b>.
+        The ORV value follows the highest ORV-per-badge cost in the latest published season.
+      </div>
+      <label>Use Selection Chests as</label>
+      <select id="legendaryBadgeChestMode">
+        <option value="badge">Universal Legendary Badges</option>
+        <option value="orv">Officer Readiness Vouchers</option>
+      </select>
+      <label>Officer Readiness Vouchers (ORV) Held</label><input id="orvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
       <div class="stat"><span>Badges used</span><b id="badgesUsed">0</b></div>
-      <div class="stat"><span>Badges from held ORV</span><b id="badgesFromOrv">0</b></div>
-      <div class="stat"><span>ORV remaining after whole badges</span><b id="orvRemainder">0</b></div>
+      <div class="stat"><span>Universal Legendary Badges available</span><b id="universalBadgesAvailable">0</b></div>
+      <div class="stat"><span>ORV generated from Selection Chests</span><b id="selectionChestOrvGenerated">0</b></div>
+      <div class="stat"><span>Badges from held Officer Readiness Vouchers (ORV)</span><b id="badgesFromOrv">0</b></div>
+      <div class="stat"><span>Officer Readiness Vouchers (ORV) remaining after whole badges</span><b id="orvRemainder">0</b></div>
       <div class="stat"><span>Badges required</span><b id="badgesRequired">1,600</b></div>
-      <div class="stat"><span>ORV required</span><b id="orvRequired">0</b></div>
+      <div class="stat"><span>Officer Readiness Vouchers (ORV) required</span><b id="orvRequired">0</b></div>
       <div class="progress"><span id="badgeBar"></span></div>
     </article>
   </section>
@@ -243,7 +247,49 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
     </article>
   </section>
 
-  <section id="settings" class="view">
+  
+  <section id="help" class="view">
+    <article class="card">
+      <h2>❓ Help & Instructions</h2>
+      <div class="notice"><b>Recommended workflow:</b> enter information in the order below, then use <b>Save Progress</b> to retain your calculator data on this device.</div>
+
+      <h3>1. Officer</h3>
+      <p>Select the Officer you want to calculate. The selected Officer determines the cost of an Officer Badge in <b>Officer Readiness Vouchers (ORV)</b> and the cost of an Exclusive Star in <b>Star Readiness Vouchers (SRV)</b>.</p>
+      <p><b>Original Officers:</b> Officer Readiness Vouchers (ORV) and Star Readiness Vouchers (SRV) cannot be used for Original Officers.</p>
+
+      <h3>2. Stars</h3>
+      <p>Set the Officer's current and target Star level. Enter the quantities of Legendary Star I, II and III you currently hold and your <b>Star Readiness Vouchers (SRV)</b>. The app calculates the Officer Star value held, Exclusive Stars obtainable from SRV, and the remaining Star requirement.</p>
+
+      <h3>3. Development</h3>
+      <p>Enter the Officer's current unlock status, completed Skill Points and Training Level. Then enter your Officer Badges Held, <b>Universal Legendary Badges Held</b>, <b>Legendary Officer Badge Selection Chests Held</b>, and <b>Officer Readiness Vouchers (ORV) Held</b>.</p>
+      <p>Each <b>Universal Legendary Badge</b> is worth <b>1 Officer Badge</b> for a Legendary Officer.</p>
+      <p>Each <b>Legendary Officer Badge Selection Chest</b> can be used as <b>either</b> 1 Universal Legendary Badge <b>or</b> converted to Officer Readiness Vouchers (ORV). It cannot count as both. The ORV value is automatically linked to the highest Officer Badge ORV cost in the latest published Season. With the current S7 database this is <b>600 ORV per chest</b>.</p>
+
+      <h3>4. XP</h3>
+      <p>Enter the current Officer Level and target Level, then enter the number of Officer XP Books you hold in each denomination. The app calculates XP held, XP required and the remaining shortfall.</p>
+
+      <h3>5. Planner</h3>
+      <p>Use the Planner after completing Stars, Development and XP. Choose a goal such as Max Officer, Next Star, Reach 5★, Max Skills or Max Training. The Planner combines the information already entered and shows requirements, resources held and shortfalls.</p>
+
+      <h3>6. Save Progress</h3>
+      <p>Use <b>Save Progress</b> after entering or changing your calculator information. Progress is stored locally in the browser on the device you are using. Saving progress does not publish changes to other users.</p>
+
+      <h3>7. Database</h3>
+      <p>The Database Manager controls the Officer master list. It can be used to add or edit Officers and export the database. <b>Export CSV</b> is different from Save Progress: it exports the Officer database rather than your personal calculator progress.</p>
+      <p>To make new or edited Officers available to everyone, the published <b>officers.json</b> and <b>officers.csv</b> files in the GitHub repository must be updated.</p>
+
+      <h3>8. Settings</h3>
+      <p>Settings contains the app name, portrait and landscape backgrounds, appearance controls and app-update controls. <b>Check for Updates</b> checks the published version. <b>Refresh Latest Version</b> refreshes the KoW Companion application cache without intentionally deleting saved calculator progress.</p>
+
+      <h3>Terminology</h3>
+      <p><b>ORV</b> = Officer Readiness Voucher<br>
+      <b>SRV</b> = Star Readiness Voucher<br>
+      <b>Universal Legendary Badge</b> = 1 Officer Badge for a Legendary Officer<br>
+      <b>Exclusive Star</b> = 110 Officer Star value</p>
+    </article>
+  </section>
+
+<section id="settings" class="view">
     <article class="card">
       <h2>⚙ Settings</h2>
       <label>App Name</label><input id="appName" value="GODS OF WAR 371">
@@ -258,7 +304,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <button id="resetAppearance" class="primary">Reset Appearance & Backgrounds</button>
       <h3>App Updates</h3>
       <div class="notice">
-        <div><b>Installed version:</b> <span id="installedVersion">v4.2.0</span></div>
+        <div><b>Installed version:</b> <span id="installedVersion">v4.1.7</span></div>
         <div id="updateStatus">Tap Check for Updates to compare with the latest GitHub Pages version.</div>
       </div>
       <div class="two">
@@ -352,16 +398,16 @@ function cumulativeXp(level){
 }
 
 
-function officerSlug(name){return String(name||'officer').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
-function updateOfficerPortrait(){
- const o=currentOfficer(),img=$('officerPortrait'); if(!img)return;
- img.src='./officer-portraits/'+officerSlug(o.name)+'.jpg?v=420';
- img.alt=o.name+' portrait'; $('officerPortraitName').textContent=o.name;
- $('officerPortraitInfo').textContent=(o.season||'')+(o.notes?' · '+o.notes:'');
+function latestSeasonOrvCost(){
+ const seasonal=officers
+  .map(o=>({...o,seasonNum:Number(String(o.season||'').match(/^S(\d+)$/i)?.[1]||0)}))
+  .filter(o=>o.seasonNum>0&&o.readinessEligible!==false&&Number(o.orv)>0);
+ if(!seasonal.length)return 0;
+ const latest=Math.max(...seasonal.map(o=>o.seasonNum));
+ return Math.max(...seasonal.filter(o=>o.seasonNum===latest).map(o=>Number(o.orv)||0));
 }
 
 function calculate(){
- updateOfficerPortrait();
  const o=currentOfficer();
  const readinessEligible=o.readinessEligible!==false&&String(o.season||'').toLowerCase()!=='original';
  $('orvCost').value=readinessEligible?o.orv:'N/A';$('srvCost').value=readinessEligible?o.srv:'N/A';$('dashOfficer').textContent=o.name;
@@ -382,11 +428,24 @@ function calculate(){
  $('exclusiveFromSrv').textContent=fmt(exclusiveFromSrv);$('officerStarsFromSrv').textContent=fmt(starsFromSrv);$('srvRemainder').textContent=fmt(srvRemainder);
  $('starsUsed').textContent=fmt(starsUsed);$('starsHeld').textContent=fmt(starsHeld);$('starsRequired').textContent=fmt(starsRequired);$('starBar').style.width=pct(starsTotal,STAR_CUM[ts]||1)+'%';
 
- const badgesHeld=+$('badgeHeld').value,orvHeld=+$('orvHeld').value;
+ const badgesHeld=+$('badgeHeld').value;
+ const universalBadgesHeld=+$('universalBadgeHeld').value;
+ const selectionChests=+$('legendaryBadgeChestHeld').value;
+ const selectionMode=$('legendaryBadgeChestMode').value;
+ const latestOrvCost=latestSeasonOrvCost();
+ const selectionChestBadges=selectionMode==='badge'?selectionChests:0;
+ const selectionChestOrv=selectionMode==='orv'?selectionChests*latestOrvCost:0;
+ const universalBadgesAvailable=universalBadgesHeld+selectionChestBadges;
+ const directOrv=+$('orvHeld').value;
+ const orvHeld=directOrv+selectionChestOrv;
+ $('selectionChestOrvValue').textContent=fmt(latestOrvCost);
+ $('selectionChestOrvGenerated').textContent=fmt(selectionChestOrv);
+ $('universalBadgesAvailable').textContent=fmt(universalBadgesAvailable);
+
  const badgesUsed=($('unlocked').checked?10:0)+skills.reduce((s,on,i)=>s+(on?SKILL_COSTS[i]:0),0)+ +$('training').value*5;
  const badgesFromOrv=readinessEligible&&o.orv>0?Math.floor(orvHeld/o.orv):0;
  const orvRemainder=o.orv>0?orvHeld-badgesFromOrv*o.orv:orvHeld;
- const badgeTotal=badgesUsed+badgesHeld+badgesFromOrv;
+ const badgeTotal=badgesUsed+badgesHeld+universalBadgesAvailable+badgesFromOrv;
  const badgesRequired=Math.max(0,MAX_BADGES-badgeTotal);
  const orvRequired=readinessEligible?badgesRequired*o.orv:0;
  $('trainingLabel').textContent=$('training').value;$('badgesUsed').textContent=fmt(badgesUsed);$('badgesFromOrv').textContent=fmt(badgesFromOrv);$('orvRemainder').textContent=fmt(orvRemainder);$('badgesRequired').textContent=fmt(badgesRequired);$('orvRequired').textContent=fmt(orvRequired);$('badgeBar').style.width=pct(badgeTotal,MAX_BADGES)+'%';
@@ -402,7 +461,7 @@ function calculate(){
  $('dashBadgesFromOrv').textContent=fmt(badgesFromOrv);$('dashBadgesRequired').textContent=fmt(badgesRequired);
  $('dashXpHeld').textContent=fmt(xpHeld);$('dashXpRequired').textContent=fmt(Math.max(0,MAX_XP-xpHeld));
 
- renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHeld,orvHeld,xpHeld,xpRequired);
+ renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHeld+universalBadgesAvailable,orvHeld,xpHeld,xpRequired);
 }
 
 function renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHeld,orvHeld,xpHeld,xpRequiredSelected){
@@ -442,14 +501,14 @@ function renderDb(){
  $('dbValidation').textContent=validateDb().join(' · ')||`${rows.length} officers shown · Database validation passed.`;
 }
 
-function exportCsv(){const escCsv=v=>`"${String(v??'').replaceAll('"','""')}"`;const rows=[['Officer Name','Season','ORV per Badge','SRV per Exclusive Star','Notes'],...officers.map(o=>[o.name,o.season,o.orv,o.srv,o.notes])];const blob=new Blob([rows.map(r=>r.map(escCsv).join(',')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='officers.csv';a.click();URL.revokeObjectURL(a.href)}
+function exportCsv(){const escCsv=v=>`"${String(v??'').replaceAll('"','""')}"`;const rows=[['Officer Name','Season','Officer Readiness Vouchers (ORV) per Badge','Star Readiness Vouchers (SRV) per Exclusive Star','Notes'],...officers.map(o=>[o.name,o.season,o.orv,o.srv,o.notes])];const blob=new Blob([rows.map(r=>r.map(escCsv).join(',')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='officers.csv';a.click();URL.revokeObjectURL(a.href)}
 function parseCsv(text){const lines=text.trim().split(/\r?\n/).slice(1);return lines.map(line=>{const p=line.match(/("([^"]|"")*"|[^,]*)(,|$)/g)?.map(x=>x.replace(/,$/,'').replace(/^"|"$/g,'').replaceAll('""','"'))||[];return{name:p[0]||'',season:p[1]||'',orv:Number(p[2]),srv:Number(p[3]),notes:p[4]||''}})}
 
-function saveProgress(){const d={officer:$('officerSelect').value,currentStar:$('currentStar').value,targetStar:$('targetStar').value,ls1:$('ls1').value,ls2:$('ls2').value,ls3:$('ls3').value,srvHeld:$('srvHeld').value,unlocked:$('unlocked').checked,skills,training:$('training').value,badgeHeld:$('badgeHeld').value,orvHeld:$('orvHeld').value,currentLevel:$('currentLevel').value,targetLevel:$('targetLevel').value,goal:$('goalSelect').value,xp:{}};XP_DENOMS.forEach(v=>d.xp[v]=$('xp'+v).value);localStorage.setItem('kow_progress_v4',JSON.stringify(d));alert('Progress saved.')}
-function loadProgress(){try{const d=JSON.parse(localStorage.getItem('kow_progress_v4')||'null');if(!d)return;$('officerSelect').value=d.officer??0;$('currentStar').value=d.currentStar??0;$('targetStar').value=d.targetStar??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('srvHeld').value=d.srvHeld??0;$('unlocked').checked=!!d.unlocked;skills=Array.isArray(d.skills)?d.skills:skills;$('training').value=d.training??0;$('badgeHeld').value=d.badgeHeld??0;$('orvHeld').value=d.orvHeld??0;$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;$('goalSelect').value=d.goal??'max';XP_DENOMS.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch{}}
+function saveProgress(){const d={officer:$('officerSelect').value,currentStar:$('currentStar').value,targetStar:$('targetStar').value,ls1:$('ls1').value,ls2:$('ls2').value,ls3:$('ls3').value,srvHeld:$('srvHeld').value,unlocked:$('unlocked').checked,skills,training:$('training').value,badgeHeld:$('badgeHeld').value,universalBadgeHeld:$('universalBadgeHeld').value,legendaryBadgeChestHeld:$('legendaryBadgeChestHeld').value,legendaryBadgeChestMode:$('legendaryBadgeChestMode').value,orvHeld:$('orvHeld').value,currentLevel:$('currentLevel').value,targetLevel:$('targetLevel').value,goal:$('goalSelect').value,xp:{}};XP_DENOMS.forEach(v=>d.xp[v]=$('xp'+v).value);localStorage.setItem('kow_progress_v4',JSON.stringify(d));alert('Progress saved.')}
+function loadProgress(){try{const d=JSON.parse(localStorage.getItem('kow_progress_v4')||'null');if(!d)return;$('officerSelect').value=d.officer??0;$('currentStar').value=d.currentStar??0;$('targetStar').value=d.targetStar??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('srvHeld').value=d.srvHeld??0;$('unlocked').checked=!!d.unlocked;skills=Array.isArray(d.skills)?d.skills:skills;$('training').value=d.training??0;$('badgeHeld').value=d.badgeHeld??0;$('universalBadgeHeld').value=d.universalBadgeHeld??0;$('legendaryBadgeChestHeld').value=d.legendaryBadgeChestHeld??0;$('legendaryBadgeChestMode').value=d.legendaryBadgeChestMode??'badge';$('orvHeld').value=d.orvHeld??0;$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;$('goalSelect').value=d.goal??'max';XP_DENOMS.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch{}}
 
 
-const APP_VERSION='4.1.5';
+const APP_VERSION='4.1.7';
 
 function parseVersion(v){
  return String(v||'').replace(/^v/i,'').split('.').map(n=>parseInt(n,10)||0);
@@ -518,7 +577,7 @@ async function init(){
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.2.0';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.1.7';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -548,7 +607,11 @@ async function init(){
  };
  $('refreshLatest').onclick=clearAppCacheAndReload;
 
- loadProgress();document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));renderDb();calculate();
+ loadProgress();
+ ['universalBadgeHeld','legendaryBadgeChestHeld','legendaryBadgeChestMode'].forEach(id=>{
+  const el=$(id);if(el)el.addEventListener(id==='legendaryBadgeChestMode'?'change':'input',calculate);
+ });
+ document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));renderDb();calculate();
  window.addEventListener('resize',applyResponsivePageBackground);
  if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
 }
