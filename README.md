@@ -1,11 +1,29 @@
-# KoW Companion v4.0.1
+# KoW Companion v4.1.2
 
-Clean integrated officer-focused rebuild.
+Clean repository build.
 
-Includes Dashboard, Officer Selection, Star Planner, Officer Development, XP, Goals Planner, editable Officer Database, CSV import/export, settings, ORV-to-badge conversion and SRV-to-Exclusive-Star conversion.
+## GitHub Pages
+Use:
+- Source: Deploy from a branch
+- Branch: `main`
+- Folder: `/(root)`
 
-Upload all files and folders to the root of the GitHub repository. GitHub Pages should use `main` and `/(root)`.
+## Canonical files
+Only these app files are required:
 
+- `index.html`
+- `manifest.json`
+- `service-worker.js`
+- `.nojekyll`
+- `LICENSE`
+- `css/app.css`
+- `js/app.js`
+- `assets/icon.svg`
+- `assets/background-portrait.jpg`
+- `assets/background-landscape.jpg`
+- `data/officers.json`
+- `data/officers.csv`
 
-## Responsive backgrounds
-The app uses `assets/background-portrait.png` in portrait orientation and `assets/background-landscape.png` in landscape orientation. Both can also be replaced from Settings without editing code.
+Do not keep duplicate root-level `app.css`, `app.js`, old PNG backgrounds, old ZIP releases, or an extra custom Pages workflow.
+
+The default backgrounds are zone-neutral. Each zone can upload its own portrait and landscape backgrounds in Settings.
