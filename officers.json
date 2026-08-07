@@ -306,5 +306,101 @@
     "orv": 20,
     "srv": 10,
     "notes": "Tank"
+  },
+  {
+    "name": "Katherine",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank",
+    "readinessEligible": false
+  },
+  {
+    "name": "Grace",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank",
+    "readinessEligible": false
+  },
+  {
+    "name": "Chloe",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Rally",
+    "readinessEligible": false
+  },
+  {
+    "name": "Ling",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank Destroyer",
+    "readinessEligible": false
+  },
+  {
+    "name": "Jessica",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank Destroyer",
+    "readinessEligible": false
+  },
+  {
+    "name": "Lilith",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank Destroyer",
+    "readinessEligible": false
+  },
+  {
+    "name": "Angel",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Gatherer",
+    "readinessEligible": false
+  },
+  {
+    "name": "Sakura",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Infantry",
+    "readinessEligible": false
+  },
+  {
+    "name": "Loubna",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Infantry",
+    "readinessEligible": false
+  },
+  {
+    "name": "Angelica",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Infantry",
+    "readinessEligible": false
+  },
+  {
+    "name": "Ophelia",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Rally",
+    "readinessEligible": false
+  },
+  {
+    "name": "Doireann",
+    "season": "Original",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Garrison",
+    "readinessEligible": false
   }
 ]

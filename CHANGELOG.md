@@ -1,9 +1,11 @@
 # Changelog
 
-## v4.1.5
-- Added App Updates section in Settings.
-- Added Check for Updates button.
-- Added Refresh Latest Version button.
-- Refresh unregisters the KoW service worker and clears KoW caches without deleting locally saved user data.
-- Reload uses a cache-busting URL to fetch the latest GitHub Pages build.
-- Retained automatic published Officer database updates introduced in v4.1.4.
+## v4.1.6
+- Added 12 Original Officers.
+- Original Officers use normal Stars, Development, Badges and XP calculations.
+- Officer Readiness and Star Readiness voucher conversion is disabled for Original Officers.
+- ORV/SRV cost fields show N/A for Original Officers.
+- Planner excludes readiness-voucher generation for Original Officers.
+- Database validation allows 0 ORV/SRV for Original Officers only.
+- S2-S7 calculations are unchanged.
+- Service-worker cache bumped to v4.1.6.

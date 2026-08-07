@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.1.5</title>
+<title>KoW Companion v4.1.6</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -113,7 +113,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
-    <p>Officer Companion v4.1.5</p>
+    <p>Officer Companion v4.1.6</p>
   </div>
 </header>
 
@@ -248,7 +248,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <button id="resetAppearance" class="primary">Reset Appearance & Backgrounds</button>
       <h3>App Updates</h3>
       <div class="notice">
-        <div><b>Installed version:</b> <span id="installedVersion">v4.1.5</span></div>
+        <div><b>Installed version:</b> <span id="installedVersion">v4.1.6</span></div>
         <div id="updateStatus">Tap Check for Updates to compare with the latest GitHub Pages version.</div>
       </div>
       <div class="two">
@@ -290,7 +290,10 @@ const fmt=n=>Math.max(0,Math.round(Number(n)||0)).toLocaleString();
 const pct=(v,m)=>Math.min(100,Math.max(0,m?100*v/m:0));
 const clone=v=>JSON.parse(JSON.stringify(v));
 
-function normalizeOfficer(o){return {name:String(o?.name||'').trim(),season:String(o?.season||String(o?.name||'').match(/^S\d+/)?.[0]||'').trim(),orv:Number(o?.orv)||0,srv:Number(o?.srv)||0,notes:String(o?.notes||'')}}
+function normalizeOfficer(o){
+ const season=String(o?.season||String(o?.name||'').match(/^S\d+/)?.[0]||'').trim();
+ return {name:String(o?.name||'').trim(),season,orv:Number(o?.orv)||0,srv:Number(o?.srv)||0,notes:String(o?.notes||''),readinessEligible:season.toLowerCase()!=='original'&&o?.readinessEligible!==false}
+}
 async function loadOfficers(){
  let published=clone(DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);
  try{
@@ -325,7 +328,7 @@ async function loadOfficers(){
  }
 }
 function saveOfficers(){localStorage.setItem('kow_officers_v4',JSON.stringify(officers))}
-function currentOfficer(){return officers[+$('officerSelect').value]||officers[0]||{name:'Officer',orv:0,srv:0}}
+function currentOfficer(){return officers[+$('officerSelect').value]||officers[0]||{name:'Officer',season:'',orv:0,srv:0,readinessEligible:true}}
 function renderOfficerOptions(name){const s=$('officerSelect');const prev=name||s.options[s.selectedIndex]?.textContent||'S7 Liora';s.innerHTML=officers.map((o,i)=>`<option value="${i}">${esc(o.name)}</option>`).join('');const i=officers.findIndex(o=>o.name===prev);s.value=i>=0?i:0}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 
@@ -340,13 +343,17 @@ function cumulativeXp(level){
 
 function calculate(){
  const o=currentOfficer();
- $('orvCost').value=o.orv;$('srvCost').value=o.srv;$('dashOfficer').textContent=o.name;
+ const readinessEligible=o.readinessEligible!==false&&String(o.season||'').toLowerCase()!=='original';
+ $('orvCost').value=readinessEligible?o.orv:'N/A';$('srvCost').value=readinessEligible?o.srv:'N/A';$('dashOfficer').textContent=o.name;
+ $('orvHeld').disabled=!readinessEligible;$('srvHeld').disabled=!readinessEligible;
+ $('orvHeld').title=readinessEligible?'':'Officer Readiness Vouchers are not available for Original Officers';
+ $('srvHeld').title=readinessEligible?'':'Star Readiness Vouchers are not available for Original Officers';
 
  let cs=+$('currentStar').value,ts=+$('targetStar').value;if(ts<cs){ts=cs;$('targetStar').value=ts}
  const starsUsed=STAR_CUM[cs];
  const legendaryHeld=+$('ls1').value*110 + +$('ls2').value*420 + +$('ls3').value*960;
  const srvHeld=+$('srvHeld').value;
- const exclusiveFromSrv=o.srv>0?Math.floor(srvHeld/o.srv):0;
+ const exclusiveFromSrv=readinessEligible&&o.srv>0?Math.floor(srvHeld/o.srv):0;
  const srvRemainder=o.srv>0?srvHeld-exclusiveFromSrv*o.srv:srvHeld;
  const starsFromSrv=exclusiveFromSrv*110;
  const starsHeld=legendaryHeld+starsFromSrv;
@@ -357,11 +364,11 @@ function calculate(){
 
  const badgesHeld=+$('badgeHeld').value,orvHeld=+$('orvHeld').value;
  const badgesUsed=($('unlocked').checked?10:0)+skills.reduce((s,on,i)=>s+(on?SKILL_COSTS[i]:0),0)+ +$('training').value*5;
- const badgesFromOrv=o.orv>0?Math.floor(orvHeld/o.orv):0;
+ const badgesFromOrv=readinessEligible&&o.orv>0?Math.floor(orvHeld/o.orv):0;
  const orvRemainder=o.orv>0?orvHeld-badgesFromOrv*o.orv:orvHeld;
  const badgeTotal=badgesUsed+badgesHeld+badgesFromOrv;
  const badgesRequired=Math.max(0,MAX_BADGES-badgeTotal);
- const orvRequired=badgesRequired*o.orv;
+ const orvRequired=readinessEligible?badgesRequired*o.orv:0;
  $('trainingLabel').textContent=$('training').value;$('badgesUsed').textContent=fmt(badgesUsed);$('badgesFromOrv').textContent=fmt(badgesFromOrv);$('orvRemainder').textContent=fmt(orvRemainder);$('badgesRequired').textContent=fmt(badgesRequired);$('orvRequired').textContent=fmt(orvRequired);$('badgeBar').style.width=pct(badgeTotal,MAX_BADGES)+'%';
 
  let xpHeld=0;XP_DENOMS.forEach(v=>xpHeld+=(+($('xp'+v)?.value||0))*v);
@@ -379,25 +386,26 @@ function calculate(){
 }
 
 function renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHeld,orvHeld,xpHeld,xpRequiredSelected){
+ const readinessEligible=o.readinessEligible!==false&&String(o.season||'').toLowerCase()!=='original';
  const g=$('goalSelect').value;let starTarget=0,badgeTarget=0,xpTarget=0;
  if(g==='nextStar')starTarget=STAR_CUM[Math.min(5,cs+1)];else if(g==='fiveStar'||g==='max')starTarget=MAX_STAR;
  if(g==='maxSkills')badgeTarget=700;else if(g==='maxTraining'||g==='max')badgeTarget=MAX_BADGES;
  if(g==='max')xpTarget=xpRequiredSelected;
- const exclusiveFromSrv=o.srv?Math.floor(srvHeld/o.srv):0;
+ const exclusiveFromSrv=readinessEligible&&o.srv?Math.floor(srvHeld/o.srv):0;
  const starHeld=legendaryHeld+exclusiveFromSrv*110;
- const badgesFromOrv=o.orv?Math.floor(orvHeld/o.orv):0;
+ const badgesFromOrv=readinessEligible&&o.orv?Math.floor(orvHeld/o.orv):0;
  const rows=[
  ['Legendary Stars',Math.max(0,starTarget-starsUsed),starHeld],
  ['Officer Badges',Math.max(0,badgeTarget-badgesUsed),badgesHeld+badgesFromOrv],
- ['Officer Readiness Vouchers',Math.max(0,badgeTarget-badgesUsed-badgesHeld)*o.orv,orvHeld],
+ ['Officer Readiness Vouchers',readinessEligible?Math.max(0,badgeTarget-badgesUsed-badgesHeld)*o.orv:0,readinessEligible?orvHeld:0],
  ['Exclusive Stars',Math.ceil(Math.max(0,starTarget-starsUsed-legendaryHeld)/110),exclusiveFromSrv],
- ['Star Readiness Vouchers',Math.ceil(Math.max(0,starTarget-starsUsed-legendaryHeld)/110)*o.srv,srvHeld],
+ ['Star Readiness Vouchers',readinessEligible?Math.ceil(Math.max(0,starTarget-starsUsed-legendaryHeld)/110)*o.srv:0,readinessEligible?srvHeld:0],
  ['Officer XP',Math.max(0,xpTarget),xpHeld]
  ];
  $('plannerRows').innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${fmt(r[2])}</td><td>${fmt(Math.max(0,r[1]-r[2]))}</td></tr>`).join('');
 }
 
-function validateDb(list=officers){const e=[],seen=new Set();list.forEach((o,i)=>{const k=(o.name||'').trim().toLowerCase();if(!k)e.push(`Row ${i+1}: name required`);if(k&&seen.has(k))e.push(`Row ${i+1}: duplicate name`);if(k)seen.add(k);if(!Number.isInteger(+o.orv)||+o.orv<=0)e.push(`Row ${i+1}: invalid ORV`);if(!Number.isInteger(+o.srv)||+o.srv<=0)e.push(`Row ${i+1}: invalid SRV`)});return e}
+function validateDb(list=officers){const e=[],seen=new Set();list.forEach((o,i)=>{const k=(o.name||'').trim().toLowerCase(),orig=String(o.season||'').toLowerCase()==='original';if(!k)e.push(`Row ${i+1}: name required`);if(k&&seen.has(k))e.push(`Row ${i+1}: duplicate name`);if(k)seen.add(k);if(!Number.isInteger(+o.orv)||(orig?+o.orv<0:+o.orv<=0))e.push(`Row ${i+1}: invalid ORV`);if(!Number.isInteger(+o.srv)||(orig?+o.srv<0:+o.srv<=0))e.push(`Row ${i+1}: invalid SRV`)});return e}
 function renderDb(){
  const search=$('dbSearch');const filter=$('dbSeason');const tbody=$('dbRows');if(!search||!filter||!tbody)return;
  const q=String(search.value||'').trim().toLowerCase();
@@ -490,7 +498,7 @@ async function init(){
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.1.5';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.1.6';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
