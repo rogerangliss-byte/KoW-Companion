@@ -397,7 +397,7 @@ function normalizeOfficer(o){
 async function loadOfficers(){
  let published=clone(DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);
  try{
-   const response=await fetch('./officers.json?v=414',{cache:'no-store'});
+   const response=await fetch('./officers.json?v=423',{cache:'no-store'});
    if(response.ok){
      const data=await response.json();
      if(Array.isArray(data)&&data.length) published=data.map(normalizeOfficer).filter(o=>o.name);
@@ -415,8 +415,14 @@ async function loadOfficers(){
        if(!existing){
          merged.push(o);
          names.add(key);
-       }else if(!existing.role && o.role){
-         existing.role=o.role;
+       }else{
+         // Published officer metadata wins over stale cached filter metadata.
+         existing.season=o.season;
+         existing.notes=o.notes;
+         existing.role=officerRole(o);
+         existing.orv=o.orv;
+         existing.srv=o.srv;
+         existing.readinessEligible=o.readinessEligible;
        }
      });
      officers=merged;
@@ -463,7 +469,6 @@ function filteredOfficerIndexes(){
 function renderOfficerOptions(name){
  const s=$('officerSelect');if(!s)return;
  const prev=name||s.options[s.selectedIndex]?.textContent||currentOfficer()?.name||'S7 Liora';
- renderOfficerFilters();
  const rows=filteredOfficerIndexes();
  s.innerHTML=rows.map(({o,i})=>`<option value="${i}">${esc(o.name)}</option>`).join('');
  let chosen=rows.find(({o})=>o.name===prev);
@@ -495,13 +500,13 @@ function updateOfficerExperience(){
  if(img){
    img.onload=()=>{img.style.display='block';if(placeholder)placeholder.style.display='none'};
    img.onerror=()=>{img.style.display='none';if(placeholder)placeholder.style.display='flex'};
-   img.src=file+'?v=420';
+   img.src=file+'?v=423';
  }
  const dash=$('dashOfficerPortrait');
  if(dash){
    dash.onload=()=>dash.style.display='block';
    dash.onerror=()=>dash.style.display='none';
-   dash.src=file+'?v=420';
+   dash.src=file+'?v=423';
  }
 }
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -527,6 +532,7 @@ function latestSeasonOrvCost(){
 
 function calculate(){
  const o=currentOfficer();
+ if(!o)return;
  if(!o)return;
  const readinessEligible=o.readinessEligible!==false&&String(o.season||'').toLowerCase()!=='original';
  $('orvCost').value=readinessEligible?o.orv:'N/A';$('srvCost').value=readinessEligible?o.srv:'N/A';$('dashOfficer').textContent=o.name;updateOfficerExperience();
@@ -670,7 +676,7 @@ async function clearAppCacheAndReload(){
 }
 
 async function init(){
- await loadOfficers();renderOfficerOptions();
+ await loadOfficers();renderOfficerFilters();renderOfficerOptions();
  ['officerSearch','officerSeasonFilter','officerRoleFilter'].forEach(id=>{
   const el=$(id);if(!el)return;
   const evt=id==='officerSearch'?'input':'change';
@@ -686,10 +692,10 @@ async function init(){
 
  $('saveProgress').onclick=saveProgress;
  $('dbSearch').oninput=renderDb;$('dbSeason').onchange=renderDb;$('dbAdd').onclick=()=>{officers.push({name:'New Officer',season:'S8',orv:1,srv:1,notes:''});renderDb();renderOfficerOptions('New Officer');calculate()};
- $('dbSave').onclick=()=>{const e=validateDb();if(e.length){alert('Fix validation issues first.');return}saveOfficers();renderOfficerOptions();alert('Officer database saved.')};
+ $('dbSave').onclick=()=>{const e=validateDb();if(e.length){alert('Fix validation issues first.');return}saveOfficers();renderOfficerFilters();renderOfficerOptions();alert('Officer database saved.')};
  $('dbExport').onclick=exportCsv;
- $('dbImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const parsed=parseCsv(r.result);if(validateDb(parsed).length){alert('CSV validation failed.');return}officers=parsed;saveOfficers();renderDb();renderOfficerOptions();calculate();alert('CSV imported.')};r.readAsText(f);e.target.value=''};
- $('dbRestore').onclick=()=>{if(confirm('Restore default officer database?')){officers=clone(window.KOW_PUBLISHED_OFFICERS||DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);saveOfficers();renderDb();renderOfficerOptions('S7 Liora');calculate()}};
+ $('dbImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const parsed=parseCsv(r.result);if(validateDb(parsed).length){alert('CSV validation failed.');return}officers=parsed;saveOfficers();renderDb();renderOfficerFilters();renderOfficerOptions();calculate();alert('CSV imported.')};r.readAsText(f);e.target.value=''};
+ $('dbRestore').onclick=()=>{if(confirm('Restore default officer database?')){officers=clone(window.KOW_PUBLISHED_OFFICERS||DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);saveOfficers();renderDb();renderOfficerFilters();renderOfficerOptions('S7 Liora');calculate()}};
 
  const savedName=localStorage.getItem('kow_app_name_v4');if(savedName){$('appName').value=savedName;$('appTitle').textContent=savedName;document.title=savedName}
  const savedPortrait=localStorage.getItem('kow_bg_portrait_v401');
