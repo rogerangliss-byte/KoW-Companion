@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.1.4</title>
+<title>KoW Companion v4.1.5</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -113,7 +113,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
-    <p>Officer Companion v4.1.4</p>
+    <p>Officer Companion v4.1.5</p>
   </div>
 </header>
 
@@ -246,6 +246,15 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <input id="landscapeBackgroundPicker" type="file" accept="image/*">
       <div class="background-status"><span>Active landscape background</span><b id="landscapeBgStatus">Built-in default landscape</b></div>
       <button id="resetAppearance" class="primary">Reset Appearance & Backgrounds</button>
+      <h3>App Updates</h3>
+      <div class="notice">
+        <div><b>Installed version:</b> <span id="installedVersion">v4.1.5</span></div>
+        <div id="updateStatus">Tap Check for Updates to compare with the latest GitHub Pages version.</div>
+      </div>
+      <div class="two">
+        <button id="checkUpdates" class="primary">Check for Updates</button>
+        <button id="refreshLatest" class="primary">Refresh Latest Version</button>
+      </div>
     </article>
   </section>
 </main>
@@ -411,6 +420,49 @@ function parseCsv(text){const lines=text.trim().split(/\r?\n/).slice(1);return l
 function saveProgress(){const d={officer:$('officerSelect').value,currentStar:$('currentStar').value,targetStar:$('targetStar').value,ls1:$('ls1').value,ls2:$('ls2').value,ls3:$('ls3').value,srvHeld:$('srvHeld').value,unlocked:$('unlocked').checked,skills,training:$('training').value,badgeHeld:$('badgeHeld').value,orvHeld:$('orvHeld').value,currentLevel:$('currentLevel').value,targetLevel:$('targetLevel').value,goal:$('goalSelect').value,xp:{}};XP_DENOMS.forEach(v=>d.xp[v]=$('xp'+v).value);localStorage.setItem('kow_progress_v4',JSON.stringify(d));alert('Progress saved.')}
 function loadProgress(){try{const d=JSON.parse(localStorage.getItem('kow_progress_v4')||'null');if(!d)return;$('officerSelect').value=d.officer??0;$('currentStar').value=d.currentStar??0;$('targetStar').value=d.targetStar??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('srvHeld').value=d.srvHeld??0;$('unlocked').checked=!!d.unlocked;skills=Array.isArray(d.skills)?d.skills:skills;$('training').value=d.training??0;$('badgeHeld').value=d.badgeHeld??0;$('orvHeld').value=d.orvHeld??0;$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;$('goalSelect').value=d.goal??'max';XP_DENOMS.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch{}}
 
+
+const APP_VERSION='4.1.5';
+
+function parseVersion(v){
+ return String(v||'').replace(/^v/i,'').split('.').map(n=>parseInt(n,10)||0);
+}
+function compareVersions(a,b){
+ const aa=parseVersion(a),bb=parseVersion(b);
+ for(let i=0;i<Math.max(aa.length,bb.length);i++){
+   const av=aa[i]||0,bv=bb[i]||0;
+   if(av>bv)return 1;
+   if(av<bv)return -1;
+ }
+ return 0;
+}
+async function fetchPublishedVersion(){
+ const response=await fetch('./index.html?version_check='+Date.now(),{
+   cache:'no-store',
+   headers:{'Cache-Control':'no-cache'}
+ });
+ if(!response.ok)throw new Error('Version check failed');
+ const text=await response.text();
+ const match=text.match(/Officer Companion v(\d+\.\d+\.\d+)/i) ||
+             text.match(/KoW Companion v(\d+\.\d+\.\d+)/i);
+ return match?match[1]:null;
+}
+async function clearAppCacheAndReload(){
+ const status=$('updateStatus');
+ if(status)status.textContent='Refreshing application files…';
+ try{
+   if('serviceWorker' in navigator){
+     const regs=await navigator.serviceWorker.getRegistrations();
+     await Promise.all(regs.map(r=>r.unregister()));
+   }
+   if('caches' in window){
+     const keys=await caches.keys();
+     await Promise.all(keys.filter(k=>k.startsWith('kow-')).map(k=>caches.delete(k)));
+   }
+ }catch(e){}
+ const baseUrl=location.origin+location.pathname;
+ location.replace(baseUrl+'?refresh='+Date.now());
+}
+
 async function init(){
  await loadOfficers();renderOfficerOptions();
  [0,1,2,3,4,5].forEach(v=>{$('currentStar').add(new Option(v+'★',v));$('targetStar').add(new Option(v+'★',v))});$('targetStar').value=5;
@@ -438,12 +490,35 @@ async function init(){
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.1.4';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.1.5';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
   alert('Appearance and backgrounds restored to defaults.');
  };
+
+ $('checkUpdates').onclick=async()=>{
+  const status=$('updateStatus');
+  $('checkUpdates').disabled=true;
+  status.textContent='Checking GitHub Pages for the latest version…';
+  try{
+    const latest=await fetchPublishedVersion();
+    if(!latest){
+      status.textContent='Could not determine the published version. You can still use Refresh Latest Version.';
+    }else if(compareVersions(latest,APP_VERSION)>0){
+      status.textContent=`Update available: v${latest}. Tap Refresh Latest Version to install it.`;
+    }else if(compareVersions(latest,APP_VERSION)===0){
+      status.textContent=`You are up to date — v${APP_VERSION}.`;
+    }else{
+      status.textContent=`Installed v${APP_VERSION}; published site reports v${latest}.`;
+    }
+  }catch(e){
+    status.textContent='Unable to check right now. Check your internet connection, or use Refresh Latest Version.';
+  }finally{
+    $('checkUpdates').disabled=false;
+  }
+ };
+ $('refreshLatest').onclick=clearAppCacheAndReload;
 
  loadProgress();document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));renderDb();calculate();
  window.addEventListener('resize',applyResponsivePageBackground);

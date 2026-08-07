@@ -1,7 +1,11 @@
-# KoW Companion v4.1.4
+# KoW Companion v4.1.5
 
-The app now loads its published default officer database from the root `officers.json`.
+## App update controls
 
-When you publish a newer `officers.json`, existing users automatically receive officers that are missing from their local database. Local edits are preserved.
+Settings now contains:
+- **Check for Updates** — compares the installed version with the current GitHub Pages `index.html`.
+- **Refresh Latest Version** — unregisters the KoW service worker, clears only KoW app caches, and reloads from a cache-busted URL.
 
-`Restore Defaults` now restores the currently published database.
+This process does **not** clear localStorage, so saved progress, officer edits, app name, and custom backgrounds are retained.
+
+The v4.1.4 published officer database behavior is retained.
