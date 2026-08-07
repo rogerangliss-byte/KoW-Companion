@@ -1,4 +1,4 @@
-# KoW Companion v4.1.7
+# KoW Companion v4.1.8
 
 Adds two new badge resources:
 
