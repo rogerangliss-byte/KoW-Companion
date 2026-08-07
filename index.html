@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.2.8</title>
+<title>KoW Companion v4.2.13</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -121,13 +121,16 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 .dashboard-officer{display:flex;align-items:center;gap:12px}.dash-officer-portrait{display:none;width:76px;height:92px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
 @media(max-width:760px){.officer-filter-grid,.officer-experience-grid{grid-template-columns:1fr}.officer-meta{grid-template-columns:repeat(3,1fr)}.officer-portrait-panel{min-height:220px}.officer-portrait-placeholder{min-height:220px}}
 
+
+.button-like{display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;background:rgba(0,0,0,.28);font-weight:700}
+.result-box{padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.28);line-height:1.55}
 </style>
 </head>
 <body>
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
-    <p>Officer Companion v4.2.8</p>
+    <p>Officer Companion v4.2.13</p>
   </div>
 </header>
 
@@ -179,6 +182,11 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
           </div>
         </div>
       </div>
+    </article>
+    <article class="card">
+      <h2>📈 Officer Upgrade Summary</h2>
+      <p class="muted">Live summary for the selected Officer using the resources currently entered in the calculator.</p>
+      <div id="upgradeSummary" class="result-box">Select an Officer and enter resources to see the current upgrade position.</div>
     </article>
   </section>
 
@@ -267,7 +275,16 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <div class="table-wrap"><table><thead><tr><th>Resource</th><th>Required</th><th>Held</th><th>Shortfall</th></tr></thead><tbody id="plannerRows"></tbody></table></div>
       <button id="saveProgress" class="primary">Save Progress</button>
     </article>
-  </section>
+      <article class="card">
+      <h2>🧮 Resource Optimiser — Preview</h2>
+      <p class="muted">Preview of shared badge resources against the selected Officer. It does not spend or alter resources.</p>
+      <div class="two" style="margin-bottom:10px">
+        <div><label>Compare with Officer</label><select id="compareOfficerSelect"></select></div>
+        <div><label>Comparison</label><div id="compareHint" class="notice">Choose another Officer to compare badge efficiency.</div></div>
+      </div>
+      <div id="optimiserSummary" class="result-box">Enter resources and select an Officer to see the optimiser preview.</div>
+    </article>
+</section>
 
   <section id="database" class="view">
     <article class="card">
@@ -290,36 +307,42 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
   <section id="help" class="view">
     <article class="card">
       <h2>❓ Help & Instructions</h2>
-      <div class="notice"><b>Recommended workflow:</b> enter information in the order below, then use <b>Save Progress</b> to retain your calculator data on this device.</div>
+      <div class="notice"><b>Recommended workflow:</b> work through Officer → Stars → Development → XP → Planner, then use <b>Save Progress</b>. Use <b>Backup & Restore</b> in Settings before major changes or when you want a portable copy of locally saved app data.</div>
 
       <h3>1. Officer</h3>
-      <p><b>v4.2 Officer Experience:</b> use Search, Season and Role filters to narrow the Officer list. The selected Officer's portrait is displayed automatically when a matching portrait file is available. Portrait files are stored in the <b>officer-portraits</b> folder. The app first looks for names such as <b>officer-s7-romana.jpg</b> or <b>officer-katherine.jpg</b>, with fallback support for older filename layouts., for example <b>officer-s7-roisin.jpg</b>.</p>
-      <p>Select the Officer you want to calculate. The selected Officer determines the cost of an Officer Badge in <b>Officer Readiness Vouchers (ORV)</b> and the cost of an Exclusive Star in <b>Star Readiness Vouchers (SRV)</b>.</p>
+      <p>Use <b>Search</b>, <b>Season</b> and <b>Officer Type / Role</b> filters to narrow the Officer list. Select the Officer you want to calculate. A matching portrait is displayed automatically when its file is available in the <b>officer-portraits</b> folder.</p>
+      <p>The selected Officer determines the cost of an Officer Badge in <b>Officer Readiness Vouchers (ORV)</b> and the cost of an Exclusive Star in <b>Star Readiness Vouchers (SRV)</b>.</p>
+      <p>The <b>Officer Upgrade Summary</b> shows the remaining Officer Badges, Officer Stars and Officer XP for the currently selected Officer.</p>
       <p><b>Original Officers:</b> Officer Readiness Vouchers (ORV) and Star Readiness Vouchers (SRV) cannot be used for Original Officers.</p>
 
       <h3>2. Stars</h3>
-      <p>Set the Officer's current and target Star level. Enter the quantities of Legendary Star I, II and III you currently hold and your <b>Star Readiness Vouchers (SRV)</b>. The app calculates the Officer Star value held, Exclusive Stars obtainable from SRV, and the remaining Star requirement.</p>
+      <p>Set the Officer's current and target Star level. Enter Legendary Star I, II and III held and <b>Star Readiness Vouchers (SRV)</b> held. The app calculates Officer Star value held, Exclusive Stars obtainable from SRV and the remaining Star requirement.</p>
 
       <h3>3. Development</h3>
-      <p>Enter the Officer's current unlock status, completed Skill Points and Training Level. Then enter your Officer Badges Held, <b>Universal Legendary Badges Held</b>, <b>Legendary Officer Badge Selection Chests Held</b>, and <b>Officer Readiness Vouchers (ORV) Held</b>.</p>
+      <p>Enter unlock status, completed Skill Points and Training Level. Then enter Officer Badges Held, <b>Universal Legendary Badges Held</b>, <b>Legendary Officer Badge Selection Chests Held</b> and <b>Officer Readiness Vouchers (ORV) Held</b>.</p>
       <p>Each <b>Universal Legendary Badge</b> is worth <b>1 Officer Badge</b> for a Legendary Officer.</p>
-      <p>Each <b>Legendary Officer Badge Selection Chest</b> can be used as <b>either</b> 1 Universal Legendary Badge <b>or</b> converted to Officer Readiness Vouchers (ORV). It cannot count as both. The ORV value is automatically linked to the highest Officer Badge ORV cost in the latest published Season. With the current S7 database this is <b>600 ORV per chest</b>.</p>
+      <p>Each <b>Legendary Officer Badge Selection Chest</b> can be used as <b>either</b> 1 Universal Legendary Badge <b>or</b> converted to the latest-Season Officer Readiness Voucher (ORV) value. A chest cannot count as both. With the current S7 database the benchmark is <b>600 ORV per chest</b>.</p>
 
       <h3>4. XP</h3>
-      <p>Enter the current Officer Level and target Level, then enter the number of Officer XP Books you hold in each denomination. The app calculates XP held, XP required and the remaining shortfall.</p>
+      <p>Enter current and target Officer Level, then enter the number of Officer XP Books held in each denomination. The app calculates XP held, XP required and the remaining shortfall.</p>
 
-      <h3>5. Planner</h3>
-      <p>Use the Planner after completing Stars, Development and XP. Choose a goal such as Max Officer, Next Star, Reach 5★, Max Skills or Max Training. The Planner combines the information already entered and shows requirements, resources held and shortfalls.</p>
+      <h3>5. Planner & Resource Optimiser</h3>
+      <p>Use Planner after entering Stars, Development and XP. Select a goal such as Max Officer, Next Star, Reach 5★, Max Skills or Max Training to see requirements, resources held and shortfalls.</p>
+      <p>The <b>Resource Optimiser</b> lets you select a second Officer in <b>Compare with Officer</b>. It compares the Officer Readiness Voucher (ORV) cost per Officer Badge for the two Officers.</p>
+      <p><b>How to interpret the recommendation:</b> where both Officers can use ORV, the optimiser recommends favouring ORV on the Officer with the <b>lower ORV cost per badge</b> and favouring shared <b>Universal Legendary Badges / Legendary Officer Badge Selection Chests</b> on the Officer with the <b>higher ORV cost per badge</b>. This protects the more expensive Officer from unnecessary ORV spending.</p>
+      <p>The optimiser is <b>preview only</b>. It does not automatically spend, allocate or change your saved resources.</p>
 
       <h3>6. Save Progress</h3>
-      <p>Use <b>Save Progress</b> after entering or changing your calculator information. Progress is stored locally in the browser on the device you are using. Saving progress does not publish changes to other users.</p>
+      <p>Use <b>Save Progress</b> after entering or changing calculator information. Progress is stored locally in the browser on the current device. Save Progress does not publish your personal data to other users.</p>
 
       <h3>7. Database</h3>
-      <p>The Database Manager controls the Officer master list. It can be used to add or edit Officers and export the database. <b>Export CSV</b> is different from Save Progress: it exports the Officer database rather than your personal calculator progress.</p>
-      <p>To make new or edited Officers available to everyone, the published <b>officers.json</b> and <b>officers.csv</b> files in the GitHub repository must be updated.</p>
+      <p>The Database Manager controls the Officer master list. Use it to add or edit Officers and export the database. <b>Export CSV</b> exports the Officer database; it is different from Save Progress and App Backup.</p>
+      <p>To publish new or edited Officers for everyone, update the published <b>officers.json</b> and <b>officers.csv</b> files in the GitHub repository.</p>
 
-      <h3>8. Settings</h3>
-      <p>Settings contains the app name, portrait and landscape backgrounds, appearance controls and app-update controls. <b>Check for Updates</b> checks the published version. <b>Refresh Latest Version</b> refreshes the KoW Companion application cache without intentionally deleting saved calculator progress.</p>
+      <h3>8. Settings, Backup & Restore</h3>
+      <p>Settings contains the app name, portrait and landscape backgrounds, update controls and <b>Backup & Restore</b>.</p>
+      <p><b>Export App Backup</b> creates a JSON backup of KoW Companion data stored locally by the browser. Keep this file somewhere safe. <b>Restore App Backup</b> loads a previously exported JSON backup and reloads the app.</p>
+      <p><b>Check for Updates</b> compares the installed version with the published version. <b>Refresh Latest Version</b> refreshes the KoW Companion application cache without intentionally deleting saved calculator progress.</p>
 
       <h3>Terminology</h3>
       <p><b>ORV</b> = Officer Readiness Voucher<br>
@@ -344,7 +367,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <button id="resetAppearance" class="primary">Reset Appearance & Backgrounds</button>
       <h3>App Updates</h3>
       <div class="notice">
-        <div><b>Installed version:</b> <span id="installedVersion">v4.2.8</span></div>
+        <div><b>Installed version:</b> <span id="installedVersion">v4.2.13</span></div>
         <div id="updateStatus">Tap Check for Updates to compare with the latest GitHub Pages version.</div>
       </div>
       <div class="two">
@@ -354,7 +377,14 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <h3>Help & Instructions</h3>
       <p class="notice">Open the in-app User Guide for the recommended setup order, explanations of every tab, saving, database publishing, vouchers, badges and Original Officer restrictions.</p>
       <button id="openUserGuide" class="primary">📖 User Guide</button>
-    </article>
+          <h3>Backup & Restore</h3>
+      <p class="notice">Export all locally saved KoW Companion browser data, or restore a previous JSON backup.</p>
+      <div class="two">
+        <button id="backupAppData" class="primary">⬇ Export App Backup</button>
+        <label class="button-like">⬆ Restore App Backup<input id="restoreAppData" type="file" accept=".json,application/json" hidden></label>
+      </div>
+      <div id="backupStatus" class="notice" style="margin-top:10px">No backup created yet.</div>
+</article>
   </section>
 </main>
 
@@ -506,7 +536,7 @@ function setPortraitWithFallback(img,placeholder,candidates,index=0){
   if(placeholder)placeholder.style.display='none';
  };
  img.onerror=()=>setPortraitWithFallback(img,placeholder,candidates,index+1);
- img.src=candidates[index]+'?v=428';
+ img.src=candidates[index]+'?v=4213';
 }
 function updateOfficerExperience(){
  const o=currentOfficer();if(!o)return;
@@ -527,13 +557,13 @@ function updateOfficerExperience(){
    const next=Number(current)+1;
    if(next<candidates.length){
     dash.setAttribute('data-portrait-index',String(next));
-    dash.src=candidates[next]+'?v=428';
+    dash.src=candidates[next]+'?v=4213';
    }else{
     dash.style.display='none';
    }
   };
   dash.setAttribute('data-portrait-index','0');
-  dash.src=candidates[0]+'?v=428';
+  dash.src=candidates[0]+'?v=4213';
  }
 }
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -660,7 +690,7 @@ function saveProgress(){const d={officer:$('officerSelect').value,currentStar:$(
 function loadProgress(){try{const d=JSON.parse(localStorage.getItem('kow_progress_v4')||'null');if(!d)return;$('officerSelect').value=d.officer??0;$('currentStar').value=d.currentStar??0;$('targetStar').value=d.targetStar??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('srvHeld').value=d.srvHeld??0;$('unlocked').checked=!!d.unlocked;skills=Array.isArray(d.skills)?d.skills:skills;$('training').value=d.training??0;$('badgeHeld').value=d.badgeHeld??0;$('universalBadgeHeld').value=d.universalBadgeHeld??0;$('legendaryBadgeChestHeld').value=d.legendaryBadgeChestHeld??0;$('legendaryBadgeChestMode').value=d.legendaryBadgeChestMode??'badge';$('orvHeld').value=d.orvHeld??0;$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;$('goalSelect').value=d.goal??'max';XP_DENOMS.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch{}}
 
 
-const APP_VERSION='4.2.8';
+const APP_VERSION='4.2.9';
 
 function parseVersion(v){
  return String(v||'').replace(/^v/i,'').split('.').map(n=>parseInt(n,10)||0);
@@ -702,14 +732,124 @@ async function clearAppCacheAndReload(){
  location.replace(baseUrl+'?refresh='+Date.now());
 }
 
+
+function numericText(id){
+ const el=$(id);if(!el)return 0;
+ return Number(String(('value' in el?el.value:el.textContent)||0).replace(/[^0-9.-]/g,''))||0;
+}
+function populateCompareOfficers(){
+ const s=$('compareOfficerSelect');if(!s)return;
+ const primary=currentOfficer();
+ const prev=s.value;
+ s.innerHTML='<option value="">Select Officer</option>'+
+  officers.map((o,i)=>({o,i}))
+   .filter(x=>!primary||x.o.name!==primary.name)
+   .map(({o,i})=>`<option value="${i}">${esc(o.name)}</option>`).join('');
+ if(prev && [...s.options].some(o=>o.value===prev))s.value=prev;
+}
+function buildUpgradeSummary(){
+ const box=$('upgradeSummary'),opt=$('optimiserSummary'),hint=$('compareHint'),o=currentOfficer();if(!o)return;
+
+ const badgeUsed=numericText('badgesUsed');
+ const starsUsed=numericText('starsUsed');
+ const xpUsed=numericText('xpUsed');
+
+ const badgeNeed=Math.max(0,1600-badgeUsed);
+ const starNeed=Math.max(0,98000-starsUsed);
+ const xpNeed=Math.max(0,199646700-xpUsed);
+
+ if(box)box.innerHTML=`<b>${esc(o.name)}</b><br>
+ Officer Badges remaining: <b>${badgeNeed.toLocaleString()}</b><br>
+ Officer Stars remaining: <b>${starNeed.toLocaleString()}</b><br>
+ Officer XP remaining: <b>${xpNeed.toLocaleString()}</b>`;
+
+ if(opt){
+  const shared=numericText('universalBadgeHeld')+numericText('legendaryBadgeChestHeld');
+  const usable=Math.min(shared,badgeNeed);
+  let comparison='';
+
+  const compareIndex=$('compareOfficerSelect')?.value;
+  if(compareIndex!==''){
+    const c=officers[Number(compareIndex)];
+    if(c){
+      if(hint)hint.innerHTML=`Comparing <b>${esc(o.name)}</b> with <b>${esc(c.name)}</b>.`;
+      const primaryCost=Number(o.orv)||0;
+      const compareCost=Number(c.orv)||0;
+
+      let recommendation='ORV comparison is not available for one of these Officers.';
+      if(primaryCost && compareCost){
+        if(primaryCost < compareCost){
+          recommendation=`Use shared Universal Legendary Badges / Selection Chests on <b>${esc(c.name)}</b> first, and favour ORV on <b>${esc(o.name)}</b>. This protects the more expensive Officer from ORV spending.`;
+        }else if(primaryCost > compareCost){
+          recommendation=`Use shared Universal Legendary Badges / Selection Chests on <b>${esc(o.name)}</b> first, and favour ORV on <b>${esc(c.name)}</b>. This protects the more expensive Officer from ORV spending.`;
+        }else{
+          recommendation=`Both Officers have the same ORV cost per badge, so shared badges can be allocated according to your upgrade priority.`;
+        }
+      }
+
+      comparison=`<hr style="border:0;border-top:1px solid rgba(255,255,255,.1);margin:10px 0">
+      <b>Comparison: ${esc(o.name)} vs ${esc(c.name)}</b><br>
+      ${esc(o.name)} ORV per Badge: <b>${primaryCost||'N/A'}</b><br>
+      ${esc(c.name)} ORV per Badge: <b>${compareCost||'N/A'}</b><br>
+      ${
+        primaryCost && compareCost
+          ? (primaryCost<compareCost
+              ? `<b>${esc(o.name)}</b> is cheaper by ${(compareCost-primaryCost).toLocaleString()} ORV per badge.`
+              : primaryCost>compareCost
+                ? `<b>${esc(c.name)}</b> is cheaper by ${(primaryCost-compareCost).toLocaleString()} ORV per badge.`
+                : `Both Officers have the same ORV cost per badge.`)
+          : ''
+      }
+      <div class="notice" style="margin-top:10px"><b>Suggested resource strategy:</b><br>${recommendation}</div>`;
+    }
+  }else{
+    if(hint)hint.textContent='Choose another Officer to compare badge efficiency.';
+  }
+
+  opt.innerHTML=`<b>${esc(o.name)}</b><br>
+  Shared Legendary badge resources detected: <b>${shared.toLocaleString()}</b><br>
+  Available toward badge requirement: <b>${usable.toLocaleString()}</b><br>
+  Remaining badge shortfall: <b>${Math.max(0,badgeNeed-usable).toLocaleString()}</b><br>
+  <span class="muted">Preview only — resources are not spent.</span>${comparison}`;
+ }
+}function exportFullBackup(){
+ try{
+  const payload={app:'KoW Companion',version:APP_VERSION,exported:new Date().toISOString(),localStorage:{}};
+  for(let i=0;i<localStorage.length;i++){
+   const k=localStorage.key(i);
+   payload.localStorage[k]=localStorage.getItem(k);
+  }
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='KoW-Companion-Backup-'+new Date().toISOString().slice(0,10)+'.json';
+  a.style.display='none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},2000);
+  const s=$('backupStatus');
+  if(s)s.textContent='Backup created. Check your browser Downloads folder.';
+ }catch(err){
+  const s=$('backupStatus');
+  if(s)s.textContent='Backup failed: '+err.message;
+  alert('Backup failed: '+err.message);
+ }
+}
+async function restoreFullBackup(file){
+ const payload=JSON.parse(await file.text());
+ if(!payload||!payload.localStorage)throw new Error('Invalid KoW Companion backup file.');
+ Object.entries(payload.localStorage).forEach(([k,v])=>localStorage.setItem(k,v));
+ alert('Backup restored. The app will reload now.');location.reload();
+}
 async function init(){
  await loadOfficers();renderOfficerFilters();renderOfficerOptions();
  ['officerSearch','officerSeasonFilter','officerRoleFilter'].forEach(id=>{
   const el=$(id);if(!el)return;
   const evt=id==='officerSearch'?'input':'change';
-  el.addEventListener(evt,()=>{renderOfficerOptions();calculate()});
+  el.addEventListener(evt,()=>{renderOfficerOptions();calculate();populateCompareOfficers();buildUpgradeSummary()});
  });
- $('officerSelect').addEventListener('change',()=>{updateOfficerExperience();calculate()});
+ $('officerSelect').addEventListener('change',()=>{updateOfficerExperience();calculate();populateCompareOfficers();buildUpgradeSummary()});
  [0,1,2,3,4,5].forEach(v=>{$('currentStar').add(new Option(v+'★',v));$('targetStar').add(new Option(v+'★',v))});$('targetStar').value=5;
  SKILL_COSTS.forEach((c,i)=>{const b=document.createElement('button');b.className='skill';b.textContent=`${i+1} · ${c}`;b.onclick=()=>{skills[i]=!skills[i];b.classList.toggle('active',skills[i]);calculate()};$('skillGrid').appendChild(b)});
  XP_DENOMS.forEach(v=>{const d=document.createElement('div');d.className='xp-item';d.innerHTML=`<label>${v.toLocaleString()} XP</label><input id="xp${v}" type="number" min="0" step="1" inputmode="numeric" value="0">`;$('xpBooks').appendChild(d)});
@@ -736,7 +876,7 @@ async function init(){
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.2.8';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.2.13';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -767,10 +907,39 @@ async function init(){
  $('refreshLatest').onclick=clearAppCacheAndReload;
 
  loadProgress();
+
+ // v4.2.13 feature wiring
+ populateCompareOfficers();
+ const compareSelect=$('compareOfficerSelect');
+ if(compareSelect){
+  compareSelect.addEventListener('change',buildUpgradeSummary);
+ }
+
+ const backupBtn=$('backupAppData');
+ if(backupBtn){
+  backupBtn.addEventListener('click',exportFullBackup);
+ }
+
+ const restoreInput=$('restoreAppData');
+ if(restoreInput){
+  restoreInput.addEventListener('change',async e=>{
+   try{
+    const f=e.target.files?.[0];
+    if(f)await restoreFullBackup(f);
+   }catch(err){
+    const s=$('backupStatus');
+    if(s)s.textContent='Restore failed: '+err.message;
+    alert('Restore failed: '+err.message);
+   }finally{
+    e.target.value='';
+   }
+  });
+ }
+
  ['universalBadgeHeld','legendaryBadgeChestHeld','legendaryBadgeChestMode'].forEach(id=>{
   const el=$(id);if(el)el.addEventListener(id==='legendaryBadgeChestMode'?'change':'input',calculate);
  });
- document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));renderDb();calculate();
+ document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));renderDb();calculate();populateCompareOfficers();buildUpgradeSummary();
  window.addEventListener('resize',applyResponsivePageBackground);
  if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
 }

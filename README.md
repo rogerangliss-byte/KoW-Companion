@@ -1,23 +1,18 @@
-# KoW Companion v4.2.0 — Officer Experience
+# KoW Companion v4.2.13 — LIVE
 
-v4.2 focuses on finding and identifying Officers quickly as the database grows.
+Approved Live release of KoW Companion.
 
-## New
-- Search Officers by name.
-- Filter by Season.
-- Filter by Role.
-- Display an Officer portrait when the corresponding image exists.
-- Show Season and Role beside the selected Officer.
+## v4.2.13 features
+- Officer Search, Season and Officer Type / Role filters.
+- Officer portraits loaded from the existing `officer-portraits` folder.
+- Officer Upgrade Summary.
+- Planner and Resource Optimiser.
+- Compare two Officers by Officer Readiness Voucher (ORV) cost per Officer Badge.
+- Suggested shared-resource allocation strategy.
+- Export App Backup and Restore App Backup.
+- Updated in-app Help and User Guide.
 
-## Portrait naming
-Portraits are root-level files in the flat repository build.
+## Deployment
+Upload these files to the root of the Live `KoW-Companion` repository.
 
-Filename format:
-`officer-<officer-name>.jpg`
-
-Examples:
-- `officer-s7-roisin.jpg`
-- `officer-s6-regina.jpg`
-- `officer-katherine.jpg`
-
-This makes it possible to add future portraits without changing the calculator logic. If a portrait file has not been added yet, the app displays a clear placeholder instead of a broken image.
+This package deliberately contains **no Officer portrait files**. Leave the existing `officer-portraits` folder untouched.

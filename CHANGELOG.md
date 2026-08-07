@@ -1,10 +1,11 @@
 # Changelog
 
-## v4.2.8 — Robust Officer Portrait Loader
-- Uses the exact `officer-portraits/officer-<name>.jpg` filename structure shown in the TEST repository.
-- Seasonal example: `officer-portraits/officer-s7-romana.jpg`.
-- Original Officer example: `officer-portraits/officer-katherine.jpg`.
-- Added automatic fallback checks for older portrait filename layouts.
-- No Officer images are included in this package.
-- Season and Officer Type / Role filters remain unchanged.
-- Cache bumped to v4.2.8.
+## v4.2.13 LIVE
+- Promoted the approved v4.2.13 TEST build to Live.
+- Officer Upgrade Summary available on the Officer tab.
+- Resource Optimiser supports comparison with a second Officer.
+- Comparison displays ORV-per-badge efficiency and suggested resource strategy.
+- Backup & Restore available in Settings.
+- Help and User Guide updated for v4.2.13.
+- TEST banner removed.
+- No Officer portrait files included in this deployment package.
