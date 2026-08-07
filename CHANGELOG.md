@@ -1,9 +1,10 @@
 # Changelog
 
-## v4.0.10
-- Moved the responsive artwork to the HTML root canvas instead of a fixed div, body, or app container.
-- The root-element background paints the full browser canvas even when a tab has very little content.
-- Specifically targets the black lower section on Officer, Planner and Database.
-- Portrait/Landscape automatic switching and zone custom uploads are retained.
-- Removed the obsolete separate background layer.
-- Service-worker cache bumped to v4.0.10.
+## v4.0.11
+- Rolled the background engine back to the simpler v4.0.0 approach.
+- The same responsive background is now painted on both the HTML canvas and BODY.
+- Kept portrait/landscape auto-switching and custom zone uploads.
+- Kept current Officer, Planner, Database, XP, Stars and Development functionality.
+- Added only a small min-height safety net for short tabs.
+- Removed the later fixed-layer/page-container background experiments.
+- Service-worker cache bumped to v4.0.11.
