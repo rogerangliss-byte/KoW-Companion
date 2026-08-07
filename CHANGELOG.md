@@ -1,3 +1,8 @@
+# v4.0.5
+- Fullscreen background hardening: body now mirrors the responsive portrait/landscape background as a fallback behind the fixed background layer.
+- Added viewport overscan to prevent seams during mobile browser viewport resizing.
+- Preserves Settings portrait/landscape background selectors and automatic orientation switching.
+
 # v4.0.4
 - Rebuilt the background as an independent fixed viewport layer.
 - Removed tab/view height dependency from background rendering.

@@ -1,10 +1,10 @@
 :root{--gold:#d5a72f;--gold2:#f2cf6b;--panel:rgba(14,16,19,.92);--line:rgba(213,167,47,.35);--text:#fff8e7;--muted:#c9c1ad;--portrait-bg:url('../assets/background-portrait.png');--landscape-bg:url('../assets/background-landscape.png')}
 *{box-sizing:border-box}
 html{margin:0;min-width:100%;min-height:100%;background:#090b0c}
-body{margin:0;min-width:100%;min-height:100vh;min-height:100dvh;font-family:Arial,sans-serif;color:var(--text);background:transparent}
+body{margin:0;min-width:100%;min-height:100vh;min-height:100dvh;font-family:Arial,sans-serif;color:var(--text);background-color:#090b0c;background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--portrait-bg);background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:fixed}
 /* v4.0.4: independent viewport background layer. Do not size this from page/tab content. */
 .app-background{position:fixed;top:0;right:0;bottom:0;left:0;width:auto;height:auto;min-height:100vh;min-height:100dvh;z-index:1;pointer-events:none;background-color:#090b0c;background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--portrait-bg);background-size:cover;background-position:center top;background-repeat:no-repeat;transform:none}
-@media (orientation:landscape){.app-background{background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--landscape-bg);background-position:center center}}
+@media (orientation:landscape){body{background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--landscape-bg);background-position:center center}.app-background{background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--landscape-bg);background-position:center center}}
 @media (min-width:1200px) and (orientation:landscape){.app-background{background-position:center 35%}}
 .topbar{position:sticky;top:0;z-index:10;padding:18px;background:rgba(0,0,0,.82);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
 .topbar h1{margin:0;color:var(--gold);font-size:1.4rem}.topbar p{margin:5px 0 0;color:var(--muted)}
@@ -34,3 +34,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 .app{position:relative;min-height:calc(100vh - 90px);min-height:calc(100dvh - 90px)}
 .bottom-nav{position:fixed}
 .view.active{min-height:0}
+
+/* v4.0.5: body fallback mirrors the fixed viewport layer. This prevents any exposed black area on short tabs or mobile browser viewport changes. */
+html,body{width:100%;min-height:100%;}
+.app-background{inset:-2px;min-width:calc(100vw + 4px);min-height:calc(100vh + 4px);min-height:calc(100dvh + 4px);}
