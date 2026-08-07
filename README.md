@@ -1,27 +1,7 @@
-# KoW Companion v4.1.3 — Fresh Flat Upload
+# KoW Companion v4.1.4
 
-This build is intended for a complete repository clean-out followed by a fresh upload.
+The app now loads its published default officer database from the root `officers.json`.
 
-## Important
-Delete the old application files/folders from the repository first, then upload only the contents of this ZIP to the repository root.
+When you publish a newer `officers.json`, existing users automatically receive officers that are missing from their local database. Local edits are preserved.
 
-There are no `css/`, `js/`, `assets/`, or `data/` folders in this build. CSS and JavaScript are embedded directly in `index.html`.
-
-## Files that should remain in the repository root
-- `.nojekyll`
-- `CHANGELOG.md`
-- `LICENSE`
-- `README.md`
-- `background-landscape.jpg`
-- `background-portrait.jpg`
-- `icon.svg`
-- `index.html`
-- `manifest.json`
-- `officers.csv`
-- `officers.json`
-- `service-worker.js`
-
-## GitHub Pages
-- Source: Deploy from a branch
-- Branch: `main`
-- Folder: `/(root)`
+`Restore Defaults` now restores the currently published database.

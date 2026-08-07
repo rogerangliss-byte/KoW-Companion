@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.1.3</title>
+<title>KoW Companion v4.1.4</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -113,7 +113,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
-    <p>Officer Companion v4.1.3</p>
+    <p>Officer Companion v4.1.4</p>
   </div>
 </header>
 
@@ -282,7 +282,39 @@ const pct=(v,m)=>Math.min(100,Math.max(0,m?100*v/m:0));
 const clone=v=>JSON.parse(JSON.stringify(v));
 
 function normalizeOfficer(o){return {name:String(o?.name||'').trim(),season:String(o?.season||String(o?.name||'').match(/^S\d+/)?.[0]||'').trim(),orv:Number(o?.orv)||0,srv:Number(o?.srv)||0,notes:String(o?.notes||'')}}
-function loadOfficers(){try{const d=JSON.parse(localStorage.getItem('kow_officers_v4')||'null');officers=(Array.isArray(d)&&d.length?d:clone(DEFAULT_OFFICERS)).map(normalizeOfficer).filter(o=>o.name)}catch{officers=clone(DEFAULT_OFFICERS).map(normalizeOfficer)}}
+async function loadOfficers(){
+ let published=clone(DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);
+ try{
+   const response=await fetch('./officers.json?v=414',{cache:'no-store'});
+   if(response.ok){
+     const data=await response.json();
+     if(Array.isArray(data)&&data.length) published=data.map(normalizeOfficer).filter(o=>o.name);
+   }
+ }catch(e){}
+
+ try{
+   const saved=JSON.parse(localStorage.getItem('kow_officers_v4')||'null');
+   if(Array.isArray(saved)&&saved.length){
+     const merged=saved.map(normalizeOfficer).filter(o=>o.name);
+     const names=new Set(merged.map(o=>o.name.toLowerCase()));
+     published.forEach(o=>{
+       const key=o.name.toLowerCase();
+       if(!names.has(key)){
+         merged.push(o);
+         names.add(key);
+       }
+     });
+     officers=merged;
+   }else{
+     officers=clone(published);
+   }
+   window.KOW_PUBLISHED_OFFICERS=clone(published);
+   saveOfficers();
+ }catch(e){
+   officers=clone(published);
+   window.KOW_PUBLISHED_OFFICERS=clone(published);
+ }
+}
 function saveOfficers(){localStorage.setItem('kow_officers_v4',JSON.stringify(officers))}
 function currentOfficer(){return officers[+$('officerSelect').value]||officers[0]||{name:'Officer',orv:0,srv:0}}
 function renderOfficerOptions(name){const s=$('officerSelect');const prev=name||s.options[s.selectedIndex]?.textContent||'S7 Liora';s.innerHTML=officers.map((o,i)=>`<option value="${i}">${esc(o.name)}</option>`).join('');const i=officers.findIndex(o=>o.name===prev);s.value=i>=0?i:0}
@@ -379,8 +411,8 @@ function parseCsv(text){const lines=text.trim().split(/\r?\n/).slice(1);return l
 function saveProgress(){const d={officer:$('officerSelect').value,currentStar:$('currentStar').value,targetStar:$('targetStar').value,ls1:$('ls1').value,ls2:$('ls2').value,ls3:$('ls3').value,srvHeld:$('srvHeld').value,unlocked:$('unlocked').checked,skills,training:$('training').value,badgeHeld:$('badgeHeld').value,orvHeld:$('orvHeld').value,currentLevel:$('currentLevel').value,targetLevel:$('targetLevel').value,goal:$('goalSelect').value,xp:{}};XP_DENOMS.forEach(v=>d.xp[v]=$('xp'+v).value);localStorage.setItem('kow_progress_v4',JSON.stringify(d));alert('Progress saved.')}
 function loadProgress(){try{const d=JSON.parse(localStorage.getItem('kow_progress_v4')||'null');if(!d)return;$('officerSelect').value=d.officer??0;$('currentStar').value=d.currentStar??0;$('targetStar').value=d.targetStar??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('srvHeld').value=d.srvHeld??0;$('unlocked').checked=!!d.unlocked;skills=Array.isArray(d.skills)?d.skills:skills;$('training').value=d.training??0;$('badgeHeld').value=d.badgeHeld??0;$('orvHeld').value=d.orvHeld??0;$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;$('goalSelect').value=d.goal??'max';XP_DENOMS.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch{}}
 
-function init(){
- loadOfficers();renderOfficerOptions();
+async function init(){
+ await loadOfficers();renderOfficerOptions();
  [0,1,2,3,4,5].forEach(v=>{$('currentStar').add(new Option(v+'★',v));$('targetStar').add(new Option(v+'★',v))});$('targetStar').value=5;
  SKILL_COSTS.forEach((c,i)=>{const b=document.createElement('button');b.className='skill';b.textContent=`${i+1} · ${c}`;b.onclick=()=>{skills[i]=!skills[i];b.classList.toggle('active',skills[i]);calculate()};$('skillGrid').appendChild(b)});
  XP_DENOMS.forEach(v=>{const d=document.createElement('div');d.className='xp-item';d.innerHTML=`<label>${v.toLocaleString()} XP</label><input id="xp${v}" type="number" min="0" step="1" inputmode="numeric" value="0">`;$('xpBooks').appendChild(d)});
@@ -392,7 +424,7 @@ function init(){
  $('dbSave').onclick=()=>{const e=validateDb();if(e.length){alert('Fix validation issues first.');return}saveOfficers();renderOfficerOptions();alert('Officer database saved.')};
  $('dbExport').onclick=exportCsv;
  $('dbImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const parsed=parseCsv(r.result);if(validateDb(parsed).length){alert('CSV validation failed.');return}officers=parsed;saveOfficers();renderDb();renderOfficerOptions();calculate();alert('CSV imported.')};r.readAsText(f);e.target.value=''};
- $('dbRestore').onclick=()=>{if(confirm('Restore default officer database?')){officers=clone(DEFAULT_OFFICERS);saveOfficers();renderDb();renderOfficerOptions('S7 Liora');calculate()}};
+ $('dbRestore').onclick=()=>{if(confirm('Restore default officer database?')){officers=clone(window.KOW_PUBLISHED_OFFICERS||DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);saveOfficers();renderDb();renderOfficerOptions('S7 Liora');calculate()}};
 
  const savedName=localStorage.getItem('kow_app_name_v4');if(savedName){$('appName').value=savedName;$('appTitle').textContent=savedName;document.title=savedName}
  const savedPortrait=localStorage.getItem('kow_bg_portrait_v401');
@@ -406,7 +438,7 @@ function init(){
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.1.3';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.1.4';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
