@@ -1,9 +1,9 @@
 # Changelog
 
-## v4.0.9
-- Moved the visible background from the separate fixed layer onto the main page container itself.
-- The main app container now has a guaranteed full viewport minimum height.
-- Short tabs (Officer, Planner and Database) can no longer end before the bottom of the screen and reveal the black page background.
-- Portrait/Landscape switching and custom uploads are retained.
-- Background selection updates immediately when orientation changes.
-- Service-worker cache bumped to v4.0.9.
+## v4.0.10
+- Moved the responsive artwork to the HTML root canvas instead of a fixed div, body, or app container.
+- The root-element background paints the full browser canvas even when a tab has very little content.
+- Specifically targets the black lower section on Officer, Planner and Database.
+- Portrait/Landscape automatic switching and zone custom uploads are retained.
+- Removed the obsolete separate background layer.
+- Service-worker cache bumped to v4.0.10.

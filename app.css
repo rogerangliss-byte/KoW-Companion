@@ -1,29 +1,45 @@
-
-:root{--gold:#d5a72f;--gold2:#f2cf6b;--panel:rgba(14,16,19,.92);--line:rgba(213,167,47,.35);--text:#fff8e7;--muted:#c9c1ad;--page-bg:url('../assets/background-portrait.jpg?v=409')}
+:root{
+  --gold:#d5a72f;
+  --gold2:#f2cf6b;
+  --panel:rgba(14,16,19,.92);
+  --line:rgba(213,167,47,.35);
+  --text:#fff8e7;
+  --muted:#c9c1ad;
+  --page-bg:url('../assets/background-portrait.jpg?v=4010');
+}
 *{box-sizing:border-box}
-html,body{min-height:100vh;font-family:Arial,sans-serif;color:var(--text);overflow-x:hidden;background:#090b0c}
-body{min-height:100vh;min-height:100dvh;font-family:Arial,sans-serif;color:var(--text);overflow-x:hidden}
-.app-background{display:none!important}
-.bg-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none}
-.bg-portrait{display:block;object-position:center top}
-.bg-landscape{display:none;object-position:center center}
-.bg-overlay{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78))}
-@media (orientation:landscape){.bg-portrait{display:none}.bg-landscape{display:block}}
-@media (min-width:1200px) and (orientation:landscape){.bg-landscape{object-position:center 35%}}
-.topbar{position:sticky;top:0;z-index:10;padding:18px;background:rgba(0,0,0,.82);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
-.topbar h1{margin:0;color:var(--gold);font-size:1.4rem}.topbar p{margin:5px 0 0;color:var(--muted)}
-.app{
-  position:relative;
-  max-width:none;
-  width:100%;
+html{
   margin:0;
-  padding:14px max(14px,calc((100% - 1000px)/2)) 100px;
-  min-height:calc(100vh - 94px);
+  width:100%;
+  min-width:100%;
+  min-height:100%;
+  background-color:#090b0c;
   background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--page-bg);
   background-size:cover;
   background-position:center top;
   background-repeat:no-repeat;
   background-attachment:fixed;
+}
+body{
+  margin:0;
+  width:100%;
+  min-width:100%;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  color:var(--text);
+  overflow-x:hidden;
+  background:transparent!important;
+}
+.topbar{position:sticky;top:0;z-index:10;padding:18px;background:rgba(0,0,0,.82);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+.topbar h1{margin:0;color:var(--gold);font-size:1.4rem}.topbar p{margin:5px 0 0;color:var(--muted)}
+.app{
+  position:relative;
+  max-width:1000px;
+  width:calc(100% - 28px);
+  margin:0 auto;
+  padding:14px 0 100px;
+  min-height:calc(100vh - 90px);
+  background:transparent!important;
 }.view{display:none}.view.active{display:block}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.wide{grid-column:1/-1}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 14px 36px rgba(0,0,0,.3);backdrop-filter:blur(10px)}
@@ -43,16 +59,14 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 @media(max-width:760px){.grid,.two{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.bottom-nav{grid-template-columns:repeat(8,1fr)}}
 
 .background-status{display:flex;justify-content:space-between;gap:12px;margin:6px 0 14px;padding:9px 10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(0,0,0,.28);font-size:.82rem}.background-status span{color:var(--muted)}.background-status b{color:var(--gold2);text-align:right}
-.topbar,.app,.bottom-nav{z-index:2}
-.topbar{position:sticky}
-.app{position:relative;min-height:calc(100vh - 90px);min-height:calc(100dvh - 90px)}
+.background-status{display:flex;justify-content:space-between;gap:12px;margin:6px 0 14px;padding:9px 10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(0,0,0,.28);font-size:.82rem}
+.background-status span{color:var(--muted)}
+.background-status b{color:var(--gold2);text-align:right}
 .view.active{display:block;min-height:calc(100vh - 225px)}
-.bottom-nav{position:fixed}
-
 @media (orientation:landscape){
-  :root{--page-bg:url('../assets/background-landscape.jpg?v=409')}
-  .app{background-position:center center}
+  :root{--page-bg:url('../assets/background-landscape.jpg?v=4010')}
+  html{background-position:center center}
 }
 @media (min-width:1200px) and (orientation:landscape){
-  .app{background-position:center 35%}
+  html{background-position:center 35%}
 }

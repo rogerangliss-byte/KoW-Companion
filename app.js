@@ -10,7 +10,7 @@ function applyResponsivePageBackground(){
  const landscape=localStorage.getItem('kow_bg_landscape_v401');
  const isLandscape=window.matchMedia('(orientation: landscape)').matches;
  const chosen=isLandscape?landscape:portrait;
- const fallback=isLandscape?'assets/background-landscape.jpg?v=409':'assets/background-portrait.jpg?v=409';
+ const fallback=isLandscape?'assets/background-landscape.jpg?v=4010':'assets/background-portrait.jpg?v=4010';
  document.documentElement.style.setProperty('--page-bg',`url("${chosen||fallback}")`);
 }
 const fmt=n=>Math.max(0,Math.round(Number(n)||0)).toLocaleString();
@@ -142,7 +142,7 @@ function init(){
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgImage','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.0.9';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.0.10';
   $('portraitBgImage').src='assets/background-portrait.jpg?v=408';$('landscapeBgImage').src='assets/background-landscape.jpg?v=408';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
