@@ -1,0 +1,310 @@
+[
+  {
+    "name": "S7 Roisin",
+    "season": "S7",
+    "orv": 600,
+    "srv": 300,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S7 Barbara",
+    "season": "S7",
+    "orv": 600,
+    "srv": 300,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S7 Romana",
+    "season": "S7",
+    "orv": 500,
+    "srv": 250,
+    "notes": "Tank"
+  },
+  {
+    "name": "S7 Liora",
+    "season": "S7",
+    "orv": 500,
+    "srv": 250,
+    "notes": "Tank"
+  },
+  {
+    "name": "S7 Stella",
+    "season": "S7",
+    "orv": 416,
+    "srv": 208,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S7 Klara",
+    "season": "S7",
+    "orv": 416,
+    "srv": 208,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S7 Code",
+    "season": "S7",
+    "orv": 346,
+    "srv": 173,
+    "notes": "Rally"
+  },
+  {
+    "name": "S7 Kamila",
+    "season": "S7",
+    "orv": 346,
+    "srv": 173,
+    "notes": "Garrison"
+  },
+  {
+    "name": "S6 Regina",
+    "season": "S6",
+    "orv": 289,
+    "srv": 144,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S6 Veronica",
+    "season": "S6",
+    "orv": 289,
+    "srv": 144,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S6 Silverhand",
+    "season": "S6",
+    "orv": 240,
+    "srv": 120,
+    "notes": "Tank"
+  },
+  {
+    "name": "S6 Red Queen",
+    "season": "S6",
+    "orv": 240,
+    "srv": 120,
+    "notes": "Tank"
+  },
+  {
+    "name": "S6 Samantha",
+    "season": "S6",
+    "orv": 200,
+    "srv": 100,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S6 Saoirse",
+    "season": "S6",
+    "orv": 200,
+    "srv": 100,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S6 Emily",
+    "season": "S6",
+    "orv": 167,
+    "srv": 84,
+    "notes": "Rally"
+  },
+  {
+    "name": "S6 Zoya",
+    "season": "S6",
+    "orv": 167,
+    "srv": 84,
+    "notes": "Garrison"
+  },
+  {
+    "name": "S5 Feng",
+    "season": "S5",
+    "orv": 139,
+    "srv": 69,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S5 Halina",
+    "season": "S5",
+    "orv": 139,
+    "srv": 69,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S5 Eva",
+    "season": "S5",
+    "orv": 116,
+    "srv": 58,
+    "notes": "Tank"
+  },
+  {
+    "name": "S5 Elsa",
+    "season": "S5",
+    "orv": 116,
+    "srv": 58,
+    "notes": "Tank"
+  },
+  {
+    "name": "S5 Camile",
+    "season": "S5",
+    "orv": 96,
+    "srv": 48,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S5 Betty",
+    "season": "S5",
+    "orv": 96,
+    "srv": 48,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S5 Miyeon",
+    "season": "S5",
+    "orv": 80,
+    "srv": 40,
+    "notes": "Rally"
+  },
+  {
+    "name": "S5 Julia",
+    "season": "S5",
+    "orv": 80,
+    "srv": 40,
+    "notes": "Garrison"
+  },
+  {
+    "name": "S4 Melina",
+    "season": "S4",
+    "orv": 67,
+    "srv": 34,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S4 Jane",
+    "season": "S4",
+    "orv": 67,
+    "srv": 34,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S4 Anna",
+    "season": "S4",
+    "orv": 56,
+    "srv": 28,
+    "notes": "Tank"
+  },
+  {
+    "name": "S4 Yuki",
+    "season": "S4",
+    "orv": 56,
+    "srv": 28,
+    "notes": "Tank"
+  },
+  {
+    "name": "S4 Eunice",
+    "season": "S4",
+    "orv": 47,
+    "srv": 23,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S4 Derya",
+    "season": "S4",
+    "orv": 47,
+    "srv": 23,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S4 Hardwin",
+    "season": "S4",
+    "orv": 39,
+    "srv": 20,
+    "notes": "Rally"
+  },
+  {
+    "name": "S4 Erin",
+    "season": "S4",
+    "orv": 39,
+    "srv": 20,
+    "notes": "Garrison"
+  },
+  {
+    "name": "S3 Su",
+    "season": "S3",
+    "orv": 33,
+    "srv": 16,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S3 Erica",
+    "season": "S3",
+    "orv": 33,
+    "srv": 16,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S3 Aurora",
+    "season": "S3",
+    "orv": 28,
+    "srv": 14,
+    "notes": "Tank"
+  },
+  {
+    "name": "S3 Ada",
+    "season": "S3",
+    "orv": 28,
+    "srv": 14,
+    "notes": "Tank"
+  },
+  {
+    "name": "S3 Hannah",
+    "season": "S3",
+    "orv": 23,
+    "srv": 11,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S3 Christina",
+    "season": "S3",
+    "orv": 23,
+    "srv": 11,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S3 Sophia",
+    "season": "S3",
+    "orv": 23,
+    "srv": 11,
+    "notes": "Rally"
+  },
+  {
+    "name": "S3 Oliva",
+    "season": "S3",
+    "orv": 23,
+    "srv": 11,
+    "notes": "Garrison"
+  },
+  {
+    "name": "S2 Lady Pandora",
+    "season": "S2",
+    "orv": 20,
+    "srv": 10,
+    "notes": "Tank"
+  },
+  {
+    "name": "S2 Amanda",
+    "season": "S2",
+    "orv": 20,
+    "srv": 10,
+    "notes": "Infantry"
+  },
+  {
+    "name": "S2 Diana",
+    "season": "S2",
+    "orv": 20,
+    "srv": 10,
+    "notes": "Tank Destroyer"
+  },
+  {
+    "name": "S2 Natalia",
+    "season": "S2",
+    "orv": 20,
+    "srv": 10,
+    "notes": "Tank"
+  }
+]
