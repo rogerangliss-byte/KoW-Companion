@@ -1,4 +1,4 @@
-# KoW Companion v4.1.6
+# KoW Companion v4.2.0
 
 Adds Original Officer support:
 
