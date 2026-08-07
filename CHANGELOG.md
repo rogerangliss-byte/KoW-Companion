@@ -1,3 +1,9 @@
+# v4.0.4
+- Rebuilt the background as an independent fixed viewport layer.
+- Removed tab/view height dependency from background rendering.
+- Preserved automatic portrait/landscape background switching and Settings selectors.
+- Bumped service-worker cache to force the updated CSS to deploy.
+
 # Changelog
 
 ## v4.0.3

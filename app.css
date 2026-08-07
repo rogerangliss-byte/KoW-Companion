@@ -1,8 +1,9 @@
 :root{--gold:#d5a72f;--gold2:#f2cf6b;--panel:rgba(14,16,19,.92);--line:rgba(213,167,47,.35);--text:#fff8e7;--muted:#c9c1ad;--portrait-bg:url('../assets/background-portrait.png');--landscape-bg:url('../assets/background-landscape.png')}
 *{box-sizing:border-box}
-html,body{margin:0;min-width:100%;min-height:100%;background:#090b0c}
-body{min-height:100dvh;font-family:Arial,sans-serif;color:var(--text);background:transparent}
-.app-background{position:fixed;inset:0;width:100vw;height:100dvh;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--portrait-bg);background-size:cover;background-position:center top;background-repeat:no-repeat;transform:translateZ(0)}
+html{margin:0;min-width:100%;min-height:100%;background:#090b0c}
+body{margin:0;min-width:100%;min-height:100vh;min-height:100dvh;font-family:Arial,sans-serif;color:var(--text);background:transparent}
+/* v4.0.4: independent viewport background layer. Do not size this from page/tab content. */
+.app-background{position:fixed;top:0;right:0;bottom:0;left:0;width:auto;height:auto;min-height:100vh;min-height:100dvh;z-index:1;pointer-events:none;background-color:#090b0c;background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--portrait-bg);background-size:cover;background-position:center top;background-repeat:no-repeat;transform:none}
 @media (orientation:landscape){.app-background{background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--landscape-bg);background-position:center center}}
 @media (min-width:1200px) and (orientation:landscape){.app-background{background-position:center 35%}}
 .topbar{position:sticky;top:0;z-index:10;padding:18px;background:rgba(0,0,0,.82);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
@@ -27,9 +28,9 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 
 .background-status{display:flex;justify-content:space-between;gap:12px;margin:6px 0 14px;padding:9px 10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(0,0,0,.28);font-size:.82rem}.background-status span{color:var(--muted)}.background-status b{color:var(--gold2);text-align:right}
 
-/* v4.0.3: full-screen background stacking fix */
-.topbar,.app,.bottom-nav{position:relative;z-index:1}
+/* v4.0.4: all UI is above the independent fixed background. */
+.topbar,.app,.bottom-nav{z-index:2}
 .topbar{position:sticky}
+.app{position:relative;min-height:calc(100vh - 90px);min-height:calc(100dvh - 90px)}
 .bottom-nav{position:fixed}
-.app{min-height:calc(100dvh - 90px)}
-.view.active{min-height:calc(100dvh - 210px)}
+.view.active{min-height:0}
