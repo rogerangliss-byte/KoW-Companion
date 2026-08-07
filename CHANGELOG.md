@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.0.3
+- Replaced the body pseudo-element background with a dedicated fixed full-screen background layer.
+- Background now fills the entire viewport on short tabs such as Officer, Planner, Database and Settings.
+- Portrait/Landscape automatic switching retained.
+- Custom Portrait/Landscape backgrounds retained.
+- Updated service-worker cache to v4.0.3.
+
+
 ## v4.0.2
 - Fixed portrait background ending part-way down long pages on Android/mobile browsers.
 - Background now uses a fixed full-viewport layer that remains visible while scrolling.

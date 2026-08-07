@@ -118,10 +118,10 @@ function init(){
  const savedName=localStorage.getItem('kow_app_name_v4');if(savedName){$('appName').value=savedName;$('appTitle').textContent=savedName;document.title=savedName}
  const savedPortrait=localStorage.getItem('kow_bg_portrait_v401');
  const savedLandscape=localStorage.getItem('kow_bg_landscape_v401');
- if(savedPortrait){document.body.style.setProperty('--portrait-bg',`url('${savedPortrait}')`);$('portraitBgStatus').textContent='Custom portrait'}
- if(savedLandscape){document.body.style.setProperty('--landscape-bg',`url('${savedLandscape}')`);$('landscapeBgStatus').textContent='Custom landscape'}
+ if(savedPortrait){document.documentElement.style.setProperty('--portrait-bg',`url('${savedPortrait}')`);$('portraitBgStatus').textContent='Custom portrait'}
+ if(savedLandscape){document.documentElement.style.setProperty('--landscape-bg',`url('${savedLandscape}')`);$('landscapeBgStatus').textContent='Custom landscape'}
  $('appName').oninput=e=>{const n=e.target.value||'GODS OF WAR 371';localStorage.setItem('kow_app_name_v4',n);$('appTitle').textContent=n;document.title=n};
- const setBackground=(inputId,key,cssVar,statusId,label)=>{$(inputId).onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{localStorage.setItem(key,r.result);document.body.style.setProperty(cssVar,`url('${r.result}')`);$(statusId).textContent=label+' · '+f.name}catch(err){alert('This image is too large for browser storage. Try a smaller JPG or PNG.')}};r.readAsDataURL(f)}};
+ const setBackground=(inputId,key,cssVar,statusId,label)=>{$(inputId).onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{localStorage.setItem(key,r.result);document.documentElement.style.setProperty(cssVar,`url('${r.result}')`);$(statusId).textContent=label+' · '+f.name}catch(err){alert('This image is too large for browser storage. Try a smaller JPG or PNG.')}};r.readAsDataURL(f)}};
  setBackground('portraitBackgroundPicker','kow_bg_portrait_v401','--portrait-bg','portraitBgStatus','Custom portrait');
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','--landscape-bg','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{localStorage.removeItem('kow_app_name_v4');localStorage.removeItem('kow_bg_v4');localStorage.removeItem('kow_bg_portrait_v401');localStorage.removeItem('kow_bg_landscape_v401');location.reload()};
