@@ -23,7 +23,14 @@ html,body{
   min-height:100%;
   font-family:Arial,sans-serif;
   color:var(--text);
-  background:#090b0c;
+  background-color:#090b0c;
+}
+body{
+  background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--page-bg);
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
 }
 body{min-height:100vh;overflow-x:hidden}
 .topbar{position:sticky;top:0;z-index:10;padding:18px;background:rgba(0,0,0,.82);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
@@ -85,3 +92,8 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
   :root{--page-bg:url('../assets/background-landscape.jpg?v=410')}
   .shell-background{background-position:center center}
 }
+
+/* v4.1.1: body owns the viewport background; no content-height background layer. */
+.shell-background{display:none!important}
+@media (orientation:portrait){body{background-position:center top}}
+@media (orientation:landscape){body{background-position:center center}}

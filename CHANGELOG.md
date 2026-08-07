@@ -1,3 +1,10 @@
+# v4.1.1
+- Fixed startup JavaScript crash caused by references to removed portrait/landscape preview image elements.
+- Restored Officer ORV/SRV values, Planner rows, and Database rows.
+- Moved the responsive background to the body itself so it cannot end with short tab content.
+- Removed malformed stray closing div from the document shell.
+- Changed service worker to network-first and bumped cache to v4.1.1.
+
 # Changelog
 
 ## v4.1.0
