@@ -1,9 +1,14 @@
 # Changelog
 
-## v4.2.3 — Filter + Original Image Fix
-- Season and Officer Type / Role filters now work together as an intersection.
-- Example: S7 + Tank shows only S7 Tank officers, not every S7 officer.
-- Repairs stale Officer Type / Role metadata cached by v4.2.1.
-- Restored the earlier badge-free, no-white-edge Officer portraits.
-- Removed the cropped SHARE-card screenshots used in v4.2.0–v4.2.2.
-- Portrait cache and app cache bumped to v4.2.3.
+## v4.2.0 — Officer Experience
+- Added Officer search.
+- Added Season filter.
+- Added Role filter using the Officer database Notes/role field.
+- Added an Officer portrait panel.
+- Added portrait support using predictable filenames such as `officer-s7-roisin.jpg`.
+- Added eight available officer-card portraits: Roisin, Barbara, Regina, Veronica, Code, Klara, Kamila and Stella.
+- Preserved the full officer-card proportions rather than forcing square crops.
+- Added portrait preview to the Home dashboard when available.
+- Added selected Officer Season/Role information.
+- Preserved all v4.1.8 calculations, Original Officer rules, Selection Chests, Universal Legendary Badges, update controls and Help.
+- Service-worker cache bumped to v4.2.0.
