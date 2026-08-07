@@ -1,14 +1,14 @@
 # Changelog
 
-## v4.2.0 — Officer Experience
-- Added Officer search.
-- Added Season filter.
-- Added Role filter using the Officer database Notes/role field.
-- Added an Officer portrait panel.
-- Added portrait support using predictable filenames such as `officer-s7-roisin.jpg`.
-- Added eight available officer-card portraits: Roisin, Barbara, Regina, Veronica, Code, Klara, Kamila and Stella.
-- Preserved the full officer-card proportions rather than forcing square crops.
-- Added portrait preview to the Home dashboard when available.
-- Added selected Officer Season/Role information.
-- Preserved all v4.1.8 calculations, Original Officer rules, Selection Chests, Universal Legendary Badges, update controls and Help.
-- Service-worker cache bumped to v4.2.0.
+## v4.1.8
+- Added a dedicated Help tab to the bottom navigation.
+- Added a User Guide button in Settings.
+- Built the operating instructions directly into the app for mobile, tablet and PC access.
+- Updated app and service-worker versioning to v4.1.8.
+
+## v4.1.7
+- Added in-app Help & Instructions tab.
+- Added recommended data-entry workflow.
+- Expanded Officer Readiness Voucher (ORV) and Star Readiness Voucher (SRV) terminology throughout key labels and instructions.
+- Added explanations of Save Progress, Database Export, Planner, Settings and app updates.
+- Added USER-GUIDE.md.

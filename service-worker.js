@@ -1,4 +1,4 @@
-const CACHE='kow-v4.2.0';
+const CACHE='kow-v4.1.8';
 const ASSETS=[
   './',
   './index.html',
@@ -7,15 +7,7 @@ const ASSETS=[
   './background-portrait.jpg',
   './background-landscape.jpg',
   './officers.csv',
-  './officers.json',
-  './officer-s7-roisin.jpg',
-  './officer-s7-barbara.jpg',
-  './officer-s6-regina.jpg',
-  './officer-s6-veronica.jpg',
-  './officer-s7-code.jpg',
-  './officer-s7-klara.jpg',
-  './officer-s7-kamila.jpg',
-  './officer-s7-stella.jpg'
+  './officers.json'
 ];
 
 self.addEventListener('install', event => {

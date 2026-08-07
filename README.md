@@ -1,23 +1,12 @@
-# KoW Companion v4.2.0 — Officer Experience
+# KoW Companion v4.1.8
 
-v4.2 focuses on finding and identifying Officers quickly as the database grows.
+Adds two new badge resources:
 
-## New
-- Search Officers by name.
-- Filter by Season.
-- Filter by Role.
-- Display an Officer portrait when the corresponding image exists.
-- Show Season and Role beside the selected Officer.
+1. Universal Legendary Badges
+   - Each is worth 1 Officer Badge for Legendary officers.
 
-## Portrait naming
-Portraits are root-level files in the flat repository build.
+2. Legendary Officer Badge Selection Chests
+   - Each chest can be used as either 1 Universal Legendary Badge or as Officer Readiness Vouchers.
+   - The ORV value is linked automatically to the latest Season's highest Officer Readiness Voucher cost per badge.
 
-Filename format:
-`officer-<officer-name>.jpg`
-
-Examples:
-- `officer-s7-roisin.jpg`
-- `officer-s6-regina.jpg`
-- `officer-katherine.jpg`
-
-This makes it possible to add future portraits without changing the calculator logic. If a portrait file has not been added yet, the app displays a clear placeholder instead of a broken image.
+The user chooses how the held Selection Chests are valued in the Development tab.
