@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.1.8</title>
+<title>KoW Companion v4.2.8</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -107,13 +107,27 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 @media (orientation:portrait){body{background-position:center top}}
 @media (orientation:landscape){body{background-position:center center}}
 
+
+/* v4.2 Officer Experience */
+.officer-filter-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.officer-experience-grid{display:grid;grid-template-columns:minmax(220px,320px) 1fr;gap:18px;align-items:start}
+.officer-portrait-panel{width:100%;min-height:300px;display:flex;align-items:center;justify-content:center}
+.officer-portrait{display:none;width:100%;max-width:320px;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.officer-portrait-placeholder{width:100%;max-width:320px;min-height:300px;border:1px dashed var(--line);border-radius:14px;background:rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;color:var(--muted)}
+.officer-portrait-placeholder span{font-size:3rem}.officer-portrait-placeholder b{color:var(--gold2);margin:8px 0}.officer-portrait-placeholder small{line-height:1.4}
+.officer-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.officer-meta div{padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(0,0,0,.28)}
+.officer-meta span{display:block;color:var(--muted);font-size:.76rem}.officer-meta b{display:block;color:var(--gold2);margin-top:4px}
+.dashboard-officer{display:flex;align-items:center;gap:12px}.dash-officer-portrait{display:none;width:76px;height:92px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+@media(max-width:760px){.officer-filter-grid,.officer-experience-grid{grid-template-columns:1fr}.officer-meta{grid-template-columns:repeat(3,1fr)}.officer-portrait-panel{min-height:220px}.officer-portrait-placeholder{min-height:220px}}
+
 </style>
 </head>
 <body>
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
-    <p>Officer Companion v4.1.8</p>
+    <p>Officer Companion v4.2.8</p>
   </div>
 </header>
 
@@ -122,7 +136,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
     <div class="grid">
       <article class="card wide">
         <span class="eyebrow">ACTIVE OFFICER</span>
-        <h2 id="dashOfficer">S7 Liora</h2>
+        <div class="dashboard-officer"><img id="dashOfficerPortrait" class="dash-officer-portrait" alt=""><div><h2 id="dashOfficer">S7 Liora</h2><span id="dashOfficerRole" class="muted"></span></div></div>
         <div class="big" id="overallPct">0.0%</div>
         <div class="progress"><span id="overallBar"></span></div>
       </article>
@@ -134,11 +148,36 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 
   <section id="officer" class="view">
     <article class="card">
-      <h2>👤 Officer Selection</h2>
-      <label>Officer</label><select id="officerSelect"></select>
-      <div class="two">
-        <div><label>ORV per Officer Badge</label><input id="orvCost" readonly></div>
-        <div><label>Star Readiness Vouchers (SRV) per Exclusive Star</label><input id="srvCost" readonly></div>
+      <h2>👤 Officer Experience</h2>
+
+      <div class="officer-filter-grid">
+        <div><label>Search Officer</label><input id="officerSearch" placeholder="Type an Officer name"></div>
+        <div><label>Season</label><select id="officerSeasonFilter"><option value="">All Seasons</option></select></div>
+        <div><label>Role</label><select id="officerRoleFilter"><option value="">All Roles</option></select></div>
+      </div>
+
+      <div class="officer-experience-grid">
+        <div class="officer-portrait-panel">
+          <img id="officerPortrait" class="officer-portrait" alt="Selected Officer portrait">
+          <div id="officerPortraitPlaceholder" class="officer-portrait-placeholder">
+            <span>👤</span>
+            <b>Portrait not added yet</b>
+            <small>Add a file named <span id="expectedPortraitFile"></span> to the repository.</small>
+          </div>
+        </div>
+
+        <div>
+          <label>Officer</label><select id="officerSelect"></select>
+          <div class="officer-meta">
+            <div><span>Season</span><b id="officerSeasonValue">—</b></div>
+            <div><span>Role</span><b id="officerRoleValue">—</b></div>
+            <div><span>Shown</span><b id="officerFilterCount">0</b></div>
+          </div>
+          <div class="two">
+            <div><label>Officer Readiness Vouchers (ORV) per Officer Badge</label><input id="orvCost" readonly></div>
+            <div><label>Star Readiness Vouchers (SRV) per Exclusive Star</label><input id="srvCost" readonly></div>
+          </div>
+        </div>
       </div>
     </article>
   </section>
@@ -254,6 +293,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <div class="notice"><b>Recommended workflow:</b> enter information in the order below, then use <b>Save Progress</b> to retain your calculator data on this device.</div>
 
       <h3>1. Officer</h3>
+      <p><b>v4.2 Officer Experience:</b> use Search, Season and Role filters to narrow the Officer list. The selected Officer's portrait is displayed automatically when a matching portrait file is available. Portrait files are stored in the <b>officer-portraits</b> folder. The app first looks for names such as <b>officer-s7-romana.jpg</b> or <b>officer-katherine.jpg</b>, with fallback support for older filename layouts., for example <b>officer-s7-roisin.jpg</b>.</p>
       <p>Select the Officer you want to calculate. The selected Officer determines the cost of an Officer Badge in <b>Officer Readiness Vouchers (ORV)</b> and the cost of an Exclusive Star in <b>Star Readiness Vouchers (SRV)</b>.</p>
       <p><b>Original Officers:</b> Officer Readiness Vouchers (ORV) and Star Readiness Vouchers (SRV) cannot be used for Original Officers.</p>
 
@@ -304,7 +344,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <button id="resetAppearance" class="primary">Reset Appearance & Backgrounds</button>
       <h3>App Updates</h3>
       <div class="notice">
-        <div><b>Installed version:</b> <span id="installedVersion">v4.1.8</span></div>
+        <div><b>Installed version:</b> <span id="installedVersion">v4.2.8</span></div>
         <div id="updateStatus">Tap Check for Updates to compare with the latest GitHub Pages version.</div>
       </div>
       <div class="two">
@@ -331,7 +371,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 </nav>
 
 <script type="module">
-const DEFAULT_OFFICERS=[{"name": "S7 Roisin", "season": "S7", "orv": 600, "srv": 300, "notes": ""}, {"name": "S7 Barbara", "season": "S7", "orv": 600, "srv": 300, "notes": ""}, {"name": "S7 Romana", "season": "S7", "orv": 500, "srv": 250, "notes": ""}, {"name": "S7 Liora", "season": "S7", "orv": 500, "srv": 250, "notes": ""}, {"name": "S7 Stella", "season": "S7", "orv": 416, "srv": 208, "notes": ""}, {"name": "S7 Klara", "season": "S7", "orv": 416, "srv": 208, "notes": ""}, {"name": "S7 Code", "season": "S7", "orv": 346, "srv": 173, "notes": ""}, {"name": "S7 Kamila", "season": "S7", "orv": 346, "srv": 173, "notes": ""}, {"name": "S6 Regina", "season": "S6", "orv": 289, "srv": 144, "notes": ""}, {"name": "S6 Veronica", "season": "S6", "orv": 289, "srv": 144, "notes": ""}, {"name": "S6 Silverhand", "season": "S6", "orv": 240, "srv": 120, "notes": ""}, {"name": "S6 Red Queen", "season": "S6", "orv": 240, "srv": 120, "notes": ""}, {"name": "S6 Samantha", "season": "S6", "orv": 200, "srv": 100, "notes": ""}, {"name": "S6 Saoirse", "season": "S6", "orv": 200, "srv": 100, "notes": ""}, {"name": "S6 Emily", "season": "S6", "orv": 167, "srv": 84, "notes": ""}, {"name": "S6 Zoya", "season": "S6", "orv": 167, "srv": 84, "notes": ""}];
+const DEFAULT_OFFICERS=[{"name": "S7 Roisin", "role": "Tank", "season": "S7", "orv": 600, "srv": 300, "notes": ""}, {"name": "S7 Barbara", "role": "Tank", "season": "S7", "orv": 600, "srv": 300, "notes": ""}, {"name": "S7 Romana", "season": "S7", "orv": 500, "srv": 250, "notes": ""}, {"name": "S7 Liora", "season": "S7", "orv": 500, "srv": 250, "notes": ""}, {"name": "S7 Stella", "role": "Tank", "season": "S7", "orv": 416, "srv": 208, "notes": ""}, {"name": "S7 Klara", "role": "Tank", "season": "S7", "orv": 416, "srv": 208, "notes": ""}, {"name": "S7 Code", "role": "Tank", "season": "S7", "orv": 346, "srv": 173, "notes": ""}, {"name": "S7 Kamila", "role": "Tank", "season": "S7", "orv": 346, "srv": 173, "notes": ""}, {"name": "S6 Regina", "role": "Tank", "season": "S6", "orv": 289, "srv": 144, "notes": ""}, {"name": "S6 Veronica", "role": "Tank", "season": "S6", "orv": 289, "srv": 144, "notes": ""}, {"name": "S6 Silverhand", "season": "S6", "orv": 240, "srv": 120, "notes": ""}, {"name": "S6 Red Queen", "season": "S6", "orv": 240, "srv": 120, "notes": ""}, {"name": "S6 Samantha", "season": "S6", "orv": 200, "srv": 100, "notes": ""}, {"name": "S6 Saoirse", "season": "S6", "orv": 200, "srv": 100, "notes": ""}, {"name": "S6 Emily", "season": "S6", "orv": 167, "srv": 84, "notes": ""}, {"name": "S6 Zoya", "season": "S6", "orv": 167, "srv": 84, "notes": ""}];
 const STAR_CUM=[0,500,1500,8000,33000,98000];
 const SKILL_COSTS=[10,10,15,15,30,30,40,40,45,45,50,50,75,75,80,80];
 const XP_DENOMS=[50,100,500,1000,5000,10000,20000,50000];
@@ -352,12 +392,12 @@ const clone=v=>JSON.parse(JSON.stringify(v));
 
 function normalizeOfficer(o){
  const season=String(o?.season||String(o?.name||'').match(/^S\d+/)?.[0]||'').trim();
- return {name:String(o?.name||'').trim(),season,orv:Number(o?.orv)||0,srv:Number(o?.srv)||0,notes:String(o?.notes||''),readinessEligible:season.toLowerCase()!=='original'&&o?.readinessEligible!==false}
+ return {name:String(o?.name||'').trim(),season,orv:Number(o?.orv)||0,srv:Number(o?.srv)||0,role:String(o?.role||'').trim(),notes:String(o?.notes||''),readinessEligible:season.toLowerCase()!=='original'&&o?.readinessEligible!==false}
 }
 async function loadOfficers(){
  let published=clone(DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);
  try{
-   const response=await fetch('./officers.json?v=414',{cache:'no-store'});
+   const response=await fetch('./officers.json?v=424',{cache:'no-store'});
    if(response.ok){
      const data=await response.json();
      if(Array.isArray(data)&&data.length) published=data.map(normalizeOfficer).filter(o=>o.name);
@@ -371,9 +411,18 @@ async function loadOfficers(){
      const names=new Set(merged.map(o=>o.name.toLowerCase()));
      published.forEach(o=>{
        const key=o.name.toLowerCase();
-       if(!names.has(key)){
+       const existing=merged.find(x=>x.name.toLowerCase()===key);
+       if(!existing){
          merged.push(o);
          names.add(key);
+       }else{
+         // Published officer metadata wins over stale cached filter metadata.
+         existing.season=o.season;
+         existing.notes=o.notes;
+         existing.role=officerRole(o);
+         existing.orv=o.orv;
+         existing.srv=o.srv;
+         existing.readinessEligible=o.readinessEligible;
        }
      });
      officers=merged;
@@ -388,8 +437,105 @@ async function loadOfficers(){
  }
 }
 function saveOfficers(){localStorage.setItem('kow_officers_v4',JSON.stringify(officers))}
-function currentOfficer(){return officers[+$('officerSelect').value]||officers[0]||{name:'Officer',season:'',orv:0,srv:0,readinessEligible:true}}
-function renderOfficerOptions(name){const s=$('officerSelect');const prev=name||s.options[s.selectedIndex]?.textContent||'S7 Liora';s.innerHTML=officers.map((o,i)=>`<option value="${i}">${esc(o.name)}</option>`).join('');const i=officers.findIndex(o=>o.name===prev);s.value=i>=0?i:0}
+function currentOfficer(){const s=$('officerSelect');if(s&&s.value==='')return null;return officers[+s?.value]||officers[0]||{name:'Officer',season:'',orv:0,srv:0,readinessEligible:true}}
+function officerPortraitCandidates(name){
+ const slug=String(name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+ return [
+  'officer-portraits/officer-'+slug+'.jpg',
+  'officer-portraits/'+slug+'.jpg',
+  'officer-'+slug+'.jpg',
+  slug+'.jpg'
+ ];
+}
+function officerRole(o){
+ return String(o?.role||'').trim()||'Unspecified';
+}
+function seasonSort(a,b){
+ if(a==='Original')return -1;if(b==='Original')return 1;
+ const an=Number(String(a).match(/\d+/)?.[0]||999),bn=Number(String(b).match(/\d+/)?.[0]||999);
+ return an-bn||String(a).localeCompare(String(b));
+}
+function renderOfficerFilters(){
+ const seasonEl=$('officerSeasonFilter'),roleEl=$('officerRoleFilter');if(!seasonEl||!roleEl)return;
+ const currentSeason=seasonEl.value,currentRole=roleEl.value;
+ const seasons=[...new Set(officers.map(o=>o.season).filter(Boolean))].sort(seasonSort);
+ const roles=[...new Set(officers.map(officerRole).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+ seasonEl.innerHTML='<option value="">All Seasons</option>'+seasons.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+ roleEl.innerHTML='<option value="">All Roles</option>'+roles.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+ if(seasons.includes(currentSeason))seasonEl.value=currentSeason;
+ if(roles.includes(currentRole))roleEl.value=currentRole;
+}
+function filteredOfficerIndexes(){
+ const q=String($('officerSearch')?.value||'').trim().toLowerCase();
+ const season=$('officerSeasonFilter')?.value||'',role=$('officerRoleFilter')?.value||'';
+ return officers.map((o,i)=>({o,i})).filter(({o})=>
+  (!q||o.name.toLowerCase().includes(q))&&(!season||o.season===season)&&(!role||officerRole(o)===role)
+ );
+}
+function renderOfficerOptions(name){
+ const s=$('officerSelect');if(!s)return;
+ const prev=name||s.options[s.selectedIndex]?.textContent||currentOfficer()?.name||'S7 Liora';
+ const rows=filteredOfficerIndexes();
+ s.innerHTML=rows.map(({o,i})=>`<option value="${i}">${esc(o.name)}</option>`).join('');
+ let chosen=rows.find(({o})=>o.name===prev);
+ if(!chosen)chosen=rows[0];
+ if(chosen){
+   s.value=chosen.i;
+   $('officerFilterCount').textContent=rows.length;
+   updateOfficerExperience();
+ }else{
+   s.innerHTML='<option value="">No Officers match these filters</option>';
+   $('officerFilterCount').textContent='0';
+   if($('officerSeasonValue'))$('officerSeasonValue').textContent='—';
+   if($('officerRoleValue'))$('officerRoleValue').textContent='—';
+   if($('orvCost'))$('orvCost').value='';
+   if($('srvCost'))$('srvCost').value='';
+   if($('officerPortrait'))$('officerPortrait').style.display='none';
+   if($('officerPortraitPlaceholder'))$('officerPortraitPlaceholder').style.display='flex';
+ }
+}
+function setPortraitWithFallback(img,placeholder,candidates,index=0){
+ if(!img)return;
+ if(index>=candidates.length){
+  img.style.display='none';
+  if(placeholder)placeholder.style.display='flex';
+  return;
+ }
+ img.onload=()=>{
+  img.style.display='block';
+  if(placeholder)placeholder.style.display='none';
+ };
+ img.onerror=()=>setPortraitWithFallback(img,placeholder,candidates,index+1);
+ img.src=candidates[index]+'?v=428';
+}
+function updateOfficerExperience(){
+ const o=currentOfficer();if(!o)return;
+ const role=officerRole(o),candidates=officerPortraitCandidates(o.name);
+ if($('officerSeasonValue'))$('officerSeasonValue').textContent=o.season||'—';
+ if($('officerRoleValue'))$('officerRoleValue').textContent=role;
+ if($('dashOfficerRole'))$('dashOfficerRole').textContent=[o.season,role].filter(Boolean).join(' · ');
+ if($('expectedPortraitFile'))$('expectedPortraitFile').textContent=candidates[0];
+
+ const img=$('officerPortrait'),placeholder=$('officerPortraitPlaceholder');
+ setPortraitWithFallback(img,placeholder,candidates);
+
+ const dash=$('dashOfficerPortrait');
+ if(dash){
+  dash.onload=()=>dash.style.display='block';
+  dash.onerror=()=>{
+   const current=decodeURIComponent(dash.getAttribute('data-portrait-index')||'0');
+   const next=Number(current)+1;
+   if(next<candidates.length){
+    dash.setAttribute('data-portrait-index',String(next));
+    dash.src=candidates[next]+'?v=428';
+   }else{
+    dash.style.display='none';
+   }
+  };
+  dash.setAttribute('data-portrait-index','0');
+  dash.src=candidates[0]+'?v=428';
+ }
+}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 
 function cumulativeXp(level){
@@ -413,8 +559,10 @@ function latestSeasonOrvCost(){
 
 function calculate(){
  const o=currentOfficer();
+ if(!o)return;
+ if(!o)return;
  const readinessEligible=o.readinessEligible!==false&&String(o.season||'').toLowerCase()!=='original';
- $('orvCost').value=readinessEligible?o.orv:'N/A';$('srvCost').value=readinessEligible?o.srv:'N/A';$('dashOfficer').textContent=o.name;
+ $('orvCost').value=readinessEligible?o.orv:'N/A';$('srvCost').value=readinessEligible?o.srv:'N/A';$('dashOfficer').textContent=o.name;updateOfficerExperience();
  $('orvHeld').disabled=!readinessEligible;$('srvHeld').disabled=!readinessEligible;
  $('orvHeld').title=readinessEligible?'':'Officer Readiness Vouchers are not available for Original Officers';
  $('srvHeld').title=readinessEligible?'':'Star Readiness Vouchers are not available for Original Officers';
@@ -512,7 +660,7 @@ function saveProgress(){const d={officer:$('officerSelect').value,currentStar:$(
 function loadProgress(){try{const d=JSON.parse(localStorage.getItem('kow_progress_v4')||'null');if(!d)return;$('officerSelect').value=d.officer??0;$('currentStar').value=d.currentStar??0;$('targetStar').value=d.targetStar??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('srvHeld').value=d.srvHeld??0;$('unlocked').checked=!!d.unlocked;skills=Array.isArray(d.skills)?d.skills:skills;$('training').value=d.training??0;$('badgeHeld').value=d.badgeHeld??0;$('universalBadgeHeld').value=d.universalBadgeHeld??0;$('legendaryBadgeChestHeld').value=d.legendaryBadgeChestHeld??0;$('legendaryBadgeChestMode').value=d.legendaryBadgeChestMode??'badge';$('orvHeld').value=d.orvHeld??0;$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;$('goalSelect').value=d.goal??'max';XP_DENOMS.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch{}}
 
 
-const APP_VERSION='4.1.8';
+const APP_VERSION='4.2.8';
 
 function parseVersion(v){
  return String(v||'').replace(/^v/i,'').split('.').map(n=>parseInt(n,10)||0);
@@ -555,7 +703,13 @@ async function clearAppCacheAndReload(){
 }
 
 async function init(){
- await loadOfficers();renderOfficerOptions();
+ await loadOfficers();renderOfficerFilters();renderOfficerOptions();
+ ['officerSearch','officerSeasonFilter','officerRoleFilter'].forEach(id=>{
+  const el=$(id);if(!el)return;
+  const evt=id==='officerSearch'?'input':'change';
+  el.addEventListener(evt,()=>{renderOfficerOptions();calculate()});
+ });
+ $('officerSelect').addEventListener('change',()=>{updateOfficerExperience();calculate()});
  [0,1,2,3,4,5].forEach(v=>{$('currentStar').add(new Option(v+'★',v));$('targetStar').add(new Option(v+'★',v))});$('targetStar').value=5;
  SKILL_COSTS.forEach((c,i)=>{const b=document.createElement('button');b.className='skill';b.textContent=`${i+1} · ${c}`;b.onclick=()=>{skills[i]=!skills[i];b.classList.toggle('active',skills[i]);calculate()};$('skillGrid').appendChild(b)});
  XP_DENOMS.forEach(v=>{const d=document.createElement('div');d.className='xp-item';d.innerHTML=`<label>${v.toLocaleString()} XP</label><input id="xp${v}" type="number" min="0" step="1" inputmode="numeric" value="0">`;$('xpBooks').appendChild(d)});
@@ -565,10 +719,10 @@ async function init(){
 
  $('saveProgress').onclick=saveProgress;
  $('dbSearch').oninput=renderDb;$('dbSeason').onchange=renderDb;$('dbAdd').onclick=()=>{officers.push({name:'New Officer',season:'S8',orv:1,srv:1,notes:''});renderDb();renderOfficerOptions('New Officer');calculate()};
- $('dbSave').onclick=()=>{const e=validateDb();if(e.length){alert('Fix validation issues first.');return}saveOfficers();renderOfficerOptions();alert('Officer database saved.')};
+ $('dbSave').onclick=()=>{const e=validateDb();if(e.length){alert('Fix validation issues first.');return}saveOfficers();renderOfficerFilters();renderOfficerOptions();alert('Officer database saved.')};
  $('dbExport').onclick=exportCsv;
- $('dbImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const parsed=parseCsv(r.result);if(validateDb(parsed).length){alert('CSV validation failed.');return}officers=parsed;saveOfficers();renderDb();renderOfficerOptions();calculate();alert('CSV imported.')};r.readAsText(f);e.target.value=''};
- $('dbRestore').onclick=()=>{if(confirm('Restore default officer database?')){officers=clone(window.KOW_PUBLISHED_OFFICERS||DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);saveOfficers();renderDb();renderOfficerOptions('S7 Liora');calculate()}};
+ $('dbImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const parsed=parseCsv(r.result);if(validateDb(parsed).length){alert('CSV validation failed.');return}officers=parsed;saveOfficers();renderDb();renderOfficerFilters();renderOfficerOptions();calculate();alert('CSV imported.')};r.readAsText(f);e.target.value=''};
+ $('dbRestore').onclick=()=>{if(confirm('Restore default officer database?')){officers=clone(window.KOW_PUBLISHED_OFFICERS||DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);saveOfficers();renderDb();renderOfficerFilters();renderOfficerOptions('S7 Liora');calculate()}};
 
  const savedName=localStorage.getItem('kow_app_name_v4');if(savedName){$('appName').value=savedName;$('appTitle').textContent=savedName;document.title=savedName}
  const savedPortrait=localStorage.getItem('kow_bg_portrait_v401');
@@ -582,7 +736,7 @@ async function init(){
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.1.8';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.2.8';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();

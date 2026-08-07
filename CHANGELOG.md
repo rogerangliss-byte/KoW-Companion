@@ -1,14 +1,10 @@
 # Changelog
 
-## v4.1.8
-- Added a dedicated Help tab to the bottom navigation.
-- Added a User Guide button in Settings.
-- Built the operating instructions directly into the app for mobile, tablet and PC access.
-- Updated app and service-worker versioning to v4.1.8.
-
-## v4.1.7
-- Added in-app Help & Instructions tab.
-- Added recommended data-entry workflow.
-- Expanded Officer Readiness Voucher (ORV) and Star Readiness Voucher (SRV) terminology throughout key labels and instructions.
-- Added explanations of Save Progress, Database Export, Planner, Settings and app updates.
-- Added USER-GUIDE.md.
+## v4.2.8 — Robust Officer Portrait Loader
+- Uses the exact `officer-portraits/officer-<name>.jpg` filename structure shown in the TEST repository.
+- Seasonal example: `officer-portraits/officer-s7-romana.jpg`.
+- Original Officer example: `officer-portraits/officer-katherine.jpg`.
+- Added automatic fallback checks for older portrait filename layouts.
+- No Officer images are included in this package.
+- Season and Officer Type / Role filters remain unchanged.
+- Cache bumped to v4.2.8.
