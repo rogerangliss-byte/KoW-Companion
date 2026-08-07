@@ -1,10 +1,11 @@
 # Changelog
 
-## v4.0.11
-- Rolled the background engine back to the simpler v4.0.0 approach.
-- The same responsive background is now painted on both the HTML canvas and BODY.
-- Kept portrait/landscape auto-switching and custom zone uploads.
-- Kept current Officer, Planner, Database, XP, Stars and Development functionality.
-- Added only a small min-height safety net for short tabs.
-- Removed the later fixed-layer/page-container background experiments.
-- Service-worker cache bumped to v4.0.11.
+## v4.1.0
+- Refactored the visual layout shell without rewriting calculator/data logic.
+- Added one dedicated fixed full-viewport background layer.
+- Individual tabs no longer control background height.
+- Officer, Planner, Database and other short pages use the same viewport background as Home.
+- Retained portrait/landscape responsive defaults.
+- Retained custom zone background uploads.
+- Retained current Officer, Stars, Development, XP, Planner, Database and Settings functionality.
+- Bumped service-worker cache to v4.1.0.

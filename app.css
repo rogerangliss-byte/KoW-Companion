@@ -5,7 +5,7 @@
   --line:rgba(213,167,47,.35);
   --text:#fff8e7;
   --muted:#c9c1ad;
-  --page-bg:url('../assets/background-portrait.jpg?v=4011');
+  --page-bg:url('../assets/background-portrait.jpg?v=410');
 }
 *{box-sizing:border-box}
 html,body{
@@ -16,27 +16,19 @@ html,body{
   font-family:Arial,sans-serif;
   color:var(--text);
 }
-html{
-  min-height:100vh;
-  background-color:#090b0c;
-  background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--page-bg);
-  background-size:cover;
-  background-position:center top;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
+html,body{
+  margin:0;
+  width:100%;
+  min-width:100%;
+  min-height:100%;
+  font-family:Arial,sans-serif;
+  color:var(--text);
+  background:#090b0c;
 }
-body{
-  min-height:100vh;
-  background-color:transparent;
-  background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--page-bg);
-  background-size:cover;
-  background-position:center top;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
-}
+body{min-height:100vh;overflow-x:hidden}
 .topbar{position:sticky;top:0;z-index:10;padding:18px;background:rgba(0,0,0,.82);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
 .topbar h1{margin:0;color:var(--gold);font-size:1.4rem}.topbar p{margin:5px 0 0;color:var(--muted)}
-.app{max-width:1000px;margin:auto;padding:14px 14px 100px;min-height:calc(100vh - 90px);background:transparent}.view{display:none}.view.active{display:block}
+.app{position:relative;z-index:1;max-width:1000px;margin:auto;padding:14px 14px 100px;min-height:calc(100vh - 90px);background:transparent}.view{display:none}.view.active{display:block}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.wide{grid-column:1/-1}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 14px 36px rgba(0,0,0,.3);backdrop-filter:blur(10px)}
 .card h2{margin:0 0 12px;color:var(--gold2)}.eyebrow{font-size:.78rem;color:var(--gold2);letter-spacing:.12em}.big{font-size:2rem;font-weight:800;color:var(--gold2)}
@@ -57,11 +49,39 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 .background-status{display:flex;justify-content:space-between;gap:12px;margin:6px 0 14px;padding:9px 10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(0,0,0,.28);font-size:.82rem}
 .background-status span{color:var(--muted)}
 .background-status b{color:var(--gold2);text-align:right}
-.view.active{display:block;min-height:calc(100vh - 220px)}
+.view.active{display:block}
 @media (orientation:landscape){
-  :root{--page-bg:url('../assets/background-landscape.jpg?v=4011')}
+  :root{--page-bg:url('../assets/background-landscape.jpg?v=410')}
   html,body{background-position:center center}
 }
 @media (min-width:1200px) and (orientation:landscape){
   html,body{background-position:center 35%}
+}
+
+
+/* v4.1.0 layout-shell refactor:
+   background is independent of tab/content height */
+.shell-background{
+  position:fixed;
+  z-index:0;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  min-height:100dvh;
+  pointer-events:none;
+  background-color:#090b0c;
+  background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--page-bg);
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+}
+.topbar{position:relative;z-index:2}
+.bottom-nav{z-index:20}
+.view{position:relative;z-index:1}
+@media (orientation:portrait){
+  .shell-background{background-position:center top}
+}
+@media (orientation:landscape){
+  :root{--page-bg:url('../assets/background-landscape.jpg?v=410')}
+  .shell-background{background-position:center center}
 }
