@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<title>KoW Companion v4.1.3</title>
+<link rel="manifest" href="./manifest.json">
+<style>
+:root{
+  --gold:#d5a72f;
+  --gold2:#f2cf6b;
+  --panel:rgba(14,16,19,.92);
+  --line:rgba(213,167,47,.35);
+  --text:#fff8e7;
+  --muted:#c9c1ad;
+  --page-bg:url('background-portrait.jpg?v=413');
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  width:100%;
+  min-width:100%;
+  min-height:100%;
+  font-family:Arial,sans-serif;
+  color:var(--text);
+}
+html,body{
+  margin:0;
+  width:100%;
+  min-width:100%;
+  min-height:100%;
+  font-family:Arial,sans-serif;
+  color:var(--text);
+  background-color:#090b0c;
+}
+body{
+  background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--page-bg);
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+}
+body{min-height:100vh;overflow-x:hidden}
+.topbar{position:sticky;top:0;z-index:10;padding:18px;background:rgba(0,0,0,.82);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+.topbar h1{margin:0;color:var(--gold);font-size:1.4rem}.topbar p{margin:5px 0 0;color:var(--muted)}
+.app{position:relative;z-index:1;max-width:1000px;margin:auto;padding:14px 14px 100px;min-height:calc(100vh - 90px);background:transparent}.view{display:none}.view.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.wide{grid-column:1/-1}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 14px 36px rgba(0,0,0,.3);backdrop-filter:blur(10px)}
+.card h2{margin:0 0 12px;color:var(--gold2)}.eyebrow{font-size:.78rem;color:var(--gold2);letter-spacing:.12em}.big{font-size:2rem;font-weight:800;color:var(--gold2)}
+label{display:block;margin:10px 0 5px;color:var(--muted);font-size:.86rem}.check{display:flex;align-items:center;gap:8px}.check input{width:auto}
+input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px solid rgba(255,255,255,.16);border-radius:10px;background:rgba(0,0,0,.5);color:white}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08)}.stat b{color:var(--gold2);text-align:right}
+.progress{height:12px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin-top:10px}.progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,#73500d,var(--gold2))}
+.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.skill{padding:10px 6px;border-radius:10px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.45);color:white}.skill.active{background:#715313;border-color:var(--gold2)}
+.xp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.xp-item{padding:10px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(0,0,0,.3)}
+.notice{margin-top:12px;padding:10px;border-left:3px solid var(--gold);border-radius:8px;background:rgba(213,167,47,.08);font-size:.86rem}
+.primary,.toolbar button,.filebtn{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#5e4512;color:white;cursor:pointer}.primary{width:100%;margin-top:12px}
+.toolbar{display:grid;grid-template-columns:2fr 1fr repeat(5,auto);gap:8px;align-items:end}.filebtn input{display:none}
+.table-wrap{overflow:auto;margin-top:12px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,.08);text-align:right}th:first-child,td:first-child{text-align:left}.db-table input{min-width:100px}.actions{display:flex;gap:6px}.actions button{padding:7px 9px}
+.bottom-nav{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);width:min(980px,calc(100% - 16px));display:grid;grid-template-columns:repeat(8,1fr);gap:4px;padding:8px;border:1px solid var(--line);border-radius:16px;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);z-index:20}
+.bottom-nav button{border:0;background:transparent;color:var(--muted);padding:8px 2px;border-radius:10px}.bottom-nav button.active{background:rgba(213,167,47,.17);color:var(--gold2)}.bottom-nav span{display:block;font-size:.68rem;margin-top:3px}
+@media(max-width:760px){.grid,.two{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.bottom-nav{grid-template-columns:repeat(8,1fr)}}
+
+.background-status{display:flex;justify-content:space-between;gap:12px;margin:6px 0 14px;padding:9px 10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(0,0,0,.28);font-size:.82rem}
+.background-status span{color:var(--muted)}
+.background-status b{color:var(--gold2);text-align:right}
+.view.active{display:block}
+@media (orientation:landscape){
+  :root{--page-bg:url('background-landscape.jpg?v=413')}
+  html,body{background-position:center center}
+}
+@media (min-width:1200px) and (orientation:landscape){
+  html,body{background-position:center 35%}
+}
+
+
+/* v4.1.0 layout-shell refactor:
+   background is independent of tab/content height */
+.shell-background{
+  position:fixed;
+  z-index:0;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  min-height:100dvh;
+  pointer-events:none;
+  background-color:#090b0c;
+  background-image:linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.78)),var(--page-bg);
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+}
+.topbar{position:relative;z-index:2}
+.bottom-nav{z-index:20}
+.view{position:relative;z-index:1}
+@media (orientation:portrait){
+  .shell-background{background-position:center top}
+}
+@media (orientation:landscape){
+  :root{--page-bg:url('background-landscape.jpg?v=413')}
+  .shell-background{background-position:center center}
+}
+
+/* v4.1.1: body owns the viewport background; no content-height background layer. */
+.shell-background{display:none!important}
+@media (orientation:portrait){body{background-position:center top}}
+@media (orientation:landscape){body{background-position:center center}}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
+    <p>Officer Companion v4.1.3</p>
+  </div>
+</header>
+
+<main class="app">
+  <section id="dashboard" class="view active">
+    <div class="grid">
+      <article class="card wide">
+        <span class="eyebrow">ACTIVE OFFICER</span>
+        <h2 id="dashOfficer">S7 Liora</h2>
+        <div class="big" id="overallPct">0.0%</div>
+        <div class="progress"><span id="overallBar"></span></div>
+      </article>
+      <article class="card"><h2>⭐ Stars</h2><div class="stat"><span>Held</span><b id="dashStarsHeld">0</b></div><div class="stat"><span>Required</span><b id="dashStarsRequired">98,000</b></div></article>
+      <article class="card"><h2>🏅 Development</h2><div class="stat"><span>Badges from held ORV</span><b id="dashBadgesFromOrv">0</b></div><div class="stat"><span>Required</span><b id="dashBadgesRequired">1,600</b></div></article>
+      <article class="card wide"><h2>📘 Officer XP</h2><div class="stat"><span>Held</span><b id="dashXpHeld">0</b></div><div class="stat"><span>Required</span><b id="dashXpRequired">199,646,700</b></div></article>
+    </div>
+  </section>
+
+  <section id="officer" class="view">
+    <article class="card">
+      <h2>👤 Officer Selection</h2>
+      <label>Officer</label><select id="officerSelect"></select>
+      <div class="two">
+        <div><label>ORV per Officer Badge</label><input id="orvCost" readonly></div>
+        <div><label>SRV per Exclusive Star</label><input id="srvCost" readonly></div>
+      </div>
+    </article>
+  </section>
+
+  <section id="stars" class="view">
+    <article class="card">
+      <h2>⭐ Star Planner</h2>
+      <div class="two">
+        <div><label>Current Star Level</label><select id="currentStar"></select></div>
+        <div><label>Target Star Level</label><select id="targetStar"></select></div>
+      </div>
+      <div class="two">
+        <div><label>Legendary Star I (110)</label><input id="ls1" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
+        <div><label>Legendary Star II (420)</label><input id="ls2" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
+      </div>
+      <label>Legendary Star III (960)</label><input id="ls3" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <label>Star Readiness Vouchers Held</label><input id="srvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <div class="stat"><span>Exclusive Stars from held SRV</span><b id="exclusiveFromSrv">0</b></div>
+      <div class="stat"><span>Officer Stars from held SRV</span><b id="officerStarsFromSrv">0</b></div>
+      <div class="stat"><span>SRV remaining</span><b id="srvRemainder">0</b></div>
+      <div class="stat"><span>Stars used</span><b id="starsUsed">0</b></div>
+      <div class="stat"><span>Stars held</span><b id="starsHeld">0</b></div>
+      <div class="stat"><span>Stars required</span><b id="starsRequired">98,000</b></div>
+      <div class="progress"><span id="starBar"></span></div>
+    </article>
+  </section>
+
+  <section id="development" class="view">
+    <article class="card">
+      <h2>🏅 Officer Development</h2>
+      <label class="check"><input id="unlocked" type="checkbox"> Officer unlocked (10 badges)</label>
+      <label>Skills 1–16</label><div id="skillGrid" class="skills"></div>
+      <label>Training Level: <b id="trainingLabel">0</b> / 180</label>
+      <input id="training" type="range" min="0" max="180" value="0">
+      <label>Officer Badges Held</label><input id="badgeHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <label>Officer Readiness Vouchers Held</label><input id="orvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
+      <div class="stat"><span>Badges used</span><b id="badgesUsed">0</b></div>
+      <div class="stat"><span>Badges from held ORV</span><b id="badgesFromOrv">0</b></div>
+      <div class="stat"><span>ORV remaining after whole badges</span><b id="orvRemainder">0</b></div>
+      <div class="stat"><span>Badges required</span><b id="badgesRequired">1,600</b></div>
+      <div class="stat"><span>ORV required</span><b id="orvRequired">0</b></div>
+      <div class="progress"><span id="badgeBar"></span></div>
+    </article>
+  </section>
+
+  <section id="xp" class="view">
+    <article class="card">
+      <h2>📘 Officer XP</h2>
+      <div class="two">
+        <div><label>Current Level</label><input id="currentLevel" type="number" min="1" max="70" step="1" inputmode="numeric" value="1"></div>
+        <div><label>Target Level</label><input id="targetLevel" type="number" min="1" max="70" step="1" inputmode="numeric" value="70"></div>
+      </div>
+      <div class="notice">1–40: 5,806,700 · 41–50: 16,960,000 · 51–60: 53,430,000 · 61–70: 123,450,000</div>
+      <div id="xpBooks" class="xp-grid"></div>
+      <div class="stat"><span>XP held in books</span><b id="xpHeld">0</b></div>
+      <div class="stat"><span>XP required for selected levels</span><b id="xpRequired">199,646,700</b></div>
+      <div class="stat"><span>XP shortfall</span><b id="xpShortfall">199,646,700</b></div>
+      <div class="progress"><span id="xpBar"></span></div>
+    </article>
+  </section>
+
+  <section id="planner" class="view">
+    <article class="card">
+      <h2>🎯 Goals Planner</h2>
+      <label>Goal</label>
+      <select id="goalSelect">
+        <option value="max">Max Officer</option>
+        <option value="nextStar">Next Star</option>
+        <option value="fiveStar">Reach 5★</option>
+        <option value="maxSkills">Max Skills</option>
+        <option value="maxTraining">Max Training</option>
+      </select>
+      <div class="table-wrap"><table><thead><tr><th>Resource</th><th>Required</th><th>Held</th><th>Shortfall</th></tr></thead><tbody id="plannerRows"></tbody></table></div>
+      <button id="saveProgress" class="primary">Save Progress</button>
+    </article>
+  </section>
+
+  <section id="database" class="view">
+    <article class="card">
+      <h2>📋 Officer Database</h2>
+      <div class="toolbar">
+        <input id="dbSearch" placeholder="Search officers">
+        <select id="dbSeason"><option value="">All seasons</option></select>
+        <button id="dbAdd">Add Officer</button>
+        <button id="dbSave">Save</button>
+        <button id="dbExport">Export CSV</button>
+        <label class="filebtn">Import CSV<input id="dbImport" type="file" accept=".csv,text/csv"></label>
+        <button id="dbRestore">Restore Defaults</button>
+      </div>
+      <div class="table-wrap"><table class="db-table"><thead><tr><th>Name</th><th>Season</th><th>ORV</th><th>SRV</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="dbRows"></tbody></table></div>
+      <div id="dbValidation" class="notice"></div>
+    </article>
+  </section>
+
+  <section id="settings" class="view">
+    <article class="card">
+      <h2>⚙ Settings</h2>
+      <label>App Name</label><input id="appName" value="GODS OF WAR 371">
+      <h3>Responsive Backgrounds</h3>
+      <p class="notice">The app automatically uses the Portrait background on portrait screens and the Landscape background on landscape/PC screens.</p>
+      <label>Portrait Background (Mobile / Tablet)</label>
+      <input id="portraitBackgroundPicker" type="file" accept="image/*">
+      <div class="background-status"><span>Active portrait background</span><b id="portraitBgStatus">Built-in default portrait</b></div>
+      <label>Landscape Background (PC / Landscape)</label>
+      <input id="landscapeBackgroundPicker" type="file" accept="image/*">
+      <div class="background-status"><span>Active landscape background</span><b id="landscapeBgStatus">Built-in default landscape</b></div>
+      <button id="resetAppearance" class="primary">Reset Appearance & Backgrounds</button>
+    </article>
+  </section>
+</main>
+
+<nav class="bottom-nav">
+  <button data-view="dashboard" class="active">🏠<span>Home</span></button>
+  <button data-view="officer">👤<span>Officer</span></button>
+  <button data-view="stars">⭐<span>Stars</span></button>
+  <button data-view="development">🏅<span>Develop</span></button>
+  <button data-view="xp">📘<span>XP</span></button>
+  <button data-view="planner">🎯<span>Planner</span></button>
+  <button data-view="database">📋<span>Database</span></button>
+  <button data-view="settings">⚙️<span>Settings</span></button>
+</nav>
+
+<script type="module">
+const DEFAULT_OFFICERS=[{"name": "S7 Roisin", "season": "S7", "orv": 600, "srv": 300, "notes": ""}, {"name": "S7 Barbara", "season": "S7", "orv": 600, "srv": 300, "notes": ""}, {"name": "S7 Romana", "season": "S7", "orv": 500, "srv": 250, "notes": ""}, {"name": "S7 Liora", "season": "S7", "orv": 500, "srv": 250, "notes": ""}, {"name": "S7 Stella", "season": "S7", "orv": 416, "srv": 208, "notes": ""}, {"name": "S7 Klara", "season": "S7", "orv": 416, "srv": 208, "notes": ""}, {"name": "S7 Code", "season": "S7", "orv": 346, "srv": 173, "notes": ""}, {"name": "S7 Kamila", "season": "S7", "orv": 346, "srv": 173, "notes": ""}, {"name": "S6 Regina", "season": "S6", "orv": 289, "srv": 144, "notes": ""}, {"name": "S6 Veronica", "season": "S6", "orv": 289, "srv": 144, "notes": ""}, {"name": "S6 Silverhand", "season": "S6", "orv": 240, "srv": 120, "notes": ""}, {"name": "S6 Red Queen", "season": "S6", "orv": 240, "srv": 120, "notes": ""}, {"name": "S6 Samantha", "season": "S6", "orv": 200, "srv": 100, "notes": ""}, {"name": "S6 Saoirse", "season": "S6", "orv": 200, "srv": 100, "notes": ""}, {"name": "S6 Emily", "season": "S6", "orv": 167, "srv": 84, "notes": ""}, {"name": "S6 Zoya", "season": "S6", "orv": 167, "srv": 84, "notes": ""}];
+const STAR_CUM=[0,500,1500,8000,33000,98000];
+const SKILL_COSTS=[10,10,15,15,30,30,40,40,45,45,50,50,75,75,80,80];
+const XP_DENOMS=[50,100,500,1000,5000,10000,20000,50000];
+const MAX_STAR=98000,MAX_BADGES=1600,MAX_XP=199646700;
+let officers=[],skills=Array(16).fill(false);
+const $=id=>document.getElementById(id);
+function applyResponsivePageBackground(){
+ const portrait=localStorage.getItem('kow_bg_portrait_v401');
+ const landscape=localStorage.getItem('kow_bg_landscape_v401');
+ const isLandscape=window.matchMedia('(orientation: landscape)').matches;
+ const chosen=isLandscape?landscape:portrait;
+ const fallback=isLandscape?'background-landscape.jpg?v=413':'background-portrait.jpg?v=413';
+ document.documentElement.style.setProperty('--page-bg',`url("${chosen||fallback}")`);
+}
+const fmt=n=>Math.max(0,Math.round(Number(n)||0)).toLocaleString();
+const pct=(v,m)=>Math.min(100,Math.max(0,m?100*v/m:0));
+const clone=v=>JSON.parse(JSON.stringify(v));
+
+function normalizeOfficer(o){return {name:String(o?.name||'').trim(),season:String(o?.season||String(o?.name||'').match(/^S\d+/)?.[0]||'').trim(),orv:Number(o?.orv)||0,srv:Number(o?.srv)||0,notes:String(o?.notes||'')}}
+function loadOfficers(){try{const d=JSON.parse(localStorage.getItem('kow_officers_v4')||'null');officers=(Array.isArray(d)&&d.length?d:clone(DEFAULT_OFFICERS)).map(normalizeOfficer).filter(o=>o.name)}catch{officers=clone(DEFAULT_OFFICERS).map(normalizeOfficer)}}
+function saveOfficers(){localStorage.setItem('kow_officers_v4',JSON.stringify(officers))}
+function currentOfficer(){return officers[+$('officerSelect').value]||officers[0]||{name:'Officer',orv:0,srv:0}}
+function renderOfficerOptions(name){const s=$('officerSelect');const prev=name||s.options[s.selectedIndex]?.textContent||'S7 Liora';s.innerHTML=officers.map((o,i)=>`<option value="${i}">${esc(o.name)}</option>`).join('');const i=officers.findIndex(o=>o.name===prev);s.value=i>=0?i:0}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+function cumulativeXp(level){
+ level=Math.max(1,Math.min(70,Number(level)||1));
+ if(level<=1)return 0;
+ if(level<=40)return 5806700*((level-1)/39);
+ if(level<=50)return 5806700+16960000*((level-40)/10);
+ if(level<=60)return 22766700+53430000*((level-50)/10);
+ return 76196700+123450000*((level-60)/10);
+}
+
+function calculate(){
+ const o=currentOfficer();
+ $('orvCost').value=o.orv;$('srvCost').value=o.srv;$('dashOfficer').textContent=o.name;
+
+ let cs=+$('currentStar').value,ts=+$('targetStar').value;if(ts<cs){ts=cs;$('targetStar').value=ts}
+ const starsUsed=STAR_CUM[cs];
+ const legendaryHeld=+$('ls1').value*110 + +$('ls2').value*420 + +$('ls3').value*960;
+ const srvHeld=+$('srvHeld').value;
+ const exclusiveFromSrv=o.srv>0?Math.floor(srvHeld/o.srv):0;
+ const srvRemainder=o.srv>0?srvHeld-exclusiveFromSrv*o.srv:srvHeld;
+ const starsFromSrv=exclusiveFromSrv*110;
+ const starsHeld=legendaryHeld+starsFromSrv;
+ const starsTotal=starsUsed+starsHeld;
+ const starsRequired=Math.max(0,STAR_CUM[ts]-starsTotal);
+ $('exclusiveFromSrv').textContent=fmt(exclusiveFromSrv);$('officerStarsFromSrv').textContent=fmt(starsFromSrv);$('srvRemainder').textContent=fmt(srvRemainder);
+ $('starsUsed').textContent=fmt(starsUsed);$('starsHeld').textContent=fmt(starsHeld);$('starsRequired').textContent=fmt(starsRequired);$('starBar').style.width=pct(starsTotal,STAR_CUM[ts]||1)+'%';
+
+ const badgesHeld=+$('badgeHeld').value,orvHeld=+$('orvHeld').value;
+ const badgesUsed=($('unlocked').checked?10:0)+skills.reduce((s,on,i)=>s+(on?SKILL_COSTS[i]:0),0)+ +$('training').value*5;
+ const badgesFromOrv=o.orv>0?Math.floor(orvHeld/o.orv):0;
+ const orvRemainder=o.orv>0?orvHeld-badgesFromOrv*o.orv:orvHeld;
+ const badgeTotal=badgesUsed+badgesHeld+badgesFromOrv;
+ const badgesRequired=Math.max(0,MAX_BADGES-badgeTotal);
+ const orvRequired=badgesRequired*o.orv;
+ $('trainingLabel').textContent=$('training').value;$('badgesUsed').textContent=fmt(badgesUsed);$('badgesFromOrv').textContent=fmt(badgesFromOrv);$('orvRemainder').textContent=fmt(orvRemainder);$('badgesRequired').textContent=fmt(badgesRequired);$('orvRequired').textContent=fmt(orvRequired);$('badgeBar').style.width=pct(badgeTotal,MAX_BADGES)+'%';
+
+ let xpHeld=0;XP_DENOMS.forEach(v=>xpHeld+=(+($('xp'+v)?.value||0))*v);
+ const cl=Math.max(1,Math.min(70,Number($('currentLevel').value)||1));const tl=Math.max(cl,Math.min(70,Number($('targetLevel').value)||70));
+ const xpRequired=Math.max(0,cumulativeXp(tl)-cumulativeXp(cl));const xpShortfall=Math.max(0,xpRequired-xpHeld);
+ $('xpHeld').textContent=fmt(xpHeld);$('xpRequired').textContent=fmt(xpRequired);$('xpShortfall').textContent=fmt(xpShortfall);$('xpBar').style.width=pct(xpHeld,xpRequired||1)+'%';
+
+ const overall=(pct(starsTotal,MAX_STAR)+pct(badgeTotal,MAX_BADGES)+pct(xpHeld,MAX_XP))/3;
+ $('overallPct').textContent=overall.toFixed(1)+'%';$('overallBar').style.width=overall+'%';
+ $('dashStarsHeld').textContent=fmt(starsHeld);$('dashStarsRequired').textContent=fmt(Math.max(0,MAX_STAR-starsTotal));
+ $('dashBadgesFromOrv').textContent=fmt(badgesFromOrv);$('dashBadgesRequired').textContent=fmt(badgesRequired);
+ $('dashXpHeld').textContent=fmt(xpHeld);$('dashXpRequired').textContent=fmt(Math.max(0,MAX_XP-xpHeld));
+
+ renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHeld,orvHeld,xpHeld,xpRequired);
+}
+
+function renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHeld,orvHeld,xpHeld,xpRequiredSelected){
+ const g=$('goalSelect').value;let starTarget=0,badgeTarget=0,xpTarget=0;
+ if(g==='nextStar')starTarget=STAR_CUM[Math.min(5,cs+1)];else if(g==='fiveStar'||g==='max')starTarget=MAX_STAR;
+ if(g==='maxSkills')badgeTarget=700;else if(g==='maxTraining'||g==='max')badgeTarget=MAX_BADGES;
+ if(g==='max')xpTarget=xpRequiredSelected;
+ const exclusiveFromSrv=o.srv?Math.floor(srvHeld/o.srv):0;
+ const starHeld=legendaryHeld+exclusiveFromSrv*110;
+ const badgesFromOrv=o.orv?Math.floor(orvHeld/o.orv):0;
+ const rows=[
+ ['Legendary Stars',Math.max(0,starTarget-starsUsed),starHeld],
+ ['Officer Badges',Math.max(0,badgeTarget-badgesUsed),badgesHeld+badgesFromOrv],
+ ['Officer Readiness Vouchers',Math.max(0,badgeTarget-badgesUsed-badgesHeld)*o.orv,orvHeld],
+ ['Exclusive Stars',Math.ceil(Math.max(0,starTarget-starsUsed-legendaryHeld)/110),exclusiveFromSrv],
+ ['Star Readiness Vouchers',Math.ceil(Math.max(0,starTarget-starsUsed-legendaryHeld)/110)*o.srv,srvHeld],
+ ['Officer XP',Math.max(0,xpTarget),xpHeld]
+ ];
+ $('plannerRows').innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${fmt(r[2])}</td><td>${fmt(Math.max(0,r[1]-r[2]))}</td></tr>`).join('');
+}
+
+function validateDb(list=officers){const e=[],seen=new Set();list.forEach((o,i)=>{const k=(o.name||'').trim().toLowerCase();if(!k)e.push(`Row ${i+1}: name required`);if(k&&seen.has(k))e.push(`Row ${i+1}: duplicate name`);if(k)seen.add(k);if(!Number.isInteger(+o.orv)||+o.orv<=0)e.push(`Row ${i+1}: invalid ORV`);if(!Number.isInteger(+o.srv)||+o.srv<=0)e.push(`Row ${i+1}: invalid SRV`)});return e}
+function renderDb(){
+ const search=$('dbSearch');const filter=$('dbSeason');const tbody=$('dbRows');if(!search||!filter||!tbody)return;
+ const q=String(search.value||'').trim().toLowerCase();
+ const seasons=[...new Set(officers.map(o=>String(o.season||'').trim()).filter(Boolean))].sort();
+ const requested=filter.value||'';
+ filter.innerHTML='<option value="">All seasons</option>'+seasons.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+ filter.value=seasons.includes(requested)?requested:'';
+ const season=filter.value;
+ const rows=officers.map((o,i)=>({...normalizeOfficer(o),_i:i})).filter(o=>(!q||o.name.toLowerCase().includes(q))&&(!season||o.season===season));
+ tbody.innerHTML=rows.map(o=>`<tr data-i="${o._i}"><td><input data-f="name" value="${esc(o.name)}"></td><td><input data-f="season" value="${esc(o.season)}"></td><td><input data-f="orv" type="number" min="1" step="1" value="${o.orv}"></td><td><input data-f="srv" type="number" min="1" step="1" value="${o.srv}"></td><td><input data-f="notes" value="${esc(o.notes)}"></td><td class="actions"><button data-copy>Copy</button><button data-del>Delete</button></td></tr>`).join('');
+ tbody.querySelectorAll('input').forEach(x=>x.oninput=e=>{const tr=e.target.closest('tr'),i=+tr.dataset.i,f=e.target.dataset.f;officers[i][f]=(f==='orv'||f==='srv')?Number(e.target.value):e.target.value;$('dbValidation').textContent=validateDb().join(' · ')||`${rows.length} officers shown · Database validation passed.`});
+ tbody.querySelectorAll('[data-copy]').forEach(b=>b.onclick=e=>{const i=+e.target.closest('tr').dataset.i;officers.splice(i+1,0,{...officers[i],name:officers[i].name+' Copy'});renderDb();renderOfficerOptions();calculate()});
+ tbody.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{const i=+e.target.closest('tr').dataset.i;if(officers.length>1)officers.splice(i,1);renderDb();renderOfficerOptions();calculate()});
+ $('dbValidation').textContent=validateDb().join(' · ')||`${rows.length} officers shown · Database validation passed.`;
+}
+
+function exportCsv(){const escCsv=v=>`"${String(v??'').replaceAll('"','""')}"`;const rows=[['Officer Name','Season','ORV per Badge','SRV per Exclusive Star','Notes'],...officers.map(o=>[o.name,o.season,o.orv,o.srv,o.notes])];const blob=new Blob([rows.map(r=>r.map(escCsv).join(',')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='officers.csv';a.click();URL.revokeObjectURL(a.href)}
+function parseCsv(text){const lines=text.trim().split(/\r?\n/).slice(1);return lines.map(line=>{const p=line.match(/("([^"]|"")*"|[^,]*)(,|$)/g)?.map(x=>x.replace(/,$/,'').replace(/^"|"$/g,'').replaceAll('""','"'))||[];return{name:p[0]||'',season:p[1]||'',orv:Number(p[2]),srv:Number(p[3]),notes:p[4]||''}})}
+
+function saveProgress(){const d={officer:$('officerSelect').value,currentStar:$('currentStar').value,targetStar:$('targetStar').value,ls1:$('ls1').value,ls2:$('ls2').value,ls3:$('ls3').value,srvHeld:$('srvHeld').value,unlocked:$('unlocked').checked,skills,training:$('training').value,badgeHeld:$('badgeHeld').value,orvHeld:$('orvHeld').value,currentLevel:$('currentLevel').value,targetLevel:$('targetLevel').value,goal:$('goalSelect').value,xp:{}};XP_DENOMS.forEach(v=>d.xp[v]=$('xp'+v).value);localStorage.setItem('kow_progress_v4',JSON.stringify(d));alert('Progress saved.')}
+function loadProgress(){try{const d=JSON.parse(localStorage.getItem('kow_progress_v4')||'null');if(!d)return;$('officerSelect').value=d.officer??0;$('currentStar').value=d.currentStar??0;$('targetStar').value=d.targetStar??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('srvHeld').value=d.srvHeld??0;$('unlocked').checked=!!d.unlocked;skills=Array.isArray(d.skills)?d.skills:skills;$('training').value=d.training??0;$('badgeHeld').value=d.badgeHeld??0;$('orvHeld').value=d.orvHeld??0;$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;$('goalSelect').value=d.goal??'max';XP_DENOMS.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch{}}
+
+function init(){
+ loadOfficers();renderOfficerOptions();
+ [0,1,2,3,4,5].forEach(v=>{$('currentStar').add(new Option(v+'★',v));$('targetStar').add(new Option(v+'★',v))});$('targetStar').value=5;
+ SKILL_COSTS.forEach((c,i)=>{const b=document.createElement('button');b.className='skill';b.textContent=`${i+1} · ${c}`;b.onclick=()=>{skills[i]=!skills[i];b.classList.toggle('active',skills[i]);calculate()};$('skillGrid').appendChild(b)});
+ XP_DENOMS.forEach(v=>{const d=document.createElement('div');d.className='xp-item';d.innerHTML=`<label>${v.toLocaleString()} XP</label><input id="xp${v}" type="number" min="0" step="1" inputmode="numeric" value="0">`;$('xpBooks').appendChild(d)});
+ document.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',calculate));
+ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.view).classList.add('active');if(b.dataset.view==='database')renderDb()});
+
+ $('saveProgress').onclick=saveProgress;
+ $('dbSearch').oninput=renderDb;$('dbSeason').onchange=renderDb;$('dbAdd').onclick=()=>{officers.push({name:'New Officer',season:'S8',orv:1,srv:1,notes:''});renderDb();renderOfficerOptions('New Officer');calculate()};
+ $('dbSave').onclick=()=>{const e=validateDb();if(e.length){alert('Fix validation issues first.');return}saveOfficers();renderOfficerOptions();alert('Officer database saved.')};
+ $('dbExport').onclick=exportCsv;
+ $('dbImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const parsed=parseCsv(r.result);if(validateDb(parsed).length){alert('CSV validation failed.');return}officers=parsed;saveOfficers();renderDb();renderOfficerOptions();calculate();alert('CSV imported.')};r.readAsText(f);e.target.value=''};
+ $('dbRestore').onclick=()=>{if(confirm('Restore default officer database?')){officers=clone(DEFAULT_OFFICERS);saveOfficers();renderDb();renderOfficerOptions('S7 Liora');calculate()}};
+
+ const savedName=localStorage.getItem('kow_app_name_v4');if(savedName){$('appName').value=savedName;$('appTitle').textContent=savedName;document.title=savedName}
+ const savedPortrait=localStorage.getItem('kow_bg_portrait_v401');
+ const savedLandscape=localStorage.getItem('kow_bg_landscape_v401');
+ if(savedPortrait){$('portraitBgStatus').textContent='Custom portrait'}
+ if(savedLandscape){$('landscapeBgStatus').textContent='Custom landscape'}
+ applyResponsivePageBackground();
+ $('appName').oninput=e=>{const n=e.target.value||'GODS OF WAR 371';localStorage.setItem('kow_app_name_v4',n);$('appTitle').textContent=n;document.title=n};
+ const setBackground=(inputId,key,statusId,label)=>{$(inputId).onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{localStorage.setItem(key,r.result);$(statusId).textContent=label+' · '+f.name;applyResponsivePageBackground()}catch(err){alert('This image is too large for browser storage. Try a smaller JPG or PNG.')}};r.readAsDataURL(f)}};
+ setBackground('portraitBackgroundPicker','kow_bg_portrait_v401','portraitBgStatus','Custom portrait');
+ setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
+ $('resetAppearance').onclick=()=>{
+  ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.1.3';
+  $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
+  $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
+   applyResponsivePageBackground();
+  alert('Appearance and backgrounds restored to defaults.');
+ };
+
+ loadProgress();document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));renderDb();calculate();
+ window.addEventListener('resize',applyResponsivePageBackground);
+ if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
+}
+init();
+
+</script>
+</body>
+</html>
