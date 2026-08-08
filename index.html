@@ -132,7 +132,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
-    <p>Officer Companion v4.3.5</p>
+    <p>Officer Companion v4.3.6</p>
   </div>
   <div class="creator-credit">Created by FireStorm (371)</div>
 </header>
@@ -426,6 +426,48 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 
 
 <section id="releases" class="view">
+<article class="card" id="futureOfficerForecastCard">
+  <h2>🔮 Future Officer Cost Forecast</h2>
+  <p class="muted">Forecast future Officer costs from the established Officer-release sequence. The model uses the latest known S7 Tank Destroyer release (600 ORV / 300 SRV) and compounds approximately 20% for each future Officer release.</p>
+
+  <div class="two">
+    <div>
+      <label>Future Officer release</label>
+      <select id="forecastRelease">
+        <option value="1">October — S8 Rally / Garrison</option>
+        <option value="2">January — S8 Infantry</option>
+        <option value="3" selected>April — S8 Tanks</option>
+        <option value="4">July — S8 Tank Destroyers</option>
+      </select>
+    </div>
+    <div>
+      <label>Forecast increase per Officer release</label>
+      <input id="forecastGrowth" type="number" min="0" max="100" step="0.1" value="20">
+    </div>
+  </div>
+
+  <div class="two">
+    <div>
+      <label>Officer Badges required</label>
+      <input id="forecastBadges" type="number" min="0" step="1" value="1600">
+    </div>
+    <div>
+      <label>Officer Star value required</label>
+      <input id="forecastStarValue" type="number" min="0" step="110" value="98000">
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="result-box"><b>Forecast ORV / Badge</b><br><span id="forecastOrvPerBadge">—</span></div>
+    <div class="result-box"><b>Forecast SRV / Exclusive Star</b><br><span id="forecastSrvPerStar">—</span></div>
+  </div>
+  <div class="two">
+    <div class="result-box"><b>Estimated ORV to fund Badges</b><br><span id="forecastTotalOrv">—</span></div>
+    <div class="result-box"><b>Estimated SRV to fund Stars</b><br><span id="forecastTotalSrv">—</span></div>
+  </div>
+  <div class="notice" id="forecastNote">Forecast only — actual release costs should replace the estimate when published.</div>
+</article>
+
  <article class="card">
   <h2>📅 Recurring Release Calendar</h2>
   <p class="notice">KoW releases follow this recurring August → July annual cycle. The current month is highlighted automatically.</p>
@@ -965,7 +1007,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.3.5';
+const APP_VERSION='4.3.6';
 
 function parseVersion(v){
  return String(v||'').replace(/^v/i,'').split('.').map(n=>parseInt(n,10)||0);
@@ -1305,6 +1347,42 @@ function updateSmartDashboard(){
  }
 }
 
+
+function updateFutureOfficerForecast(){
+ if(!$('forecastRelease'))return;
+ const steps=Math.max(1,+$('forecastRelease').value||1);
+ const growth=Math.max(0,+$('forecastGrowth').value||20)/100;
+ const badges=Math.max(0,+$('forecastBadges').value||0);
+ const starValue=Math.max(0,+$('forecastStarValue').value||0);
+
+ // Latest confirmed published sequence point in the app database:
+ // S7 Tank Destroyer = 600 ORV/badge and 300 SRV/Exclusive Star.
+ const baseOrv=600, baseSrv=300;
+ const orvExact=baseOrv*Math.pow(1+growth,steps);
+ const srvExact=baseSrv*Math.pow(1+growth,steps);
+
+ // Round to whole vouchers for a practical planning figure.
+ const orv=Math.round(orvExact);
+ const srv=Math.round(srvExact);
+
+ // One Exclusive Star contributes 110 Officer Star value.
+ const exclusiveStars=Math.ceil(starValue/110);
+ const totalOrv=badges*orv;
+ const totalSrv=exclusiveStars*srv;
+
+ $('forecastOrvPerBadge').textContent=fmt(orv);
+ $('forecastSrvPerStar').textContent=fmt(srv);
+ $('forecastTotalOrv').textContent=fmt(totalOrv);
+ $('forecastTotalSrv').textContent=fmt(totalSrv);
+
+ const labels={
+   1:'October — S8 Rally / Garrison',
+   2:'January — S8 Infantry',
+   3:'April — S8 Tanks',
+   4:'July — S8 Tank Destroyers'
+ };
+ $('forecastNote').innerHTML=`<b>${labels[steps]}</b><br>Planning estimate using ${($('forecastGrowth').value||20)}% growth per Officer release from the latest known 600 ORV / 300 SRV release. For ${fmt(badges)} badges and ${fmt(starValue)} Star value (${fmt(exclusiveStars)} Exclusive Stars), plan for approximately <b>${fmt(totalOrv)} ORV</b> and <b>${fmt(totalSrv)} SRV</b>. Forecast only — replace with confirmed costs when released.`;
+}
 async function init(){
  await loadOfficers();renderOfficerFilters();renderOfficerOptions();
  ['officerSearch','officerSeasonFilter','officerRoleFilter'].forEach(id=>{
@@ -1346,6 +1424,12 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  multiPlanOfficers=[{officerIndex:0,badgesNeeded:1600}];
  renderMultiPlanner();
 
+
+ ['forecastRelease','forecastGrowth','forecastBadges','forecastStarValue'].forEach(id=>{
+   const el=$(id); if(el){el.addEventListener('input',updateFutureOfficerForecast);el.addEventListener('change',updateFutureOfficerForecast)}
+ });
+ updateFutureOfficerForecast();
+
  const savedName=localStorage.getItem('kow_app_name_v4');if(savedName){$('appName').value=savedName;$('appTitle').textContent=savedName;document.title=savedName}
  const savedPortrait=localStorage.getItem('kow_bg_portrait_v401');
  const savedLandscape=localStorage.getItem('kow_bg_landscape_v401');
@@ -1358,7 +1442,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.5';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.6';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();

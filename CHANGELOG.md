@@ -1,5 +1,16 @@
 # Changelog
 
+## v4.3.6 LIVE
+- Added Future Officer Cost Forecast to Releases.
+- Forecast is based on Officer release sequence, not Officer role pricing.
+- Uses latest known S7 Tank Destroyer benchmark: 600 ORV per Badge / 300 SRV per Exclusive Star.
+- Defaults to 20% estimated cost growth for each future Officer release.
+- Includes October S8 Rally/Garrison, January S8 Infantry, April S8 Tanks and July S8 Tank Destroyer forecasts.
+- User can alter forecast growth rate, Badge requirement and Star value requirement.
+- Calculates projected ORV per Badge, SRV per Exclusive Star, total ORV for Badges and total SRV for Stars.
+- Estimates are clearly labelled forecasts until confirmed game costs are published.
+- Approved TEST build promoted to LIVE.
+
 ## v4.3.5 LIVE
 - Fixed Officer switching so shared resource inventories remain populated.
 - Split saved data into:
