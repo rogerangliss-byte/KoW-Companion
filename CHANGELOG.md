@@ -1,5 +1,25 @@
 # Changelog
 
+## v4.3.5 LIVE
+- Fixed Officer switching so shared resource inventories remain populated.
+- Split saved data into:
+  - Officer-specific progress: Star levels, unlock/skills/training, Officer Badges held, current/target XP level, Planner goal.
+  - Global shared inventory: Legendary Star I/II/III, SRV, Universal Legendary Badges, Selection Chests, ORV and XP Books.
+- Changing Officer now changes only Officer-specific progress.
+- Shared resources persist across every Officer.
+- Reset This Officer does not clear shared resource inventory.
+- Added migration from v4.3.4 Officer profiles and the earlier legacy single save.
+- v4.3.3 remains the LIVE baseline while this TEST build is checked.
+
+## v4.3.4 TEST
+- Added a separate persistent progress profile for every Officer.
+- Officer switching automatically saves the Officer being left and loads the selected Officer's profile.
+- Added `Save This Officer` and `Reset This Officer` controls.
+- Saved profile covers Stars, Development, XP Books/levels and Planner goal.
+- Added one-time migration of the previous single saved-progress record.
+- Existing full Backup & Restore automatically includes the new Officer profiles.
+- LIVE v4.3.3 remains untouched while this feature is tested.
+
 ## v4.3.3 LIVE
 - Fixed Smart Dashboard not populating.
 - Corrected an invalid Officer reference that stopped the Dashboard updater.

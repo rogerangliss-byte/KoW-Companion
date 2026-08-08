@@ -132,7 +132,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
-    <p>Officer Companion v4.3.3</p>
+    <p>Officer Companion v4.3.5</p>
   </div>
   <div class="creator-credit">Created by FireStorm (371)</div>
 </header>
@@ -203,6 +203,19 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
           </div>
         </div>
       </div>
+    </article>
+    <article class="card">
+      <h2>💾 Officer Progress Profile</h2>
+      <p class="muted">Each Officer keeps their own upgrade progress. Shared resource inventories stay populated when you switch Officers.</p>
+      <div class="two">
+        <div><div class="stat"><span>Profile</span><b id="profileOfficerName">—</b></div></div>
+        <div><div class="stat"><span>Saved status</span><b id="profileSavedStatus">Not saved yet</b></div></div>
+      </div>
+      <div class="toolbar">
+        <button id="saveOfficerProfile" class="primary">Save This Officer</button>
+        <button id="resetOfficerProfile">Reset This Officer</button>
+      </div>
+      <div class="notice">Changing Officer saves/loads Officer-specific progress only. Shared Stars, vouchers, Universal Badges, Selection Chests and XP Books remain unchanged.</div>
     </article>
     <article class="card">
       <h2>📈 Officer Upgrade Summary</h2>
@@ -759,11 +772,200 @@ function renderDb(){
 function exportCsv(){const escCsv=v=>`"${String(v??'').replaceAll('"','""')}"`;const rows=[['Officer Name','Season','Officer Readiness Vouchers (ORV) per Badge','Star Readiness Vouchers (SRV) per Exclusive Star','Notes'],...officers.map(o=>[o.name,o.season,o.orv,o.srv,o.notes])];const blob=new Blob([rows.map(r=>r.map(escCsv).join(',')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='officers.csv';a.click();URL.revokeObjectURL(a.href)}
 function parseCsv(text){const lines=text.trim().split(/\r?\n/).slice(1);return lines.map(line=>{const p=line.match(/("([^"]|"")*"|[^,]*)(,|$)/g)?.map(x=>x.replace(/,$/,'').replace(/^"|"$/g,'').replaceAll('""','"'))||[];return{name:p[0]||'',season:p[1]||'',orv:Number(p[2]),srv:Number(p[3]),notes:p[4]||''}})}
 
-function saveProgress(){const d={officer:$('officerSelect').value,currentStar:$('currentStar').value,targetStar:$('targetStar').value,ls1:$('ls1').value,ls2:$('ls2').value,ls3:$('ls3').value,srvHeld:$('srvHeld').value,unlocked:$('unlocked').checked,skills,training:$('training').value,badgeHeld:$('badgeHeld').value,universalBadgeHeld:$('universalBadgeHeld').value,legendaryBadgeChestHeld:$('legendaryBadgeChestHeld').value,legendaryBadgeChestMode:$('legendaryBadgeChestMode').value,orvHeld:$('orvHeld').value,currentLevel:$('currentLevel').value,targetLevel:$('targetLevel').value,goal:$('goalSelect').value,xp:{}};XP_DENOMS.forEach(v=>d.xp[v]=$('xp'+v).value);localStorage.setItem('kow_progress_v4',JSON.stringify(d));alert('Progress saved.')}
-function loadProgress(){try{const d=JSON.parse(localStorage.getItem('kow_progress_v4')||'null');if(!d)return;$('officerSelect').value=d.officer??0;$('currentStar').value=d.currentStar??0;$('targetStar').value=d.targetStar??5;$('ls1').value=d.ls1??0;$('ls2').value=d.ls2??0;$('ls3').value=d.ls3??0;$('srvHeld').value=d.srvHeld??0;$('unlocked').checked=!!d.unlocked;skills=Array.isArray(d.skills)?d.skills:skills;$('training').value=d.training??0;$('badgeHeld').value=d.badgeHeld??0;$('universalBadgeHeld').value=d.universalBadgeHeld??0;$('legendaryBadgeChestHeld').value=d.legendaryBadgeChestHeld??0;$('legendaryBadgeChestMode').value=d.legendaryBadgeChestMode??'badge';$('orvHeld').value=d.orvHeld??0;$('currentLevel').value=d.currentLevel??1;$('targetLevel').value=d.targetLevel??70;$('goalSelect').value=d.goal??'max';XP_DENOMS.forEach(v=>$('xp'+v).value=d.xp?.[v]??0)}catch{}}
+const OFFICER_PROFILE_KEY='kow_officer_profiles_v435';
+const GLOBAL_RESOURCE_KEY='kow_global_resources_v435';
+let loadedOfficerProfileIndex=null;
+
+function getOfficerProfiles(){
+ try{return JSON.parse(localStorage.getItem(OFFICER_PROFILE_KEY)||'{}')||{}}
+ catch{return {}}
+}
+function getGlobalResources(){
+ try{return JSON.parse(localStorage.getItem(GLOBAL_RESOURCE_KEY)||'{}')||{}}
+ catch{return {}}
+}
+function officerProfileKey(index){
+ const o=officers[+index];
+ return o ? `${o.season||''}|${o.name||''}` : String(index);
+}
+
+// Officer-specific progress only.
+function captureOfficerProgress(){
+ return {
+  currentStar:$('currentStar').value,
+  targetStar:$('targetStar').value,
+  unlocked:$('unlocked').checked,
+  skills:[...skills],
+  training:$('training').value,
+  badgeHeld:$('badgeHeld').value,
+  currentLevel:$('currentLevel').value,
+  targetLevel:$('targetLevel').value,
+  goal:$('goalSelect').value,
+  savedAt:new Date().toISOString()
+ };
+}
+function applyOfficerProgress(d){
+ d=d||{};
+ $('currentStar').value=d.currentStar??0;
+ $('targetStar').value=d.targetStar??5;
+ $('unlocked').checked=!!d.unlocked;
+ skills=Array.isArray(d.skills)?d.skills.slice(0,16):Array(16).fill(false);
+ while(skills.length<16)skills.push(false);
+ $('training').value=d.training??0;
+ $('badgeHeld').value=d.badgeHeld??0;
+ $('currentLevel').value=d.currentLevel??1;
+ $('targetLevel').value=d.targetLevel??70;
+ $('goalSelect').value=d.goal??'max';
+ document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));
+}
+
+// Shared inventory/resources. These must NOT clear when switching Officer.
+function captureGlobalResources(){
+ const d={
+  ls1:$('ls1').value,
+  ls2:$('ls2').value,
+  ls3:$('ls3').value,
+  srvHeld:$('srvHeld').value,
+  universalBadgeHeld:$('universalBadgeHeld').value,
+  legendaryBadgeChestHeld:$('legendaryBadgeChestHeld').value,
+  legendaryBadgeChestMode:$('legendaryBadgeChestMode').value,
+  orvHeld:$('orvHeld').value,
+  xp:{},
+  savedAt:new Date().toISOString()
+ };
+ XP_DENOMS.forEach(v=>d.xp[v]=$('xp'+v).value);
+ return d;
+}
+function applyGlobalResources(d){
+ d=d||{};
+ $('ls1').value=d.ls1??0;
+ $('ls2').value=d.ls2??0;
+ $('ls3').value=d.ls3??0;
+ $('srvHeld').value=d.srvHeld??0;
+ $('universalBadgeHeld').value=d.universalBadgeHeld??0;
+ $('legendaryBadgeChestHeld').value=d.legendaryBadgeChestHeld??0;
+ $('legendaryBadgeChestMode').value=d.legendaryBadgeChestMode??'badge';
+ $('orvHeld').value=d.orvHeld??0;
+ XP_DENOMS.forEach(v=>$('xp'+v).value=d.xp?.[v]??0);
+}
+function saveGlobalResources(){
+ localStorage.setItem(GLOBAL_RESOURCE_KEY,JSON.stringify(captureGlobalResources()));
+}
+function updateProfileStatus(d){
+ const o=currentOfficer(), n=$('profileOfficerName'), st=$('profileSavedStatus');
+ if(n)n.textContent=o?`${o.season} ${o.name}`:'—';
+ if(st)st.textContent=d?.savedAt ? `Saved ${new Date(d.savedAt).toLocaleString()}` : 'Not saved yet';
+}
+function saveOfficerProfile(silent=false,index=null){
+ const idx=index==null ? +$('officerSelect').value : +index;
+ if(!Number.isFinite(idx)||!officers[idx])return;
+ const profiles=getOfficerProfiles(), d=captureOfficerProgress();
+ profiles[officerProfileKey(idx)]=d;
+ localStorage.setItem(OFFICER_PROFILE_KEY,JSON.stringify(profiles));
+ saveGlobalResources();
+ loadedOfficerProfileIndex=idx;
+ updateProfileStatus(d);
+ if(!silent)alert(`${officers[idx].season} ${officers[idx].name} progress saved.`);
+}
+function loadOfficerProfile(index){
+ const idx=+index, profiles=getOfficerProfiles(), d=profiles[officerProfileKey(idx)]||null;
+ // Only Officer progress changes here. Global resources are deliberately left untouched.
+ applyOfficerProgress(d);
+ loadedOfficerProfileIndex=idx;
+ updateProfileStatus(d);
+ calculate();
+}
+function resetOfficerProfile(){
+ const idx=+$('officerSelect').value,o=officers[idx];if(!o)return;
+ if(!confirm(`Reset saved progress for ${o.season} ${o.name}? Shared resources will not be changed.`))return;
+ const profiles=getOfficerProfiles();
+ delete profiles[officerProfileKey(idx)];
+ localStorage.setItem(OFFICER_PROFILE_KEY,JSON.stringify(profiles));
+ applyOfficerProgress(null);
+ updateProfileStatus(null);
+ calculate();
+}
+
+function saveProgress(){saveOfficerProfile(false)}
+function loadProgress(){
+ try{
+  const profiles=getOfficerProfiles();
+  let globals=getGlobalResources();
+
+  // One-time migration from v4.3.4 Officer profiles:
+  // take resource inventory from the currently selected Officer profile if global inventory is empty.
+  if(!Object.keys(globals).length){
+   try{
+    const oldProfiles=JSON.parse(localStorage.getItem('kow_officer_profiles_v434')||'{}')||{};
+    const oldKey=officerProfileKey($('officerSelect').value);
+    const old=oldProfiles[oldKey]||Object.values(oldProfiles)[0];
+    if(old){
+     globals={
+      ls1:old.ls1??0,ls2:old.ls2??0,ls3:old.ls3??0,srvHeld:old.srvHeld??0,
+      universalBadgeHeld:old.universalBadgeHeld??0,
+      legendaryBadgeChestHeld:old.legendaryBadgeChestHeld??0,
+      legendaryBadgeChestMode:old.legendaryBadgeChestMode??'badge',
+      orvHeld:old.orvHeld??0,xp:old.xp||{},savedAt:new Date().toISOString()
+     };
+     localStorage.setItem(GLOBAL_RESOURCE_KEY,JSON.stringify(globals));
+    }
+   }catch{}
+  }
+
+  // Migrate Officer progress from v4.3.4 if new profile store is empty.
+  if(!Object.keys(profiles).length){
+   try{
+    const oldProfiles=JSON.parse(localStorage.getItem('kow_officer_profiles_v434')||'{}')||{};
+    const migrated={};
+    for(const [key,old] of Object.entries(oldProfiles)){
+     migrated[key]={
+      currentStar:old.currentStar??0,targetStar:old.targetStar??5,
+      unlocked:!!old.unlocked,skills:Array.isArray(old.skills)?old.skills:[],
+      training:old.training??0,badgeHeld:old.badgeHeld??0,
+      currentLevel:old.currentLevel??1,targetLevel:old.targetLevel??70,
+      goal:old.goal??'max',savedAt:old.savedAt||new Date().toISOString()
+     };
+    }
+    if(Object.keys(migrated).length)localStorage.setItem(OFFICER_PROFILE_KEY,JSON.stringify(migrated));
+   }catch{}
+  }
+
+  // Legacy single-save migration if required.
+  if(!Object.keys(getOfficerProfiles()).length){
+   const legacy=JSON.parse(localStorage.getItem('kow_progress_v4')||'null');
+   if(legacy){
+    const idx=Number(legacy.officer??$('officerSelect').value??0);
+    $('officerSelect').value=idx;
+    const migrated={
+     currentStar:legacy.currentStar??0,targetStar:legacy.targetStar??5,
+     unlocked:!!legacy.unlocked,skills:Array.isArray(legacy.skills)?legacy.skills:[],
+     training:legacy.training??0,badgeHeld:legacy.badgeHeld??0,
+     currentLevel:legacy.currentLevel??1,targetLevel:legacy.targetLevel??70,
+     goal:legacy.goal??'max',savedAt:new Date().toISOString()
+    };
+    const p=getOfficerProfiles();p[officerProfileKey(idx)]=migrated;
+    localStorage.setItem(OFFICER_PROFILE_KEY,JSON.stringify(p));
+
+    if(!Object.keys(getGlobalResources()).length){
+     const g={
+      ls1:legacy.ls1??0,ls2:legacy.ls2??0,ls3:legacy.ls3??0,srvHeld:legacy.srvHeld??0,
+      universalBadgeHeld:legacy.universalBadgeHeld??0,
+      legendaryBadgeChestHeld:legacy.legendaryBadgeChestHeld??0,
+      legendaryBadgeChestMode:legacy.legendaryBadgeChestMode??'badge',
+      orvHeld:legacy.orvHeld??0,xp:legacy.xp||{},savedAt:new Date().toISOString()
+     };
+     localStorage.setItem(GLOBAL_RESOURCE_KEY,JSON.stringify(g));
+    }
+   }
+  }
+ }catch{}
+
+ applyGlobalResources(getGlobalResources());
+ loadOfficerProfile($('officerSelect').value);
+}
 
 
-const APP_VERSION='4.2.9';
+const APP_VERSION='4.3.5';
 
 function parseVersion(v){
  return String(v||'').replace(/^v/i,'').split('.').map(n=>parseInt(n,10)||0);
@@ -1110,7 +1312,10 @@ async function init(){
   const evt=id==='officerSearch'?'input':'change';
   el.addEventListener(evt,()=>{renderOfficerOptions();calculate();populateCompareOfficers();buildUpgradeSummary()});
  });
- $('officerSelect').addEventListener('change',()=>{updateOfficerExperience();calculate();populateCompareOfficers();buildUpgradeSummary()});
+ $('officerSelect').addEventListener('change',()=>{
+ if(loadedOfficerProfileIndex!==null && loadedOfficerProfileIndex!==+$('officerSelect').value)saveOfficerProfile(true,loadedOfficerProfileIndex);
+ updateOfficerExperience();loadOfficerProfile($('officerSelect').value);populateCompareOfficers();buildUpgradeSummary();
+});
  [0,1,2,3,4,5].forEach(v=>{$('currentStar').add(new Option(v+'★',v));$('targetStar').add(new Option(v+'★',v))});$('targetStar').value=5;
  SKILL_COSTS.forEach((c,i)=>{const b=document.createElement('button');b.className='skill';b.textContent=`${i+1} · ${c}`;b.onclick=()=>{skills[i]=!skills[i];b.classList.toggle('active',skills[i]);calculate()};$('skillGrid').appendChild(b)});
  XP_DENOMS.forEach(v=>{const d=document.createElement('div');d.className='xp-item';d.innerHTML=`<label>${v.toLocaleString()} XP</label><input id="xp${v}" type="number" min="0" step="1" inputmode="numeric" value="0">`;$('xpBooks').appendChild(d)});
@@ -1122,6 +1327,8 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  $('openUserGuide').onclick=()=>{document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.toggle('active',x.dataset.view==='help'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));$('help').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});};
 
  $('saveProgress').onclick=saveProgress;
+ if($('saveOfficerProfile'))$('saveOfficerProfile').onclick=()=>saveOfficerProfile(false);
+ if($('resetOfficerProfile'))$('resetOfficerProfile').onclick=resetOfficerProfile;
  $('dbSearch').oninput=renderDb;$('dbSeason').onchange=renderDb;$('dbAdd').onclick=()=>{officers.push({name:'New Officer',season:'S8',orv:1,srv:1,notes:''});renderDb();renderOfficerOptions('New Officer');calculate()};
  $('dbSave').onclick=()=>{const e=validateDb();if(e.length){alert('Fix validation issues first.');return}saveOfficers();renderOfficerFilters();renderOfficerOptions();alert('Officer database saved.')};
  $('dbExport').onclick=exportCsv;
@@ -1151,7 +1358,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.3';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.5';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -1222,6 +1429,7 @@ init();
 
 
 document.addEventListener('input',()=>setTimeout(updateSmartDashboard,0));
+document.addEventListener('input',()=>{if(typeof saveGlobalResources==='function')saveGlobalResources()});
 document.addEventListener('change',()=>setTimeout(updateSmartDashboard,0));
 document.addEventListener('click',()=>setTimeout(updateSmartDashboard,0));
 window.addEventListener('load',()=>{setTimeout(updateSmartDashboard,100);setTimeout(updateSmartDashboard,500);});
