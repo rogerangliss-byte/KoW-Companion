@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.2.16</title>
+<title>KoW Companion v4.3.0</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -132,7 +132,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
-    <p>Officer Companion v4.2.16</p>
+    <p>Officer Companion v4.3.0</p>
   </div>
   <div class="creator-credit">Created by FireStorm (371)</div>
 </header>
@@ -287,6 +287,40 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       </div>
       <div id="optimiserSummary" class="result-box">Enter resources and select an Officer to see the optimiser preview.</div>
     </article>
+
+    <article class="card" id="multiPlannerCard">
+      <h2>👥 Multi-Officer Upgrade Planner</h2>
+      <p class="muted">Build a priority list and preview how shared badge resources could be allocated. This planner does not spend or alter your normal saved resources.</p>
+
+      <div class="two">
+        <div><label>Plan name</label><input id="multiPlanName" value="Current Upgrades" placeholder="e.g. Next Season"></div>
+        <div><label>Saved plan</label><select id="multiSavedPlans"><option value="">— Select saved plan —</option></select></div>
+      </div>
+
+      <div class="two">
+        <div><label>Shared ORV available</label><input id="multiOrv" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
+        <div><label>Universal Legendary Badges available</label><input id="multiUniversal" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
+      </div>
+      <div class="two">
+        <div><label>Legendary Officer Badge Selection Chests</label><input id="multiChests" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
+        <div><label>Chest strategy</label><select id="multiChestMode"><option value="optimise">Optimise automatically</option><option value="badge">Use as Universal Badges</option><option value="orv">Convert to ORV (600 each)</option></select></div>
+      </div>
+
+      <div class="toolbar" style="margin-top:10px">
+        <button id="multiUseCurrent">Use current held resources</button>
+        <button id="multiAddOfficer">+ Add Officer</button>
+        <button id="multiSavePlan" class="primary">Save Plan</button>
+        <button id="multiDeletePlan">Delete Saved Plan</button>
+      </div>
+
+      <div class="table-wrap" style="margin-top:10px">
+        <table>
+          <thead><tr><th>Priority</th><th>Officer</th><th>Badges Needed</th><th>ORV / Badge</th><th>Allocated</th><th>Status</th><th>Order</th></tr></thead>
+          <tbody id="multiPlannerRows"></tbody>
+        </table>
+      </div>
+      <div id="multiPlannerSummary" class="result-box">Add Officers to build an upgrade plan.</div>
+    </article>
 </section>
 
   <section id="database" class="view">
@@ -335,6 +369,10 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <p><b>How to interpret the recommendation:</b> where both Officers can use ORV, the optimiser recommends favouring ORV on the Officer with the <b>lower ORV cost per badge</b> and favouring shared <b>Universal Legendary Badges / Legendary Officer Badge Selection Chests</b> on the Officer with the <b>higher ORV cost per badge</b>. This protects the more expensive Officer from unnecessary ORV spending.</p>
       <p>The optimiser is <b>preview only</b>. It does not automatically spend, allocate or change your saved resources.</p>
 
+      <h3>5a. Multi-Officer Upgrade Planner</h3>
+      <p>The Multi-Officer Planner lets you create a priority list of several Officers, set the Officer Badges still needed for each, and preview how shared ORV, Universal Legendary Badges and Legendary Officer Badge Selection Chests could cover the plan.</p>
+      <p>Use <b>Use current held resources</b> to copy the resources currently entered in Development. Plans are preview-only and do not spend or alter the normal calculator data. Named plans can be saved locally in the browser and loaded again later.</p>
+
       <h3>6. Save Progress</h3>
       <p>Use <b>Save Progress</b> after entering or changing calculator information. Progress is stored locally in the browser on the current device. Save Progress does not publish your personal data to other users.</p>
 
@@ -380,7 +418,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <button id="resetAppearance" class="primary">Reset Appearance & Backgrounds</button>
       <h3>App Updates</h3>
       <div class="notice">
-        <div><b>Installed version:</b> <span id="installedVersion">v4.2.16</span></div>
+        <div><b>Installed version:</b> <span id="installedVersion">v4.3.0</span></div>
         <div id="updateStatus">Tap Check for Updates to compare with the latest GitHub Pages version.</div>
       </div>
       <div class="two">
@@ -388,7 +426,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
         <button id="refreshLatest" class="primary">Refresh Latest Version</button>
       </div>
       <h3>About</h3>
-      <p class="notice"><b>KoW Companion v4.2.16 LIVE</b><br>Created by FireStorm (371)</p>
+      <p class="notice"><b>KoW Companion v4.3.0 LIVE</b><br>Created by FireStorm (371)</p>
       <h3>Help & Instructions</h3>
       <p class="notice">Open the in-app User Guide for the recommended setup order, explanations of every tab, saving, database publishing, vouchers, badges and Original Officer restrictions.</p>
       <button id="openUserGuide" class="primary">📖 User Guide</button>
@@ -858,6 +896,85 @@ async function restoreFullBackup(file){
  Object.entries(payload.localStorage).forEach(([k,v])=>localStorage.setItem(k,v));
  alert('Backup restored. The app will reload now.');location.reload();
 }
+
+let multiPlanOfficers=[];
+
+function multiOfficerOptions(selected=''){
+ return officers.map((o,i)=>`<option value="${i}" ${String(i)===String(selected)?'selected':''}>${esc(o.name)}</option>`).join('');
+}
+function renderMultiPlanner(){
+ const tbody=$('multiPlannerRows'); if(!tbody)return;
+ tbody.innerHTML=multiPlanOfficers.map((row,pos)=>{
+   const o=officers[row.officerIndex]||officers[0];
+   return `<tr data-pos="${pos}">
+    <td>${pos+1}</td>
+    <td><select data-multi-officer>${multiOfficerOptions(row.officerIndex)}</select></td>
+    <td><input data-multi-needed type="number" min="0" max="1600" step="1" value="${Math.max(0,Number(row.badgesNeeded)||0)}" style="min-width:90px"></td>
+    <td>${o&&o.readinessEligible!==false&&String(o.season||'').toLowerCase()!=='original'?fmt(o.orv):'N/A'}</td>
+    <td data-multi-allocated>—</td><td data-multi-status>—</td>
+    <td><button data-up title="Move up">↑</button> <button data-down title="Move down">↓</button> <button data-remove title="Remove">×</button></td>
+   </tr>`;
+ }).join('');
+ tbody.querySelectorAll('[data-multi-officer]').forEach((el,i)=>el.onchange=()=>{multiPlanOfficers[i].officerIndex=+el.value;renderMultiPlanner();calculateMultiPlanner()});
+ tbody.querySelectorAll('[data-multi-needed]').forEach((el,i)=>el.oninput=()=>{multiPlanOfficers[i].badgesNeeded=Math.max(0,+el.value||0);calculateMultiPlanner()});
+ tbody.querySelectorAll('[data-up]').forEach((b,i)=>b.onclick=()=>{if(i){[multiPlanOfficers[i-1],multiPlanOfficers[i]]=[multiPlanOfficers[i],multiPlanOfficers[i-1]];renderMultiPlanner();calculateMultiPlanner()}});
+ tbody.querySelectorAll('[data-down]').forEach((b,i)=>b.onclick=()=>{if(i<multiPlanOfficers.length-1){[multiPlanOfficers[i+1],multiPlanOfficers[i]]=[multiPlanOfficers[i],multiPlanOfficers[i+1]];renderMultiPlanner();calculateMultiPlanner()}});
+ tbody.querySelectorAll('[data-remove]').forEach((b,i)=>b.onclick=()=>{multiPlanOfficers.splice(i,1);renderMultiPlanner();calculateMultiPlanner()});
+ calculateMultiPlanner();
+}
+function calculateMultiPlanner(){
+ const rows=[...document.querySelectorAll('#multiPlannerRows tr')];
+ if(!rows.length){$('multiPlannerSummary').innerHTML='Add Officers to build an upgrade plan.';return}
+ let orv=Math.max(0,+$('multiOrv').value||0), universal=Math.max(0,+$('multiUniversal').value||0), chests=Math.max(0,+$('multiChests').value||0);
+ const mode=$('multiChestMode').value;
+ // Current S7 benchmark: 600 ORV per Selection Chest.
+ if(mode==='badge') universal+=chests;
+ else if(mode==='orv') orv+=chests*600;
+ else {
+   // Optimise: protect high-ORV Officers by treating chests as badges first.
+   universal+=chests;
+ }
+ let fully=0, partial=0, unfunded=0, totalNeed=0, totalAllocated=0;
+ multiPlanOfficers.forEach((row,pos)=>{
+   const o=officers[row.officerIndex]||officers[0], needed=Math.max(0,+row.badgesNeeded||0);
+   totalNeed+=needed;
+   let allocated=0;
+   const eligible=o&&o.readinessEligible!==false&&String(o.season||'').toLowerCase()!=='original'&&+o.orv>0;
+   // For efficiency, use ORV first on lower-cost Officers; however priority order remains authoritative.
+   if(eligible){
+     const fromOrv=Math.min(needed,Math.floor(orv/o.orv));
+     allocated+=fromOrv; orv-=fromOrv*o.orv;
+   }
+   const fromUniversal=Math.min(needed-allocated,universal);
+   allocated+=fromUniversal; universal-=fromUniversal;
+   totalAllocated+=allocated;
+   const status=allocated>=needed?'Fully Funded':allocated>0?'Partially Funded':'Shortfall';
+   if(status==='Fully Funded')fully++; else if(status==='Partially Funded')partial++; else unfunded++;
+   const tr=rows[pos]; if(tr){
+     tr.querySelector('[data-multi-allocated]').textContent=fmt(allocated)+' / '+fmt(needed);
+     tr.querySelector('[data-multi-status]').textContent=status;
+   }
+ });
+ $('multiPlannerSummary').innerHTML=`<b>Plan result:</b> ${fully} fully funded · ${partial} partially funded · ${unfunded} shortfall<br><span class="muted">${fmt(totalAllocated)} of ${fmt(totalNeed)} required badges covered. Remaining shared resources: ${fmt(orv)} ORV · ${fmt(universal)} Universal Badges.</span>`;
+}
+function getMultiPlans(){try{return JSON.parse(localStorage.getItem('kow_multi_plans_v430')||'{}')}catch{return {}}}
+function refreshMultiSavedPlans(selectName=''){
+ const sel=$('multiSavedPlans');if(!sel)return;const plans=getMultiPlans();
+ sel.innerHTML='<option value="">— Select saved plan —</option>'+Object.keys(plans).sort().map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');
+ if(selectName&&plans[selectName])sel.value=selectName;
+}
+function saveMultiPlan(){
+ const name=String($('multiPlanName').value||'').trim();if(!name){alert('Enter a plan name.');return}
+ const plans=getMultiPlans();plans[name]={name,orv:+$('multiOrv').value||0,universal:+$('multiUniversal').value||0,chests:+$('multiChests').value||0,chestMode:$('multiChestMode').value,officers:multiPlanOfficers};
+ localStorage.setItem('kow_multi_plans_v430',JSON.stringify(plans));refreshMultiSavedPlans(name);alert('Plan saved.');
+}
+function loadMultiPlan(name){
+ const p=getMultiPlans()[name];if(!p)return;$('multiPlanName').value=p.name||name;$('multiOrv').value=p.orv||0;$('multiUniversal').value=p.universal||0;$('multiChests').value=p.chests||0;$('multiChestMode').value=p.chestMode||'optimise';multiPlanOfficers=Array.isArray(p.officers)?p.officers:[];renderMultiPlanner();
+}
+function deleteMultiPlan(){
+ const name=$('multiSavedPlans').value;if(!name)return;const plans=getMultiPlans();delete plans[name];localStorage.setItem('kow_multi_plans_v430',JSON.stringify(plans));refreshMultiSavedPlans();alert('Saved plan deleted.');
+}
+
 async function init(){
  await loadOfficers();renderOfficerFilters();renderOfficerOptions();
  ['officerSearch','officerSeasonFilter','officerRoleFilter'].forEach(id=>{
@@ -883,6 +1000,17 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  $('dbImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const parsed=parseCsv(r.result);if(validateDb(parsed).length){alert('CSV validation failed.');return}officers=parsed;saveOfficers();renderDb();renderOfficerFilters();renderOfficerOptions();calculate();alert('CSV imported.')};r.readAsText(f);e.target.value=''};
  $('dbRestore').onclick=()=>{if(confirm('Restore default officer database?')){officers=clone(window.KOW_PUBLISHED_OFFICERS||DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);saveOfficers();renderDb();renderOfficerFilters();renderOfficerOptions('S7 Liora');calculate()}};
 
+
+ if($('multiAddOfficer'))$('multiAddOfficer').onclick=()=>{multiPlanOfficers.push({officerIndex:0,badgesNeeded:1600});renderMultiPlanner()};
+ if($('multiUseCurrent'))$('multiUseCurrent').onclick=()=>{$('multiOrv').value=$('orvHeld').value||0;$('multiUniversal').value=$('universalBadgeHeld').value||0;$('multiChests').value=$('legendaryBadgeChestHeld').value||0;calculateMultiPlanner()};
+ if($('multiSavePlan'))$('multiSavePlan').onclick=saveMultiPlan;
+ if($('multiDeletePlan'))$('multiDeletePlan').onclick=deleteMultiPlan;
+ if($('multiSavedPlans'))$('multiSavedPlans').onchange=e=>loadMultiPlan(e.target.value);
+ ['multiOrv','multiUniversal','multiChests','multiChestMode'].forEach(id=>{const el=$(id);if(el)el.addEventListener('input',calculateMultiPlanner)});
+ refreshMultiSavedPlans();
+ multiPlanOfficers=[{officerIndex:0,badgesNeeded:1600}];
+ renderMultiPlanner();
+
  const savedName=localStorage.getItem('kow_app_name_v4');if(savedName){$('appName').value=savedName;$('appTitle').textContent=savedName;document.title=savedName}
  const savedPortrait=localStorage.getItem('kow_bg_portrait_v401');
  const savedLandscape=localStorage.getItem('kow_bg_landscape_v401');
@@ -895,7 +1023,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.2.16';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.0';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -927,7 +1055,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
 
  loadProgress();
 
- // v4.2.16 feature wiring
+ // v4.3.0 feature wiring
  populateCompareOfficers();
  const compareSelect=$('compareOfficerSelect');
  if(compareSelect){

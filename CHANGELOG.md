@@ -1,4 +1,16 @@
-# v4.2.16 LIVE
+# Changelog
+
+## v4.3.0 LIVE
+- Added Multi-Officer Upgrade Planner.
+- Add multiple Officers and arrange upgrade priority.
+- Set badge requirements per Officer.
+- Preview shared ORV, Universal Legendary Badges and Selection Chest allocation.
+- Shows Fully Funded, Partially Funded and Shortfall status.
+- Save, load and delete named upgrade plans locally.
+- Planner is preview-only and does not alter normal saved calculator resources.
+- v4.3.0 is the Live baseline.
+
+# v4.3.0 LIVE
 - Bottom navigation now uses one 10-item row.
 - Reduced navigation spacing and label size to prevent Help wrapping to a second line.
 - No calculator or database logic changed.
