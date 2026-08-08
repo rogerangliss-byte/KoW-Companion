@@ -1,4 +1,4 @@
-# KoW Companion v4.2.13 — User Guide
+# KoW Companion v4.2.15 — User Guide
 
 ## Recommended order
 

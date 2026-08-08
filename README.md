@@ -1,8 +1,8 @@
-# KoW Companion v4.2.13 — LIVE
+# KoW Companion v4.2.16 — LIVE
 
 Approved Live release of KoW Companion.
 
-## v4.2.13 features
+## v4.2.16 features
 - Officer Search, Season and Officer Type / Role filters.
 - Officer portraits loaded from the existing `officer-portraits` folder.
 - Officer Upgrade Summary.
