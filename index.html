@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.3.28</title>
+<title>KoW Companion v4.3.29</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -58,7 +58,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 .primary,.toolbar button,.filebtn{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#5e4512;color:white;cursor:pointer}.primary{width:100%;margin-top:12px}
 .toolbar{display:grid;grid-template-columns:2fr 1fr repeat(5,auto);gap:8px;align-items:end}.filebtn input{display:none}
 .table-wrap{overflow:auto;margin-top:12px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,.08);text-align:right}th:first-child,td:first-child{text-align:left}.db-table input{min-width:100px}.actions{display:flex;gap:6px}.actions button{padding:7px 9px}
-.bottom-nav{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);width:min(980px,calc(100% - 16px));display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;padding:8px;border:1px solid var(--line);border-radius:16px;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);z-index:20}
+.bottom-nav{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);width:min(980px,calc(100% - 16px));display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;padding:8px;border:1px solid var(--line);border-radius:16px;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);z-index:20}
 .bottom-nav button{border:0;background:transparent;color:var(--muted);padding:7px 1px;border-radius:10px;min-width:0;white-space:nowrap;font-size:.9rem}.bottom-nav button.active{background:rgba(213,167,47,.17);color:var(--gold2)}.bottom-nav span{display:block;font-size:.62rem;margin-top:3px;white-space:nowrap}
 @media(max-width:760px){
 .grid,.two{grid-template-columns:1fr}
@@ -133,6 +133,53 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 
 .button-like{display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;background:rgba(0,0,0,.28);font-weight:700}
 .result-box{padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.28);line-height:1.55}
+
+.progress-meter{height:8px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;min-width:90px;margin-top:4px}
+.progress-meter>span{display:block;height:100%;background:var(--gold2);border-radius:999px}
+.status-ready{font-weight:800;color:#79d98c}.status-progress{font-weight:700;color:var(--gold2)}
+@media(max-width:760px){#savedOfficerProgressTable{min-width:980px}}
+
+ .skill-lvl{font-size:12px;padding:8px 5px}
+}
+
+
+.skill-strands{display:grid;gap:10px}
+.skill-strand-row{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center}
+.skill-strand-label{font-weight:700;color:var(--gold2)}
+.skill-strand-controls{display:grid;grid-template-columns:repeat(5,minmax(70px,1fr));gap:8px}
+.skill-lvl{min-height:42px;padding:8px 6px}
+.skill-lvl.free{opacity:.9}
+.skill-lvl.active{background:#7a5a10;border-color:#d6aa35;color:#fff}
+.quick-strand-row{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center}
+.quick-strand-select{width:100%;min-height:42px}
+@media(max-width:760px){
+ .skill-strand-row,.quick-strand-row{grid-template-columns:1fr}
+ .skill-strand-controls{grid-template-columns:repeat(5,minmax(54px,1fr))}
+}
+
+
+/* Strand grid: reached = gold, unreached = black */
+.strand-level-btn,.skill-strand-level,.strandLevel{
+ background:#090a0c !important;color:#f5f0e6 !important;border-color:#3a3d42 !important;
+}
+.strand-level-btn.reached,.skill-strand-level.reached,.strandLevel.reached,
+.strand-level-btn.selected,.skill-strand-level.selected,.strandLevel.selected{
+ background:#7a5a10 !important;color:#fff !important;border-color:#d6aa35 !important;
+}
+
+
+/* Correct strand cells: reached levels gold, unreached levels black */
+.skill-lvl{
+ background:#090a0c !important;
+ color:#f5f0e6 !important;
+ border-color:#3a3d42 !important;
+}
+.skill-lvl.reached,.skill-lvl.free,.skill-lvl.active{
+ background:#7a5a10 !important;
+ color:#fff !important;
+ border-color:#d6aa35 !important;
+}
+
 </style>
 </head>
 <body>
@@ -175,9 +222,55 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <article class="card"><h2>🏅 Development</h2><div class="stat"><span>Badges from held Officer Readiness Vouchers (ORV)</span><b id="dashBadgesFromOrv">0</b></div><div class="stat"><span>Required</span><b id="dashBadgesRequired">1,600</b></div></article>
       <article class="card wide"><h2>📘 Officer XP</h2><div class="stat"><span>Held</span><b id="dashXpHeld">0</b></div><div class="stat"><span>Required</span><b id="dashXpRequired">199,646,700</b></div></article>
     </div>
-  </section>
+  
 
-  <section id="officer" class="view">
+</section>
+
+  
+<section id="progress" class="view">
+  <article class="card">
+    <h2>📊 Officer Progress</h2>
+    <p class="notice">All Officers are shown automatically. Officers with no saved development are classified as NOT STARTED. Held shared resources do not increase an Officer's progress percentage.</p>
+    <div id="savedOfficerProgressSummary" class="result-box">Save Officer progress to build this dashboard.</div>
+    <div id="progressStatusFilters" class="notice" style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-top:12px">
+      <b>Show:</b>
+      <label><input type="checkbox" class="progressStatusFilter" value="maxed" checked> MAXED</label>
+      <label><input type="checkbox" class="progressStatusFilter" value="progress" checked> IN PROGRESS</label>
+      <label><input type="checkbox" class="progressStatusFilter" value="notStarted" checked> NOT STARTED</label>
+    </div>
+    <div class="table-wrap" style="margin-top:12px">
+      <table id="savedOfficerProgressTable">
+        <thead><tr><th>Officer</th><th>Overall progress</th><th>Development</th><th>Stars</th><th>XP</th><th>Badge shortfall</th><th>Star shortfall</th><th>XP shortfall</th><th>Status</th></tr></thead>
+        <tbody id="savedOfficerProgressRows"></tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2>🔎 Compare Officer Progress</h2>
+    <p class="notice">Choose any saved Officers to compare their actual saved progress. Shared inventory is not counted as completed progress.</p>
+    <div id="compareStatusFilters" class="notice" style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+      <b>Compare:</b>
+      <label><input type="checkbox" class="compareStatusFilter" value="maxed" checked> MAXED</label>
+      <label><input type="checkbox" class="compareStatusFilter" value="progress" checked> IN PROGRESS</label>
+      <label><input type="checkbox" class="compareStatusFilter" value="notStarted" checked> NOT STARTED</label>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+      <button type="button" id="compareProgressSelectAll">Select All</button>
+      <button type="button" id="compareProgressClear">Clear All</button>
+      <button type="button" id="compareProgressRun" class="primary" style="width:auto;margin-top:0">Compare Selected</button>
+    </div>
+    <div id="compareProgressChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px"></div>
+    <div id="compareProgressRecommendation" class="notice" style="display:none;margin-top:12px"></div>
+    <div class="table-wrap" id="compareProgressResultsWrap" style="display:none;margin-top:12px">
+      <table>
+        <thead><tr><th>Officer</th><th>Overall progress</th><th>Development</th><th>Stars</th><th>XP</th><th>Badges Needed</th><th>Stars Needed</th><th>XP Needed</th><th>Status</th></tr></thead>
+        <tbody id="compareProgressResults"></tbody>
+      </table>
+    </div>
+  </article>
+</section>
+<section id="officer" class="view">
     <article class="card">
       <h2>👤 Officer Experience</h2>
 
@@ -220,6 +313,8 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       </div>
       <div class="toolbar">
         <button id="saveOfficerProfile" class="primary">Save This Officer</button>
+<button id="quickProgressBtn" class="primary" type="button">✏️ Edit Officer Progress</button>
+<button id="maxOfficerProfile" class="primary" type="button" style="margin-top:8px">⭐ MAX Officer</button>
         <button id="resetOfficerProfile">Reset This Officer</button>
       </div>
       <div class="notice">Changing Officer saves/loads Officer-specific progress only. Shared Stars, vouchers, Universal Badges, Selection Chests and XP Books remain unchanged.</div>
@@ -258,9 +353,18 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
     <article class="card">
       <h2>🏅 Officer Development</h2>
       <label class="check"><input id="unlocked" type="checkbox"> Officer unlocked (10 badges)</label>
-      <label>Skills 1–16</label><div id="skillGrid" class="skills"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+<label style="margin:0">Skill Strands — each starts at Level 1</label>
+<button id="skillCostInfoBtn" type="button" title="Skill cost information" aria-label="Skill cost information" style="width:30px;height:30px;border-radius:50%;padding:0;font-weight:800">i</button>
+</div>
+<div id="skillGrid" class="skill-strands"></div>
+<div id="nextSkillCostSummary" class="notice" style="margin-top:8px"></div>
+      <div class="notice">Level 1 is free on all four strands. Each additional skill level uses the next cost in the existing sequence: 10, 10, 15, 15, 30, 30, 40, 40, 45, 45, 50, 50, 75, 75, 80, 80 — regardless of which strand you increase.</div>
       <label>Training Level: <b id="trainingLabel">0</b> / 180</label>
-      <input id="training" type="range" min="0" max="180" value="0">
+      <div style="display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center">
+        <input id="training" type="range" min="0" max="180" value="0">
+        <input id="trainingExact" type="number" min="0" max="180" step="1" inputmode="numeric" value="0" aria-label="Exact Training Level">
+      </div>
       <label>Officer Badges Held</label><input id="badgeHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
       <label>Universal Legendary Badges Held</label><input id="universalBadgeHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
       <label>Legendary Officer Badge Selection Chests Held</label><input id="legendaryBadgeChestHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
@@ -382,6 +486,48 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
   <section id="help" class="view">
     <article class="card">
       <h2>❓ Help & Instructions</h2>
+
+<div class="card" id="whatsNewV4329" style="margin-bottom:16px">
+  <h3 style="margin-top:0">✨ What’s New — v4.3.29</h3>
+  <div class="notice">
+    <b>v4.3.29 focuses on faster Officer progress entry, clearer progress tracking, and the new four-strand skill system.</b>
+  </div>
+
+  <h4>📊 Officer Progress</h4>
+  <p>Officers are automatically classified as <b>MAXED</b>, <b>IN PROGRESS</b>, or <b>NOT STARTED</b>. The main Progress filters and Compare Officer Progress filters work independently.</p>
+
+  <h4>🔎 Compare Officer Progress</h4>
+  <p>Compare saved Officers in Season order. You can compare Not Started and In Progress Officers even when the main Officer Progress table is filtered differently.</p>
+
+  <h4>✏️ Edit Officer Progress</h4>
+  <p>The Officer tab now has <b>Edit Officer Progress</b>, allowing you to enter the key Officer-specific values in one place: Current Star Level, Current Officer Level, Officer Unlocked, Skill Strands and Training Level.</p>
+
+  <h4>⭐ MAX Officer</h4>
+  <p>Use <b>MAX Officer</b> to set the selected Officer to <b>5★, Level 70, Unlocked, all four Skill Strands at Level 5, and Training Level 180</b>.</p>
+
+  <h4>✅ Automatic Unlock</h4>
+  <p>Setting an Officer above Level 1 automatically selects <b>Officer unlocked</b>, reducing the chance of missing the unlock status.</p>
+
+  <h4>🎚 Exact Training Level</h4>
+  <p>Training can now be entered as an exact number from <b>0–180</b> as well as using the slider.</p>
+
+  <h4>🧩 Four Independent Skill Strands</h4>
+  <p>Each Officer has four independent Skill Strands. Every strand begins at <b>Level 1 free</b> and can be advanced separately to Level 5. Combinations such as <b>1 / 3 / 5 / 2</b> are supported.</p>
+
+  <p>The 16 paid skill increases share one badge-cost sequence, regardless of which strand is increased:</p>
+  <div class="notice"><b>10, 10, 15, 15, 30, 30, 40, 40, 45, 45, 50, 50, 75, 75, 80, 80</b></div>
+  <p>All 16 paid skill increases cost <b>690 Officer Badges</b> in total.</p>
+
+  <h4>ℹ️ Skill Cost Information</h4>
+  <p>The Development screen now shows <b>Next Cost</b>, <b>badges used / 690</b>, and <b>badges remaining</b>. Select the <b>i</b> button to view the full cost sequence and current strand information.</p>
+
+  <h4>🎨 Skill Progress Colours</h4>
+  <p><b>Gold</b> means that skill level has been reached. <b>Black/dark</b> means it has not yet been reached. Level 1 is gold because it is free and already available on every strand.</p>
+
+  <h4>💾 Improved Saving & Synchronisation</h4>
+  <p>Progress saved through Edit Officer Progress is written back to the Officer profile so the Officer, Stars, Develop, XP and Progress views stay synchronised.</p>
+</div>
+
       <div class="notice"><b>Recommended workflow:</b> work through Officer → Stars → Development → XP → Planner, then use <b>Save Progress</b>. Use <b>Backup & Restore</b> in Settings before major changes or when you want a portable copy of locally saved app data.</div>
 
       <h3>1. Officer</h3>
@@ -394,7 +540,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <p>Set the Officer's current and target Star level. Enter Legendary Star I, II and III held and <b>Star Readiness Vouchers (SRV)</b> held. The app calculates Officer Star value held, Exclusive Stars obtainable from SRV and the remaining Star requirement.</p>
 
       <h3>3. Development</h3>
-      <p>Enter unlock status, completed Skill Points and Training Level. Then enter Officer Badges Held, <b>Universal Legendary Badges Held</b>, <b>Legendary Officer Badge Selection Chests Held</b> and <b>Officer Readiness Vouchers (ORV) Held</b>.</p>
+      <p>Enter unlock status, the four independent Skill Strand levels and Training Level. Then enter Officer Badges Held, <b>Universal Legendary Badges Held</b>, <b>Legendary Officer Badge Selection Chests Held</b> and <b>Officer Readiness Vouchers (ORV) Held</b>.</p>
       <p>Each <b>Universal Legendary Badge</b> is worth <b>1 Officer Badge</b> for a Legendary Officer.</p>
       <p>Each <b>Legendary Officer Badge Selection Chest</b> can be used as <b>either</b> 1 Universal Legendary Badge <b>or</b> converted to the latest-Season Officer Readiness Voucher (ORV) value. A chest cannot count as both. With the current S7 database the benchmark is <b>600 ORV per chest</b>.</p>
 
@@ -412,6 +558,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <p>Use <b>Use current held resources</b> to copy the resources currently entered in Development. Plans are preview-only and do not spend or alter the normal calculator data. Named plans can be saved locally in the browser and loaded again later.</p>
 
       <h3>6. Save Progress</h3>
+      <p><b>MAX Officer:</b> use the ⭐ MAX Officer button to set the selected Officer to 5 Stars, Level 70, Unlocked, all 4 Skill Strands at Level 5 and Training Level 180. The Officer profile is saved immediately. Shared inventory is not spent or changed.</p>
       <p>Use <b>Save Progress</b> after entering or changing calculator information. Progress is stored locally in the browser on the current device. Save Progress does not publish your personal data to other users.</p>
 
       <h3>7. Database</h3>
@@ -529,6 +676,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 
 <nav class="bottom-nav">
   <button data-view="dashboard" class="active">🏠<span>Home</span></button>
+  <button data-view="progress">📊<span>Progress</span></button>
   <button data-view="officer">👤<span>Officer</span></button>
   <button data-view="stars">⭐<span>Stars</span></button>
   <button data-view="development">🏅<span>Develop</span></button>
@@ -548,6 +696,92 @@ const XP_DENOMS=[50,100,500,1000,5000,10000,20000,50000];
 const MAX_STAR=98000,MAX_BADGES=1600,MAX_XP=199646700;
 let officers=[],skills=Array(16).fill(false);
 const $=id=>document.getElementById(id);
+
+function getSkillStrandLevels(){
+ const levels=[];
+ for(let strand=0;strand<4;strand++){
+   let paid=0;
+   for(let step=0;step<4;step++){
+     if(skills[strand*4+step]) paid++;
+     else break;
+   }
+   levels.push(1+paid);
+ }
+ return levels;
+}
+function setSkillStrandLevel(strand,level){
+ level=Math.max(1,Math.min(5,Number(level)||1));
+ for(let step=0;step<4;step++){
+   skills[strand*4+step]=step < (level-1);
+ }
+ renderSkillStrands();
+ calculate();
+}
+function totalPaidSkillUpgrades(){
+ return getSkillStrandLevels().reduce((sum,lvl)=>sum+(lvl-1),0);
+}
+function skillBadgesSpent(){
+ const n=totalPaidSkillUpgrades();
+ return SKILL_COSTS.slice(0,n).reduce((a,b)=>a+b,0);
+}
+function nextSkillUpgradeCost(){
+ const n=totalPaidSkillUpgrades();
+ return n>=SKILL_COSTS.length?0:SKILL_COSTS[n];
+}
+function skillCostStatusText(){
+ const levels=getSkillStrandLevels(),n=totalPaidSkillUpgrades(),next=nextSkillUpgradeCost();
+ const total=SKILL_COSTS.reduce((a,b)=>a+b,0);
+ const spent=SKILL_COSTS.slice(0,n).reduce((a,b)=>a+b,0);
+ const remaining=Math.max(0,total-spent);
+ const state=levels.map((lvl,i)=>`Strand ${i+1}: Lv${lvl}`).join(' · ');
+ return n>=16
+   ? `${state} · Skills complete · ${spent}/${total} badges used · 0 remaining.`
+   : `${state} · Next cost: ${next} badges · ${spent}/${total} used · ${remaining} remaining.`;
+}
+function updateSkillCostSummaries(){
+ const a=$('nextSkillCostSummary');if(a)a.innerHTML=`<b>${skillCostStatusText()}</b>`;
+ const b=document.getElementById('quickNextSkillCostSummary');if(b)b.innerHTML=`<b>${skillCostStatusText()}</b>`;
+}
+function openSkillCostInfo(){
+ const used=totalPaidSkillUpgrades(),rows=document.getElementById('skillCostSequenceRows');
+ if(rows)rows.innerHTML=SKILL_COSTS.map((c,i)=>`<tr><td>${i+1}${i===used?' ← NEXT':''}</td><td>${c}</td></tr>`).join('');
+ const cur=document.getElementById('skillCostCurrent');if(cur)cur.innerHTML=`<b>${skillCostStatusText()}</b>`;
+ const levels=getSkillStrandLevels(),next=nextSkillUpgradeCost(),per=document.getElementById('skillCostPerStrand');
+ if(per)per.innerHTML=levels.map((lvl,i)=>lvl>=5?`<b>Strand ${i+1}:</b> Level 5 — MAX`:`<b>Strand ${i+1}:</b> Level ${lvl} → Level ${lvl+1} would currently cost ${next} badges`).join('<br>');
+ document.getElementById('skillCostInfoModal').style.display='block';
+}
+function closeSkillCostInfo(){document.getElementById('skillCostInfoModal').style.display='none';}
+function renderSkillStrands(){
+ const g=$('skillGrid'); if(!g)return;
+ g.innerHTML='';
+ const levels=getSkillStrandLevels();
+ for(let strand=0;strand<4;strand++){
+   const row=document.createElement('div');
+   row.className='skill-strand-row';
+
+   const label=document.createElement('div');
+   label.className='skill-strand-label';
+   label.textContent=`Strand ${strand+1}`;
+   row.appendChild(label);
+
+   const controls=document.createElement('div');
+   controls.className='skill-strand-controls';
+
+   for(let level=1;level<=5;level++){
+     const b=document.createElement('button');
+     b.type='button';
+     b.className='skill-lvl'+(level===1?' free':'')+(level<=levels[strand]?' reached':'')+(levels[strand]===level?' active':'');
+     b.textContent=level===1?'Lv1 ✓':`Lv${level}`;
+     b.title=level===1?'Level 1 is free and already unlocked':`Set Strand ${strand+1} to Level ${level}`;
+     b.onclick=()=>setSkillStrandLevel(strand,level);
+     controls.appendChild(b);
+   }
+   row.appendChild(controls);
+   g.appendChild(row);
+ }
+ updateSkillCostSummaries();
+}
+
 function applyResponsivePageBackground(){
  const portrait=localStorage.getItem('kow_bg_portrait_v401');
  const landscape=localStorage.getItem('kow_bg_landscape_v401');
@@ -727,6 +961,32 @@ function latestSeasonOrvCost(){
  return Math.max(...seasonal.filter(o=>o.seasonNum===latest).map(o=>Number(o.orv)||0));
 }
 
+
+$('currentLevel')?.addEventListener('input',()=>{
+ if((Number($('currentLevel').value)||1)>1 && !$('unlocked').checked){
+  $('unlocked').checked=true;
+ }
+});
+
+function clampTrainingValue(v){
+ v=Math.round(Number(v)||0);
+ return Math.max(0,Math.min(180,v));
+}
+function syncMainTrainingFromSlider(){
+ const v=clampTrainingValue($('training').value);
+ $('training').value=v;
+ if($('trainingExact'))$('trainingExact').value=v;
+ if($('trainingLabel'))$('trainingLabel').textContent=v;
+}
+function syncMainTrainingFromExact(){
+ const v=clampTrainingValue($('trainingExact').value);
+ $('trainingExact').value=v;
+ $('training').value=v;
+ if($('trainingLabel'))$('trainingLabel').textContent=v;
+ calculate();
+}
+$('training')?.addEventListener('input',syncMainTrainingFromSlider);
+$('trainingExact')?.addEventListener('input',syncMainTrainingFromExact);
 function calculate(){
  const o=currentOfficer();
  if(!o)return;
@@ -764,7 +1024,7 @@ function calculate(){
  $('selectionChestOrvGenerated').textContent=fmt(selectionChestOrv);
  $('universalBadgesAvailable').textContent=fmt(universalBadgesAvailable);
 
- const badgesUsed=($('unlocked').checked?10:0)+skills.reduce((s,on,i)=>s+(on?SKILL_COSTS[i]:0),0)+ +$('training').value*5;
+ const badgesUsed=($('unlocked').checked?10:0)+skillBadgesSpent()+ +$('training').value*5;
  const badgesFromOrv=readinessEligible&&o.orv>0?Math.floor(orvHeld/o.orv):0;
  const orvRemainder=o.orv>0?orvHeld-badgesFromOrv*o.orv:orvHeld;
  const badgeTotal=badgesUsed+badgesHeld+universalBadgesAvailable+badgesFromOrv;
@@ -867,11 +1127,13 @@ function applyOfficerProgress(d){
  skills=Array.isArray(d.skills)?d.skills.slice(0,16):Array(16).fill(false);
  while(skills.length<16)skills.push(false);
  $('training').value=d.training??0;
+ if($('trainingExact'))$('trainingExact').value=d.training??0;
+ if($('trainingLabel'))$('trainingLabel').textContent=d.training??0;
  $('badgeHeld').value=d.badgeHeld??0;
  $('currentLevel').value=d.currentLevel??1;
  $('targetLevel').value=d.targetLevel??70;
  $('goalSelect').value=d.goal??'max';
- document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));
+ renderSkillStrands();
 }
 
 // Shared inventory/resources. These must NOT clear when switching Officer.
@@ -908,7 +1170,7 @@ function saveGlobalResources(){
 }
 function updateProfileStatus(d){
  const o=currentOfficer(), n=$('profileOfficerName'), st=$('profileSavedStatus');
- if(n)n.textContent=o?`${o.season} ${o.name}`:'—';
+ if(n)n.textContent=o?(String(o.name).startsWith(String(o.season)+' ')?o.name:`${o.season} ${o.name}`):'—';
  if(st)st.textContent=d?.savedAt ? `Saved ${new Date(d.savedAt).toLocaleString()}` : 'Not saved yet';
 }
 function saveOfficerProfile(silent=false,index=null){
@@ -930,6 +1192,38 @@ function loadOfficerProfile(index){
  updateProfileStatus(d);
  calculate();
 }
+
+function maxSelectedOfficerProfile(){
+ const idx=+$('officerSelect').value;
+ const o=officers[idx];
+ if(!o)return;
+
+ const label=`${o.season||''} ${o.name||''}`.trim();
+ if(!confirm(`Set ${label} to fully MAXED?\n\nThis will set:\n• 5 Stars\n• Level 70\n• Unlocked\n• All 4 Skill Strands at Level 5\n• Training Level 180\n\nShared ORV, SRV, badges, stars and XP inventory will not be spent or changed.`))return;
+
+ $('currentStar').value=5;
+ $('targetStar').value=5;
+ $('unlocked').checked=true;
+
+ skills=Array(16).fill(true);
+ renderSkillStrands();
+
+ $('training').value=180;
+ if($('trainingExact'))$('trainingExact').value=180;
+ if($('trainingLabel'))$('trainingLabel').textContent='180';
+
+ $('currentLevel').value=70;
+ $('targetLevel').value=70;
+
+ calculate();
+ saveOfficerProfile(true);
+
+ if(typeof renderSavedOfficerProgress==='function')renderSavedOfficerProgress();
+ if(typeof renderProgressCompareChoices==='function')renderProgressCompareChoices();
+
+ alert(`${label} is now saved as MAXED.`);
+}
+
 function resetOfficerProfile(){
  const idx=+$('officerSelect').value,o=officers[idx];if(!o)return;
  if(!confirm(`Reset saved progress for ${o.season} ${o.name}? Shared resources will not be changed.`))return;
@@ -1020,7 +1314,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.3.28';
+const APP_VERSION='4.3.29';
 function syncVersionUI(){
  const v='v'+APP_VERSION;
  if($('headerVersion'))$('headerVersion').textContent=v;
@@ -1429,7 +1723,7 @@ async function init(){
  updateOfficerExperience();loadOfficerProfile($('officerSelect').value);populateCompareOfficers();buildUpgradeSummary();
 });
  [0,1,2,3,4,5].forEach(v=>{$('currentStar').add(new Option(v+'★',v));$('targetStar').add(new Option(v+'★',v))});$('targetStar').value=5;
- SKILL_COSTS.forEach((c,i)=>{const b=document.createElement('button');b.className='skill';b.textContent=`${i+1} · ${c}`;b.onclick=()=>{skills[i]=!skills[i];b.classList.toggle('active',skills[i]);calculate()};$('skillGrid').appendChild(b)});
+ renderSkillStrands();
  XP_DENOMS.forEach(v=>{const d=document.createElement('div');d.className='xp-item';d.innerHTML=`<label>${v.toLocaleString()} XP</label><input id="xp${v}" type="number" min="0" step="1" inputmode="numeric" value="0">`;$('xpBooks').appendChild(d)});
  document.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',calculate));
  const RELEASES=[
@@ -1478,11 +1772,12 @@ function renderReleases(){
  $('releaseCalendar').innerHTML=html;
 }
 renderReleases();
-document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.view).classList.add('active');if(b.dataset.view==='database')renderDb();if(b.dataset.view==='dashboard'&&typeof updateSmartDashboard==='function')updateSmartDashboard()});
+document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.view).classList.add('active');if(b.dataset.view==='database')renderDb();if(b.dataset.view==='dashboard'){if(typeof updateSmartDashboard==='function')updateSmartDashboard();}if(b.dataset.view==='progress'){renderSavedOfficerProgress();renderProgressCompareChoices();}});
  $('openUserGuide').onclick=()=>{document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.toggle('active',x.dataset.view==='help'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));$('help').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});};
 
  $('saveProgress').onclick=saveProgress;
- if($('saveOfficerProfile'))$('saveOfficerProfile').onclick=()=>saveOfficerProfile(false);
+ if($('saveOfficerProfile'))$('saveOfficerProfile').onclick=()=>{saveOfficerProfile(false);setTimeout(renderSavedOfficerProgress,0)};
+ if($('maxOfficerProfile'))$('maxOfficerProfile').onclick=maxSelectedOfficerProfile;
  if($('resetOfficerProfile'))$('resetOfficerProfile').onclick=resetOfficerProfile;
  $('dbSearch').oninput=renderDb;$('dbSeason').onchange=renderDb;$('dbAdd').onclick=()=>{officers.push({name:'New Officer',season:'S8',orv:1,srv:1,notes:''});renderDb();renderOfficerOptions('New Officer');calculate()};
  $('dbSave').onclick=()=>{const e=validateDb();if(e.length){alert('Fix validation issues first.');return}saveOfficers();renderOfficerFilters();renderOfficerOptions();alert('Officer database saved.')};
@@ -1519,7 +1814,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.28';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.29';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -1551,7 +1846,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
 
  loadProgress();
 
- // v4.3.28 feature wiring
+ // v4.3.29 feature wiring
  populateCompareOfficers();
  const compareSelect=$('compareOfficerSelect');
  if(compareSelect){
@@ -1582,7 +1877,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  ['universalBadgeHeld','legendaryBadgeChestHeld','legendaryBadgeChestMode'].forEach(id=>{
   const el=$(id);if(el)el.addEventListener(id==='legendaryBadgeChestMode'?'change':'input',calculate);
  });
- document.querySelectorAll('.skill').forEach((b,i)=>b.classList.toggle('active',!!skills[i]));renderDb();calculate();populateCompareOfficers();buildUpgradeSummary();
+ renderSkillStrands();renderDb();calculate();populateCompareOfficers();buildUpgradeSummary();
  window.addEventListener('resize',applyResponsivePageBackground);
  if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
 }
@@ -1594,6 +1889,348 @@ document.addEventListener('input',()=>{if(typeof saveGlobalResources==='function
 document.addEventListener('change',()=>setTimeout(updateSmartDashboard,0));
 document.addEventListener('click',()=>setTimeout(updateSmartDashboard,0));
 window.addEventListener('load',()=>{setTimeout(updateSmartDashboard,100);setTimeout(updateSmartDashboard,500);});
+
+function savedPct(v,max){return Math.max(0,Math.min(100,max?Math.round((Number(v)||0)/max*100):0));}
+function meter(value){return `${value}%<div class="progress-meter"><span style="width:${value}%"></span></div>`;}
+function savedOfficerProgressData(){
+ const profiles=(typeof getOfficerProfiles==='function'?getOfficerProfiles():{})||{};
+
+ function profileKeyForOfficer(o){
+   return `${String(o.season||'').trim()}|${String(o.name||'').trim()}`;
+ }
+ function profileForOfficer(o){
+   const exact=profiles[profileKeyForOfficer(o)];
+   if(exact)return exact;
+   const wantedName=String(o.name||'').trim();
+   const entry=Object.entries(profiles).find(([key])=>String(key).split('|').pop().trim()===wantedName);
+   return entry?entry[1]:null;
+ }
+
+ // Every Officer is represented. Officers with no saved development are automatically NOT STARTED.
+ return officers.map(o=>{
+   const p=profileForOfficer(o) || {};
+   const displayName=o?.name || '';
+   const season=o?.season || '';
+
+   const skillFlags=Array.isArray(p.skills)?p.skills:[];
+   let paidSkillUpgrades=0;
+   for(let strand=0;strand<4;strand++){
+     for(let step=0;step<4;step++){
+       if(skillFlags[strand*4+step]) paidSkillUpgrades++;
+       else break;
+     }
+   }
+   const skillSpent=SKILL_COSTS.slice(0,paidSkillUpgrades).reduce((a,b)=>a+b,0);
+   const badgesUsed=(p.unlocked?10:0)+skillSpent+(Number(p.training)||0)*5;
+   const badgeShort=Math.max(0,MAX_BADGES-badgesUsed);
+   const dev=savedPct(badgesUsed,MAX_BADGES);
+
+   const currentStar=Math.max(0,Math.min(5,Number(p.currentStar)||0));
+   const starValue=STAR_CUM[currentStar]||0;
+   const starShort=Math.max(0,MAX_STAR-starValue);
+   const stars=savedPct(starValue,MAX_STAR);
+
+   const level=Math.max(1,Math.min(70,Number(p.currentLevel)||1));
+   const xpUsed=cumulativeXp(level);
+   const xpShort=Math.max(0,MAX_XP-xpUsed);
+   const xp=savedPct(xpUsed,MAX_XP);
+
+   const overall=Math.round(((dev+stars+xp)/3)*10)/10;
+   const maxed=badgeShort===0&&starShort===0&&xpShort===0;
+   const hasProgress=badgesUsed>0||currentStar>0||level>1;
+   const notStarted=!maxed&&!hasProgress;
+   const status=maxed?'MAXED':hasProgress?'IN PROGRESS':'NOT STARTED';
+
+   return {
+     name:displayName,season,overall,dev,stars,xp,
+     badgeShort,starShort,xpShort,maxed,notStarted,status
+   };
+ }).sort((a,b)=>Number(b.maxed)-Number(a.maxed)||b.overall-a.overall||a.name.localeCompare(b.name));
+}
+function progressStatusAllowed(r){
+ const boxes=[...document.querySelectorAll('.progressStatusFilter')];
+ if(!boxes.length)return true;
+ const selected=new Set(boxes.filter(x=>x.checked).map(x=>x.value));
+ if(r.maxed)return selected.has('maxed');
+ if(r.notStarted)return selected.has('notStarted');
+ return selected.has('progress');
+}
+function renderSavedOfficerProgress(){
+ const body=document.getElementById('savedOfficerProgressRows');
+ const summary=document.getElementById('savedOfficerProgressSummary');
+ if(!body||!summary)return;
+ const allRows=savedOfficerProgressData();
+ if(!allRows.length){
+   body.innerHTML='';
+   summary.textContent='No saved Officer profiles yet. Use Save Officer Progress to add Officers to this overview.';
+   return;
+ }
+ const rows=allRows.filter(progressStatusAllowed);
+ const ready=allRows.filter(x=>x.maxed);
+ const closest=allRows[0];
+ summary.innerHTML=`<b>${allRows.length} saved Officer${allRows.length===1?'':'s'}</b> · `+
+   `<b>${ready.length} MAXED</b> · `+
+   `<b>Highest progress:</b> ${esc(closest.name)} (${closest.overall}%)`+
+   (rows.length!==allRows.length?` · <b>Showing ${rows.length}</b>`:'');
+ body.innerHTML=rows.length?rows.map(r=>`<tr>
+   <td><b>${esc(r.name)}</b></td>
+   <td>${meter(r.overall)}</td>
+   <td>${meter(r.dev)}</td>
+   <td>${meter(r.stars)}</td>
+   <td>${meter(r.xp)}</td>
+   <td>${fmt(r.badgeShort)}</td>
+   <td>${fmt(r.starShort)}</td>
+   <td>${fmt(r.xpShort)}</td>
+   <td class="${r.maxed?'status-ready':r.notStarted?'':'status-progress'}">${r.status}</td>
+ </tr>`).join(''):`<tr><td colspan="9" class="muted">No saved Officers match the selected status filters.</td></tr>`;
+}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(renderSavedOfficerProgress,0));
+function compareStatusAllowed(r){
+ const boxes=[...document.querySelectorAll('.compareStatusFilter')];
+ if(!boxes.length)return true;
+ const selected=new Set(boxes.filter(x=>x.checked).map(x=>x.value));
+ if(r.maxed)return selected.has('maxed');
+ if(r.notStarted)return selected.has('notStarted');
+ return selected.has('progress');
+}
+function renderProgressCompareChoices(){
+ const box=document.getElementById('compareProgressChoices'); if(!box)return;
+ const seasonRank=s=>{
+   const v=String(s||'').trim().toLowerCase();
+   if(v==='original')return 0;
+   const m=v.match(/^s(\d+)$/);
+   return m?Number(m[1]):999;
+ };
+ const rows=savedOfficerProgressData().filter(compareStatusAllowed).slice().sort((a,b)=>
+   seasonRank(a.season)-seasonRank(b.season) ||
+   String(a.name).localeCompare(String(b.name))
+ );
+ box.innerHTML=rows.length?rows.map((r,i)=>`<label style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #4a3a12;border-radius:8px"><input type="checkbox" class="progressComparePick" value="${i}"> <span>${esc(r.name)}</span></label>`).join(''):'No saved Officer profiles.';
+ box.dataset.compareRows=JSON.stringify(rows);
+}
+function runProgressComparison(){
+ const box=document.getElementById('compareProgressChoices');
+ let all=[];
+ try{all=JSON.parse(box?.dataset.compareRows||'[]')}catch{}
+ if(!all.length)all=savedOfficerProgressData();
+
+ const picks=[...document.querySelectorAll('.progressComparePick:checked')]
+   .map(x=>all[Number(x.value)]).filter(Boolean);
+
+ const wrap=document.getElementById('compareProgressResultsWrap'),
+       body=document.getElementById('compareProgressResults'),
+       rec=document.getElementById('compareProgressRecommendation');
+
+ if(picks.length<2){
+   wrap.style.display='none';
+   rec.style.display='block';
+   rec.textContent='Select at least 2 saved Officers to compare.';
+   return;
+ }
+
+ picks.sort((a,b)=>Number(b.maxed)-Number(a.maxed)||b.overall-a.overall||a.name.localeCompare(b.name));
+
+ body.innerHTML=picks.map(r=>`<tr>
+   <td><b>${esc(r.name)}</b></td>
+   <td>${meter(r.overall)}</td>
+   <td>${meter(r.dev)}</td>
+   <td>${meter(r.stars)}</td>
+   <td>${meter(r.xp)}</td>
+   <td>${fmt(r.badgeShort)}</td>
+   <td>${fmt(r.starShort)}</td>
+   <td>${fmt(r.xpShort)}</td>
+   <td class="${r.maxed?'status-ready':r.notStarted?'':'status-progress'}">${r.status}</td>
+ </tr>`).join('');
+
+ const best=picks[0];
+ rec.style.display='block';
+ if(best.maxed){
+   rec.innerHTML=`<b>${esc(best.season?`${best.season} ${best.name}`:best.name)}</b> is already MAXED.`;
+ }else if(picks.every(r=>r.notStarted)){
+   rec.innerHTML='<b>No selected Officer has been started yet.</b>';
+ }else{
+   rec.innerHTML=`<b>Highest actual progress:</b> ${esc(best.season?`${best.season} ${best.name}`:best.name)} at ${best.overall}%.`;
+ }
+ wrap.style.display='block';
+}
+function setupProgressComparison(){
+ renderProgressCompareChoices();
+ const all=document.getElementById('compareProgressSelectAll');
+ const clear=document.getElementById('compareProgressClear');
+ const run=document.getElementById('compareProgressRun');
+ if(all)all.onclick=()=>document.querySelectorAll('.progressComparePick').forEach(x=>x.checked=true);
+ if(clear)clear.onclick=()=>{document.querySelectorAll('.progressComparePick').forEach(x=>x.checked=false);document.getElementById('compareProgressResultsWrap').style.display='none';document.getElementById('compareProgressRecommendation').style.display='none';};
+ if(run)run.onclick=runProgressComparison;
+}
+document.addEventListener('DOMContentLoaded',setupProgressComparison);
+document.addEventListener('DOMContentLoaded',()=>{
+ document.querySelectorAll('.progressStatusFilter').forEach(x=>x.addEventListener('change',()=>{
+   renderSavedOfficerProgress();
+ }));
+ document.querySelectorAll('.compareStatusFilter').forEach(x=>x.addEventListener('change',()=>{
+   renderProgressCompareChoices();
+   const wrap=document.getElementById('compareProgressResultsWrap');
+   const rec=document.getElementById('compareProgressRecommendation');
+   if(wrap)wrap.style.display='none';
+   if(rec)rec.style.display='none';
+ }));
+});
+
+
+(function(){
+ const q=id=>document.getElementById(id);
+ function buildQuickSkills(){
+ const box=q('quickSkills'); if(!box)return;
+ box.innerHTML='';
+ box.style.display='grid';
+ box.style.gap='10px';
+ const levels=getSkillStrandLevels();
+
+ for(let strand=0;strand<4;strand++){
+   const row=document.createElement('div');
+   row.className='quick-strand-row';
+   row.dataset.quickStrand=strand;
+
+   const label=document.createElement('label');
+   label.className='skill-strand-label';
+   label.textContent=`Strand ${strand+1}`;
+   row.appendChild(label);
+
+   const select=document.createElement('select');
+   select.className='quick-strand-select';
+   select.dataset.quickStrandSelect=strand;
+   for(let level=1;level<=5;level++){
+     const opt=document.createElement('option');
+     opt.value=level;
+     opt.textContent=level===1?'Level 1 — Free / already unlocked':`Level ${level}`;
+     select.appendChild(opt);
+   }
+   select.value=levels[strand];
+   row.dataset.selectedLevel=levels[strand];
+   select.onchange=()=>{
+ row.dataset.selectedLevel=select.value;
+ const paid=[...document.querySelectorAll('#quickSkills .quick-strand-select')].reduce((sum,x)=>sum+Math.max(0,(Number(x.value)||1)-1),0);
+ const next=paid>=16?0:SKILL_COSTS[paid];
+ const box=document.getElementById('quickNextSkillCostSummary');
+ if(box){
+ const total=SKILL_COSTS.reduce((a,b)=>a+b,0);
+ const spent=SKILL_COSTS.slice(0,paid).reduce((a,b)=>a+b,0);
+ const remaining=Math.max(0,total-spent);
+ box.innerHTML=paid>=16
+  ? `<b>Skills complete · ${spent}/${total} badges used · 0 remaining.</b>`
+  : `<b>Next cost: ${next} badges · ${spent}/${total} used · ${remaining} remaining.</b>`;
+}
+};
+   row.appendChild(select);
+   box.appendChild(row);
+ }
+ const paid=levels.reduce((sum,lvl)=>sum+Math.max(0,lvl-1),0);
+ const next=paid>=16?0:SKILL_COSTS[paid];
+ const summary=document.getElementById('quickNextSkillCostSummary');
+ if(summary){
+ const total=SKILL_COSTS.reduce((a,b)=>a+b,0);
+ const spent=SKILL_COSTS.slice(0,paid).reduce((a,b)=>a+b,0);
+ const remaining=Math.max(0,total-spent);
+ summary.innerHTML=paid>=16
+  ? `<b>Skills complete · ${spent}/${total} badges used · 0 remaining.</b>`
+  : `<b>Next cost: ${next} badges · ${spent}/${total} used · ${remaining} remaining.</b>`;
+}
+}
+ function openQuickProgress(){
+   buildQuickSkills();
+   const o=typeof currentOfficer==='function'?currentOfficer():null;
+   q('quickProgressOfficer').textContent=o?`${o.season} ${o.name}`:'Selected Officer';
+   q('quickStarLevel').value=q('currentStar')?.value??0;
+   q('quickOfficerLevel').value=q('currentLevel')?.value??1;
+   q('quickUnlocked').checked=!!q('unlocked')?.checked;
+   q('quickTraining').value=q('training')?.value??0;
+   q('quickTrainingValue').textContent=q('quickTraining').value;
+   if(q('quickTrainingExact'))q('quickTrainingExact').value=q('quickTraining').value;
+   buildQuickSkills();
+   q('quickProgressModal').style.display='block';
+ }
+ function closeQuickProgress(){q('quickProgressModal').style.display='none';}
+ function applyQuickProgress(){
+   q('currentStar').value=q('quickStarLevel').value;
+   q('targetStar').value=Math.max(Number(q('targetStar').value)||5,Number(q('quickStarLevel').value)||0);
+   q('currentLevel').value=q('quickOfficerLevel').value;
+   q('targetLevel').value=Math.max(Number(q('targetLevel').value)||70,Number(q('quickOfficerLevel').value)||1);
+   q('unlocked').checked=q('quickUnlocked').checked;
+   skills=Array(16).fill(false);
+   document.querySelectorAll('#quickSkills .quick-strand-row').forEach((row,strand)=>{
+     const level=Math.max(1,Math.min(5,Number(row.dataset.selectedLevel)||1));
+     for(let step=0;step<4;step++)skills[strand*4+step]=step<(level-1);
+   });
+   renderSkillStrands();
+   q('training').value=q('quickTrainingExact')?q('quickTrainingExact').value:q('quickTraining').value;
+   if(q('trainingExact'))q('trainingExact').value=q('training').value;
+   if(q('trainingLabel'))q('trainingLabel').textContent=q('quickTraining').value;
+   calculate();
+   saveOfficerProfile(true);
+   if(typeof renderSavedOfficerProgress==='function')renderSavedOfficerProgress();
+   if(typeof renderProgressCompareChoices==='function')renderProgressCompareChoices();
+   closeQuickProgress();
+   const o=typeof currentOfficer==='function'?currentOfficer():null;
+   alert(`${o?`${o.season} ${o.name}`:'Officer'} progress saved.`);
+ }
+ q('quickProgressBtn')?.addEventListener('click',openQuickProgress);
+ q('skillCostInfoBtn')?.addEventListener('click',openSkillCostInfo);
+ q('quickSkillCostInfoBtn')?.addEventListener('click',openSkillCostInfo);
+ q('skillCostInfoClose')?.addEventListener('click',closeSkillCostInfo);
+ q('skillCostInfoModal')?.addEventListener('click',e=>{if(e.target===q('skillCostInfoModal'))closeSkillCostInfo();});
+ q('quickProgressClose')?.addEventListener('click',closeQuickProgress);
+ q('quickProgressCancel')?.addEventListener('click',closeQuickProgress);
+ q('quickTraining')?.addEventListener('input',()=>{
+   const v=Math.max(0,Math.min(180,Math.round(Number(q('quickTraining').value)||0)));
+   q('quickTraining').value=v;
+   q('quickTrainingValue').textContent=v;
+   if(q('quickTrainingExact'))q('quickTrainingExact').value=v;
+ });
+ q('quickTrainingExact')?.addEventListener('input',()=>{
+   const v=Math.max(0,Math.min(180,Math.round(Number(q('quickTrainingExact').value)||0)));
+   q('quickTrainingExact').value=v;
+   q('quickTraining').value=v;
+   q('quickTrainingValue').textContent=v;
+ });
+ q('quickOfficerLevel')?.addEventListener('input',()=>{
+   if((Number(q('quickOfficerLevel').value)||1)>1) q('quickUnlocked').checked=true;
+ });
+ q('quickProgressSave')?.addEventListener('click',applyQuickProgress);
+ q('quickProgressMax')?.addEventListener('click',()=>{
+   q('quickStarLevel').value='5';q('quickOfficerLevel').value='70';q('quickUnlocked').checked=true;
+   q('quickTraining').value='180';q('quickTrainingValue').textContent='180';if(q('quickTrainingExact'))q('quickTrainingExact').value='180';
+   document.querySelectorAll('#quickSkills .quick-strand-row').forEach(row=>{row.dataset.selectedLevel='5';const sel=row.querySelector('.quick-strand-select');if(sel)sel.value='5';});
+ });
+ q('quickProgressModal')?.addEventListener('click',e=>{if(e.target===q('quickProgressModal'))closeQuickProgress();});
+})();;
 </script>
+
+<div id="skillCostInfoModal" style="display:none;position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.82);padding:18px;overflow:auto">
+<article class="card" style="max-width:720px;margin:5vh auto">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="margin:0">ℹ️ Skill Strand Costs</h2><button id="skillCostInfoClose" type="button">✕</button></div>
+<div id="skillCostCurrent" class="notice" style="margin:14px 0"></div>
+<p>Each strand starts at <b>Level 1 for free</b>. Every extra level on any strand uses the next cost in the shared sequence.</p>
+<div class="table-wrap"><table><thead><tr><th>Paid upgrade #</th><th>Badge cost</th></tr></thead><tbody id="skillCostSequenceRows"></tbody></table></div>
+<div id="skillCostPerStrand" class="notice" style="margin-top:14px"></div>
+</article></div>
+<div id="quickProgressModal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.8);padding:18px;overflow:auto">
+ <article class="card" style="max-width:820px;margin:3vh auto">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2>✏️ Edit Officer Progress</h2><button id="quickProgressClose" type="button">✕</button></div>
+  <div id="quickProgressOfficer" class="notice"></div>
+  <div class="two">
+   <div><label>Current Star Level</label><select id="quickStarLevel"><option value="0">0★</option><option value="1">1★</option><option value="2">2★</option><option value="3">3★</option><option value="4">4★</option><option value="5">5★</option></select></div>
+   <div><label>Current Officer Level</label><input id="quickOfficerLevel" type="number" min="1" max="70"></div>
+  </div>
+  <label><input id="quickUnlocked" type="checkbox"> Officer unlocked (10 badges)</label>
+  <h3>Skill Strands — each starts at Level 1</h3><div id="quickSkills"></div>
+  <label style="display:block;margin-top:14px">Training Level: <b id="quickTrainingValue">0</b> / 180</label>
+  <div style="display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center">
+    <input id="quickTraining" type="range" min="0" max="180" value="0" style="width:100%">
+    <input id="quickTrainingExact" type="number" min="0" max="180" step="1" inputmode="numeric" value="0" aria-label="Exact Training Level">
+  </div>
+  <div class="toolbar" style="margin-top:16px"><button id="quickProgressSave" class="primary" type="button">💾 Save Progress</button><button id="quickProgressMax" class="primary" type="button">⭐ MAX Officer</button><button id="quickProgressCancel" type="button">Cancel</button></div>
+  <div class="notice">Officer-specific progress only. Shared resources remain on Stars, Develop and XP.</div>
+ </article>
+</div>
 </body>
 </html>

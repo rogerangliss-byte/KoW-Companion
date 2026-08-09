@@ -1,3 +1,7 @@
+# ✨ What’s New — v4.3.29
+
+See the in-app Help tab for the full feature summary.
+
 # KoW Companion v4.2.15 — User Guide
 
 ## Recommended order
