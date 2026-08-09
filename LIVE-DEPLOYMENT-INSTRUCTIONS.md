@@ -1,9 +1,9 @@
-# KoW Companion v4.3.3 — LIVE Deployment Instructions
+# KoW Companion v4.3.27 — LIVE Deployment Instructions
 
-This package is the approved LIVE build of KoW Companion v4.3.3.
+This package is the approved LIVE build of KoW Companion v4.3.27.
 
 ## What is included
-- Smart Dashboard fix approved in TEST v4.3.3.
+- Smart Dashboard fix approved in TEST v4.3.27.
 - Smart Dashboard reads the active Officer and the app's existing calculated Development, Stars and XP results.
 - "Can I Max This Officer?" is populated automatically.
 - Saved Multi-Officer Upgrade Plan information is shown on Home.
@@ -21,9 +21,9 @@ Do NOT upload this build to KoW-Companion-Test.
 
 ## Recommended replacement procedure
 
-1. Download `KoW-Companion-v4.3.3-LIVE-Complete.zip`.
+1. Download `KoW-Companion-v4.3.27-LIVE-Complete.zip`.
 2. In Windows File Explorer, right-click the ZIP and choose **Extract All**.
-3. Open the extracted `KoW-Companion-v4.3.3-LIVE` folder.
+3. Open the extracted `KoW-Companion-v4.3.27-LIVE` folder.
 4. Open the LIVE `KoW-Companion` repository on GitHub.
 5. Delete the old app files that are being replaced before uploading the new build. This prevents obsolete files from previous versions remaining in the repository.
 6. Keep the repository itself — only replace the application contents.
@@ -43,7 +43,7 @@ Do NOT upload this build to KoW-Companion-Test.
 11. Open the GitHub **Actions** tab and wait for the Pages deployment workflow to finish successfully.
 12. When the deployment shows success, open the LIVE KoW Companion website.
 13. Hard-refresh the browser with **Ctrl + F5** so the old cached `index.html` is not displayed.
-14. Confirm the header shows **Officer Companion v4.3.3** and there is NO red TEST VERSION banner.
+14. Confirm the header shows **Officer Companion v4.3.27** and there is NO red TEST VERSION banner.
 
 ## LIVE verification checklist
 
@@ -103,4 +103,4 @@ After deployment, check these areas before considering the release complete:
 GitHub Pages and the browser can briefly show the previous build after deployment. Once the GitHub Pages workflow is successful, use **Ctrl + F5** on Windows to force a fresh copy.
 
 ## Rollback
-If a serious problem is found after deployment, restore the previous known-good LIVE build/repository commit rather than modifying several files individually. The approved v4.3.3 package should be kept as the release archive.
+If a serious problem is found after deployment, restore the previous known-good LIVE build/repository commit rather than modifying several files individually. The approved v4.3.27 package should be kept as the release archive.

@@ -1,6 +1,11 @@
 # Changelog
 
-## v4.3.6 LIVE
+## v4.3.27 LIVE — English
+- English release version synchronised with the Multilingual edition at v4.3.27.
+- Header, Settings, About, update checker and service-worker/cache version references aligned.
+- Functionality is unchanged from the approved English Live build; this package synchronises the English release number with the Multilingual edition.
+
+## v4.3.27 LIVE
 - Added Future Officer Cost Forecast to Releases.
 - Forecast is based on Officer release sequence, not Officer role pricing.
 - Uses latest known S7 Tank Destroyer benchmark: 600 ORV per Badge / 300 SRV per Exclusive Star.
@@ -20,7 +25,7 @@
 - Shared resources persist across every Officer.
 - Reset This Officer does not clear shared resource inventory.
 - Added migration from v4.3.4 Officer profiles and the earlier legacy single save.
-- v4.3.3 remains the LIVE baseline while this TEST build is checked.
+- v4.3.27 remains the LIVE baseline while this TEST build is checked.
 
 ## v4.3.4 TEST
 - Added a separate persistent progress profile for every Officer.
@@ -29,9 +34,9 @@
 - Saved profile covers Stars, Development, XP Books/levels and Planner goal.
 - Added one-time migration of the previous single saved-progress record.
 - Existing full Backup & Restore automatically includes the new Officer profiles.
-- LIVE v4.3.3 remains untouched while this feature is tested.
+- LIVE v4.3.27 remains untouched while this feature is tested.
 
-## v4.3.3 LIVE
+## v4.3.27 LIVE
 - Fixed Smart Dashboard not populating.
 - Corrected an invalid Officer reference that stopped the Dashboard updater.
 - Smart Dashboard now mirrors the app's existing authoritative MAX Officer results:
