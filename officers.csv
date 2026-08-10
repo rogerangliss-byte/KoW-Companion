@@ -1,57 +1,67 @@
-﻿Officer Name,Season,Role,ORV per Badge,SRV per Exclusive Star,Notes
-S7 Roisin,S7,Tank Destroyer,600,300,Tank Destroyer
-S7 Barbara,S7,Tank Destroyer,600,300,Tank Destroyer
-S7 Romana,S7,Tank,500,250,Tank
-S7 Liora,S7,Tank,500,250,Tank
-S7 Stella,S7,Infantry,416,208,Infantry
-S7 Klara,S7,Infantry,416,208,Infantry
-S7 Code,S7,Rally,346,173,Rally
-S7 Kamila,S7,Garrison,346,173,Garrison
-S6 Regina,S6,Tank Destroyer,289,144,Tank Destroyer
-S6 Veronica,S6,Tank Destroyer,289,144,Tank Destroyer
-S6 Silverhand,S6,Tank,240,120,Tank
-S6 Red Queen,S6,Tank,240,120,Tank
-S6 Samantha,S6,Infantry,200,100,Infantry
-S6 Saoirse,S6,Infantry,200,100,Infantry
-S6 Emily,S6,Rally,167,84,Rally
-S6 Zoya,S6,Garrison,167,84,Garrison
-S5 Feng,S5,Tank Destroyer,139,69,Tank Destroyer
-S5 Halina,S5,Tank Destroyer,139,69,Tank Destroyer
-S5 Eva,S5,Tank,116,58,Tank
-S5 Elsa,S5,Tank,116,58,Tank
-S5 Camile,S5,Infantry,96,48,Infantry
-S5 Betty,S5,Infantry,96,48,Infantry
-S5 Miyeon,S5,Rally,80,40,Rally
-S5 Julia,S5,Garrison,80,40,Garrison
-S4 Melina,S4,Tank Destroyer,67,34,Tank Destroyer
-S4 Jane,S4,Tank Destroyer,67,34,Tank Destroyer
-S4 Anna,S4,Tank,56,28,Tank
-S4 Yuki,S4,Tank,56,28,Tank
-S4 Eunice,S4,Infantry,47,23,Infantry
-S4 Derya,S4,Infantry,47,23,Infantry
-S4 Hardwin,S4,Rally,39,20,Rally
-S4 Erin,S4,Garrison,39,20,Garrison
-S3 Su,S3,Tank Destroyer,33,16,Tank Destroyer
-S3 Erica,S3,Tank Destroyer,33,16,Tank Destroyer
-S3 Aurora,S3,Tank,28,14,Tank
-S3 Ada,S3,Tank,28,14,Tank
-S3 Hannah,S3,Infantry,23,11,Infantry
-S3 Christina,S3,Infantry,23,11,Infantry
-S3 Sophia,S3,Rally,23,11,Rally
-S3 Oliva,S3,Garrison,23,11,Garrison
-S2 Lady Pandora,S2,Tank,20,10,Tank
-S2 Amanda,S2,Infantry,20,10,Infantry
-S2 Diana,S2,Tank Destroyer,20,10,Tank Destroyer
-S2 Natalia,S2,Tank,20,10,Tank
-Katherine,Original,Tank,0,0,Tank
-Grace,Original,Tank,0,0,Tank
-Chloe,Original,Rally,0,0,Rally
-Ling,Original,Tank Destroyer,0,0,Tank Destroyer
-Jessica,Original,Tank Destroyer,0,0,Tank Destroyer
-Lilith,Original,Tank Destroyer,0,0,Tank Destroyer
-Angel,Original,Gatherer,0,0,Gatherer
-Sakura,Original,Infantry,0,0,Infantry
-Loubna,Original,Infantry,0,0,Infantry
-Angelica,Original,Infantry,0,0,Infantry
-Ophelia,Original,Rally,0,0,Rally
-Doireann,Original,Garrison,0,0,Garrison
+﻿name,season,orv,srv,role,notes,rarity
+S7 Roisin,S7,600,300,Tank Destroyer,Tank Destroyer,Legendary
+S7 Barbara,S7,600,300,Tank Destroyer,Tank Destroyer,Legendary
+S7 Romana,S7,500,250,Tank,Tank,Legendary
+S7 Liora,S7,500,250,Tank,Tank,Legendary
+S7 Stella,S7,416,208,Infantry,Infantry,Legendary
+S7 Klara,S7,416,208,Infantry,Infantry,Legendary
+S7 Code,S7,346,173,Rally,Rally,Legendary
+S7 Kamila,S7,346,173,Garrison,Garrison,Legendary
+S6 Regina,S6,289,144,Tank Destroyer,Tank Destroyer,Legendary
+S6 Veronica,S6,289,144,Tank Destroyer,Tank Destroyer,Legendary
+S6 Silverhand,S6,240,120,Tank,Tank,Legendary
+S6 Red Queen,S6,240,120,Tank,Tank,Legendary
+S6 Samantha,S6,200,100,Infantry,Infantry,Legendary
+S6 Saoirse,S6,200,100,Infantry,Infantry,Legendary
+S6 Emily,S6,167,84,Rally,Rally,Legendary
+S6 Zoya,S6,167,84,Garrison,Garrison,Legendary
+S5 Feng,S5,139,69,Tank Destroyer,Tank Destroyer,Legendary
+S5 Halina,S5,139,69,Tank Destroyer,Tank Destroyer,Legendary
+S5 Eva,S5,116,58,Tank,Tank,Legendary
+S5 Elsa,S5,116,58,Tank,Tank,Legendary
+S5 Camile,S5,96,48,Infantry,Infantry,Legendary
+S5 Betty,S5,96,48,Infantry,Infantry,Legendary
+S5 Miyeon,S5,80,40,Rally,Rally,Legendary
+S5 Julia,S5,80,40,Garrison,Garrison,Legendary
+S4 Melina,S4,67,34,Tank Destroyer,Tank Destroyer,Legendary
+S4 Jane,S4,67,34,Tank Destroyer,Tank Destroyer,Legendary
+S4 Anna,S4,56,28,Tank,Tank,Legendary
+S4 Yuki,S4,56,28,Tank,Tank,Legendary
+S4 Eunice,S4,47,23,Infantry,Infantry,Legendary
+S4 Derya,S4,47,23,Infantry,Infantry,Legendary
+S4 Hardwin,S4,39,20,Rally,Rally,Legendary
+S4 Erin,S4,39,20,Garrison,Garrison,Legendary
+S3 Su,S3,33,16,Tank Destroyer,Tank Destroyer,Legendary
+S3 Erica,S3,33,16,Tank Destroyer,Tank Destroyer,Legendary
+S3 Aurora,S3,28,14,Tank,Tank,Legendary
+S3 Ada,S3,28,14,Tank,Tank,Legendary
+S3 Hannah,S3,23,11,Infantry,Infantry,Legendary
+S3 Christina,S3,23,11,Infantry,Infantry,Legendary
+S3 Sophia,S3,23,11,Rally,Rally,Legendary
+S3 Oliva,S3,23,11,Garrison,Garrison,Legendary
+S2 Lady Pandora,S2,20,10,Tank,Tank,Legendary
+S2 Amanda,S2,20,10,Infantry,Infantry,Legendary
+S2 Diana,S2,20,10,Tank Destroyer,Tank Destroyer,Legendary
+S2 Natalia,S2,20,10,Tank,Tank,Legendary
+Katherine,Original,0,0,Tank,Tank,Legendary
+Grace,Original,0,0,Tank,Tank,Legendary
+Chloe,Original,0,0,Rally,Rally,Legendary
+Ling,Original,0,0,Tank Destroyer,Tank Destroyer,Legendary
+Jessica,Original,0,0,Tank Destroyer,Tank Destroyer,Legendary
+Lilith,Original,0,0,Tank Destroyer,Tank Destroyer,Legendary
+Angel,Original,0,0,Gatherer,Gatherer,Legendary
+Sakura,Original,0,0,Infantry,Infantry,Legendary
+Loubna,Original,0,0,Infantry,Infantry,Legendary
+Angelica,Original,0,0,Infantry,Infantry,Legendary
+Ophelia,Original,0,0,Rally,Rally,Legendary
+Doireann,Original,0,0,Garrison,Garrison,Legendary
+Dorothea,Original,0,0,General,General,Epic
+Abigail,Original,0,0,Tank,Tank,Epic
+Monica,Original,0,0,"Tank Destroyer, Gatherer","Tank Destroyer, Gatherer",Epic
+Linda,Original,0,0,Tank,Tank,Epic
+Riven,Original,0,0,Infantry,Infantry,Epic
+Maria,Original,0,0,Tank Destroyer,Tank Destroyer,Epic
+Evelyn,Original,0,0,"Infantry, Gatherer","Infantry, Gatherer",Epic
+Helena,Original,0,0,General,General,Epic
+Marjorie,Original,0,0,"Tank, Gatherer","Tank, Gatherer",Elite
+Jeanne,Original,0,0,"Tank Destroyer, Gatherer","Tank Destroyer, Gatherer",Elite

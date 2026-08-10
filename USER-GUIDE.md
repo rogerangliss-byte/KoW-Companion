@@ -1,135 +1,181 @@
-# ✨ What’s New — v4.3.30
+# KoW Companion — Comprehensive User Guide
+## Version 4.3.35
 
-See the in-app Help tab for the full feature summary.
+KoW Companion is an Officer planning and progress companion for Kiss of War. Version 4.3.35 supports Legendary, Epic and Elite Officer development rules and keeps each Officer's saved progress separate while shared resource inventories remain available when switching Officers.
 
-# KoW Companion v4.2.15 — User Guide
+## 1. Navigation
 
-## Recommended order
+The bottom navigation provides the main working areas:
 
-Work through the app in this order:
+- **Home** — overview and high-level progress/status information.
+- **Progress** — saved Officer progress, completion percentages and comparison information.
+- **Officer** — select an Officer, search/filter the database and edit the Officer's saved progress profile.
+- **Stars** — Officer star progression and star-resource planning.
+- **Develop** — unlock, skill strands, training and badge/resource requirements.
+- **XP** — Officer XP and XP Book calculations.
+- **Planner** — forward planning for Officer development and resources.
+- **Database** — Officer/database information and management functions.
+- **Releases** — version and release information.
+- **Settings** — application settings, appearance and supporting options.
+- **Help** — in-app assistance and guidance.
 
-**Officer → Stars → Development → XP → Planner → Save Progress**
+## 2. Selecting an Officer
 
-Before major changes, use **Settings → Export App Backup** to create a portable JSON backup of locally saved KoW Companion data.
+Use the **Officer** page to select the Officer you want to work on. You can narrow the list using Search Officer, Season, Rarity and Role.
 
-## 1. Officer
+The Officer card shows the selected Officer's season, rarity, role and applicable voucher information. Original Officers do not use seasonal ORV/SRV conversion rules where these are not applicable.
 
-Use Search, Season and Officer Type / Role filters to narrow the Officer list, then select the Officer you want to calculate.
+Changing Officer changes the Officer-specific progress record. Shared resource inventory values are retained for planning purposes.
 
-The selected Officer determines:
-- Officer Readiness Voucher (ORV) cost per Officer Badge.
-- Star Readiness Voucher (SRV) cost per Exclusive Star.
+## 3. Saving Officer Progress
 
-The Officer portrait is displayed automatically when a matching image exists in the `officer-portraits` folder.
+Each Officer has an individual progress profile. Use **Edit Officer Progress** to record:
 
-The **Officer Upgrade Summary** shows the remaining Officer Badges, Officer Stars and Officer XP for the selected Officer.
+- Current Star Level
+- Current Officer Level
+- Whether the Officer is unlocked
+- Skill Strand 1 level
+- Skill Strand 2 level
+- Skill Strand 3 level
+- Skill Strand 4 level
+- Training Level
 
-**Original Officers cannot use Officer Readiness Vouchers (ORV) or Star Readiness Vouchers (SRV).**
+Use **Save Progress** after editing. **MAX Officer** sets the Officer to the completed state: 5★, Level 70, unlocked, all four skill strands at Level 5 and Training 180.
 
-## 2. Stars
+A fully completed Officer should therefore report consistently as complete on Home and Progress.
 
-Enter:
-- Current Star level.
-- Target Star level.
-- Legendary Star I held.
-- Legendary Star II held.
-- Legendary Star III held.
-- Star Readiness Vouchers (SRV) held.
+## 4. Skill Strands
 
-The app calculates Officer Star value held, Exclusive Stars obtainable from SRV and the remaining Star requirement.
+Each skill strand begins at Level 1 when it becomes available. Level 1 itself is free.
 
-## 3. Development
+Skill strand availability follows the Officer's current star level:
 
-Enter:
-- Unlock status.
-- Skill Points completed.
-- Training Level.
-- Officer Badges Held.
-- Universal Legendary Badges Held.
-- Legendary Officer Badge Selection Chests Held.
-- Officer Readiness Vouchers (ORV) Held.
+- 0★ — Strand 1
+- 1★ — Strands 1–2
+- 2★ — Strands 1–3
+- 3★ and above — all four strands
 
-Each **Universal Legendary Badge** is worth **1 Officer Badge** for a Legendary Officer.
+The Develop page colours completed/advanced skill cells and reports badges used and remaining.
 
-Each **Legendary Officer Badge Selection Chest** can be used as either:
-- 1 Universal Legendary Badge; or
-- the latest-Season Officer Readiness Voucher (ORV) value.
+## 5. Legendary Officer Development
 
-A Selection Chest cannot count as both. With the current S7 database, the benchmark is **600 ORV per chest**.
+Legendary Officers use the Legendary promotion sequence shown by the app.
 
-## 4. XP
+A fully developed Legendary Officer requires:
 
-Enter the current and target Officer Level and the quantities of each Officer XP Book held.
+- Unlock: **10 badges**
+- Skill promotion: **690 badges**
+- Training: **5 badges × 180 = 900 badges**
+- **Total to MAX: 1,600 badges**
 
-The app calculates XP held, XP required and the remaining XP shortfall.
+The Develop page must show **Legendary: 5 badges per Training point** and **1,600 total to MAX**.
 
-## 5. Planner & Resource Optimiser
+## 6. Epic Officer Development
 
-Use Planner after completing Stars, Development and XP.
+Epic Officers use this confirmed 16-step promotion sequence:
 
-Select the upgrade goal required, such as:
-- Max Officer.
-- Next Star.
-- Reach 5★.
-- Max Skills.
-- Max Training.
+**10, 10, 15, 15, 20, 20, 25, 25, 30, 30, 35, 35, 40, 40, 45, 45**
 
-The Planner combines the information already entered and shows requirements, held resources and shortfalls.
+This totals **440 promotion badges**.
 
-### Compare two Officers
+A fully developed Epic Officer requires:
 
-In **Resource Optimiser**, use **Compare with Officer** to select a second Officer.
+- Unlock: **10 badges**
+- Skill promotion: **440 badges**
+- Unlock + skills: **450 badges**
+- Training: **25 badges × 180 = 4,500 badges**
+- **Total to MAX: 4,950 badges**
 
-The optimiser compares the Officer Readiness Voucher (ORV) cost per Officer Badge for both Officers.
+The Develop page must show **Epic: 25 badges per Training point**, **440 Promotion badges** and **4,950 total to MAX**.
 
-Where both Officers can use ORV, the recommended strategy is:
-- favour **Officer Readiness Vouchers (ORV)** on the Officer with the lower ORV cost per badge; and
-- favour shared **Universal Legendary Badges / Legendary Officer Badge Selection Chests** on the Officer with the higher ORV cost per badge.
+## 7. Elite Officer Development
 
-This protects the more expensive Officer from unnecessary ORV spending.
+Elite Officers use the confirmed 16-step promotion sequence:
 
-The Resource Optimiser is **preview only**. It does not automatically spend, allocate or change saved resources.
+**10, 10, 15, 15, 20, 20, 25, 25, 30, 30, 35, 35, 40, 40, 45, 45**
 
-## 6. Save Progress
+This totals **440 promotion badges**.
 
-Use **Save Progress** after entering or changing calculator information.
+A fully developed Elite Officer requires:
 
-Progress is stored locally in the browser on the current device. Save Progress does not publish personal calculator data to other users.
+- Unlock: **10 badges**
+- Skill promotion: **440 badges**
+- Unlock + skills: **450 badges**
+- Training: **100 badges × 180 = 18,000 badges**
+- **Total to MAX: 18,450 badges**
 
-## 7. Database
+The Develop page must show **Elite: 100 badges per Training point**, **440 Promotion badges** and **18,450 total to MAX**.
 
-Database Manager controls the Officer master list.
+## 8. Rarity-Aware Development
 
-**Export CSV** exports the Officer database. It is different from Save Progress and App Backup.
+Version 4.3.35 refreshes Development calculations from the currently selected Officer.
 
-To publish new or edited Officers for everyone, update `officers.json` and `officers.csv` in the GitHub repository.
+When changing between Legendary, Epic and Elite Officers, the Develop page should immediately change:
 
-## 8. Settings, Backup & Restore
+- Promotion sequence/total
+- Training cost per point
+- Total badges to MAX
+- Rarity wording
 
-Settings contains:
-- App name.
-- Portrait and landscape backgrounds.
-- Appearance controls.
-- App update controls.
-- Backup & Restore.
+This prevents the previous Officer's rarity information from remaining on screen after an Officer switch.
 
-### Export App Backup
+## 9. Badge Inventories
 
-Select **Export App Backup** to create a JSON backup containing KoW Companion data stored locally by the browser. Keep the downloaded file somewhere safe.
+Develop contains resource inventory fields including Officer-specific badges and supported Universal badge inventories. Enter the quantities you currently hold so the app can compare available resources against the selected Officer's remaining development requirement.
 
-### Restore App Backup
+Universal Legendary, Epic and Elite resources should be treated according to their matching rarity. Legendary Officer Badge Selection Chests retain their Legendary/ORV planning purpose.
 
-Select **Restore App Backup**, choose a previously exported KoW Companion JSON backup, and the app will restore the locally saved data and reload.
+## 10. Stars
 
-### Updates
+Use **Stars** to record and plan Officer star resources. Star rules can differ from badge development rules, particularly for Original/non-seasonal Officers. Always select the Officer first so the app can apply the appropriate Officer data.
 
-**Check for Updates** compares the installed version with the published version.
+## 11. XP
 
-**Refresh Latest Version** refreshes the application cache without intentionally deleting saved calculator progress.
+Use **XP** to calculate Officer XP requirements and the value of held XP Books. Officer level progress saved in the Officer profile contributes to the overall progress view.
 
-## Terminology
+## 12. Progress
 
-- **ORV** — Officer Readiness Voucher.
-- **SRV** — Star Readiness Voucher.
-- **Universal Legendary Badge** — worth 1 Officer Badge for a Legendary Officer.
-- **Exclusive Star** — worth 110 Officer Star value.
+The **Progress** page consolidates saved Officer development. It is intended to report the same underlying saved profile used elsewhere in the app.
+
+A MAX Officer is:
+
+**5★ + Level 70 + Unlocked + all four skills Level 5 + Training 180**
+
+Version 4.3.35 includes consistency work so a genuinely MAX Officer is represented as complete rather than remaining just below 100%.
+
+## 13. Planner
+
+Use Planner to estimate future requirements before committing resources. Select and save the Officer's current progress first so planning begins from the correct baseline.
+
+## 14. Recommended Data-Entry Order
+
+For the clearest results:
+
+1. Select the Officer.
+2. Open/Edit Officer Progress.
+3. Enter current Star Level and Officer Level.
+4. Set unlocked status.
+5. Enter all four skill strand levels.
+6. Enter Training Level.
+7. Save Progress.
+8. Enter shared resource inventories in Stars, Develop and XP as applicable.
+9. Check Progress/Home for the consolidated result.
+10. Use Planner for remaining-resource planning.
+
+## 15. Testing a Rarity Switch
+
+A useful validation sequence is:
+
+1. Select an Epic Officer and open Develop — confirm 25/training and 4,950 MAX.
+2. Select an Elite Officer and open Develop — confirm 100/training and 18,450 MAX.
+3. Select a Legendary Officer and open Develop — confirm 5/training and 1,600 MAX.
+
+The text and calculations should refresh every time without carrying over the previous rarity.
+
+## 16. Reset and Stored Data
+
+Use Settings/reset functions carefully. Officer progress and resource inventories are valuable saved data. Where backup/export functionality is available, keep a backup before resetting or replacing a deployment.
+
+## 17. Version Identification
+
+This guide applies to **KoW Companion v4.3.35 LIVE**. The LIVE build must not display the red TEST VERSION / NOT LIVE banner.

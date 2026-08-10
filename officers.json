@@ -2,461 +2,595 @@
   {
     "name": "S7 Roisin",
     "season": "S7",
+    "role": "Tank Destroyer",
     "orv": 600,
     "srv": 300,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S7 Barbara",
     "season": "S7",
+    "role": "Tank Destroyer",
     "orv": 600,
     "srv": 300,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S7 Romana",
     "season": "S7",
+    "role": "Tank",
     "orv": 500,
     "srv": 250,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S7 Liora",
     "season": "S7",
+    "role": "Tank",
     "orv": 500,
     "srv": 250,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S7 Stella",
     "season": "S7",
+    "role": "Infantry",
     "orv": 416,
     "srv": 208,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S7 Klara",
     "season": "S7",
+    "role": "Infantry",
     "orv": 416,
     "srv": 208,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S7 Code",
     "season": "S7",
+    "role": "Rally",
     "orv": 346,
     "srv": 173,
     "notes": "Rally",
-    "role": "Rally"
+    "rarity": "Legendary"
   },
   {
     "name": "S7 Kamila",
     "season": "S7",
+    "role": "Garrison",
     "orv": 346,
     "srv": 173,
     "notes": "Garrison",
-    "role": "Garrison"
+    "rarity": "Legendary"
   },
   {
     "name": "S6 Regina",
     "season": "S6",
+    "role": "Tank Destroyer",
     "orv": 289,
     "srv": 144,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S6 Veronica",
     "season": "S6",
+    "role": "Tank Destroyer",
     "orv": 289,
     "srv": 144,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S6 Silverhand",
     "season": "S6",
+    "role": "Tank",
     "orv": 240,
     "srv": 120,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S6 Red Queen",
     "season": "S6",
+    "role": "Tank",
     "orv": 240,
     "srv": 120,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S6 Samantha",
     "season": "S6",
+    "role": "Infantry",
     "orv": 200,
     "srv": 100,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S6 Saoirse",
     "season": "S6",
+    "role": "Infantry",
     "orv": 200,
     "srv": 100,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S6 Emily",
     "season": "S6",
+    "role": "Rally",
     "orv": 167,
     "srv": 84,
     "notes": "Rally",
-    "role": "Rally"
+    "rarity": "Legendary"
   },
   {
     "name": "S6 Zoya",
     "season": "S6",
+    "role": "Garrison",
     "orv": 167,
     "srv": 84,
     "notes": "Garrison",
-    "role": "Garrison"
+    "rarity": "Legendary"
   },
   {
     "name": "S5 Feng",
     "season": "S5",
+    "role": "Tank Destroyer",
     "orv": 139,
     "srv": 69,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S5 Halina",
     "season": "S5",
+    "role": "Tank Destroyer",
     "orv": 139,
     "srv": 69,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S5 Eva",
     "season": "S5",
+    "role": "Tank",
     "orv": 116,
     "srv": 58,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S5 Elsa",
     "season": "S5",
+    "role": "Tank",
     "orv": 116,
     "srv": 58,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S5 Camile",
     "season": "S5",
+    "role": "Infantry",
     "orv": 96,
     "srv": 48,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S5 Betty",
     "season": "S5",
+    "role": "Infantry",
     "orv": 96,
     "srv": 48,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S5 Miyeon",
     "season": "S5",
+    "role": "Rally",
     "orv": 80,
     "srv": 40,
     "notes": "Rally",
-    "role": "Rally"
+    "rarity": "Legendary"
   },
   {
     "name": "S5 Julia",
     "season": "S5",
+    "role": "Garrison",
     "orv": 80,
     "srv": 40,
     "notes": "Garrison",
-    "role": "Garrison"
+    "rarity": "Legendary"
   },
   {
     "name": "S4 Melina",
     "season": "S4",
+    "role": "Tank Destroyer",
     "orv": 67,
     "srv": 34,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S4 Jane",
     "season": "S4",
+    "role": "Tank Destroyer",
     "orv": 67,
     "srv": 34,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S4 Anna",
     "season": "S4",
+    "role": "Tank",
     "orv": 56,
     "srv": 28,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S4 Yuki",
     "season": "S4",
+    "role": "Tank",
     "orv": 56,
     "srv": 28,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S4 Eunice",
     "season": "S4",
+    "role": "Infantry",
     "orv": 47,
     "srv": 23,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S4 Derya",
     "season": "S4",
+    "role": "Infantry",
     "orv": 47,
     "srv": 23,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S4 Hardwin",
     "season": "S4",
+    "role": "Rally",
     "orv": 39,
     "srv": 20,
     "notes": "Rally",
-    "role": "Rally"
+    "rarity": "Legendary"
   },
   {
     "name": "S4 Erin",
     "season": "S4",
+    "role": "Garrison",
     "orv": 39,
     "srv": 20,
     "notes": "Garrison",
-    "role": "Garrison"
+    "rarity": "Legendary"
   },
   {
     "name": "S3 Su",
     "season": "S3",
+    "role": "Tank Destroyer",
     "orv": 33,
     "srv": 16,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S3 Erica",
     "season": "S3",
+    "role": "Tank Destroyer",
     "orv": 33,
     "srv": 16,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S3 Aurora",
     "season": "S3",
+    "role": "Tank",
     "orv": 28,
     "srv": 14,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S3 Ada",
     "season": "S3",
+    "role": "Tank",
     "orv": 28,
     "srv": 14,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S3 Hannah",
     "season": "S3",
+    "role": "Infantry",
     "orv": 23,
     "srv": 11,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S3 Christina",
     "season": "S3",
+    "role": "Infantry",
     "orv": 23,
     "srv": 11,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S3 Sophia",
     "season": "S3",
+    "role": "Rally",
     "orv": 23,
     "srv": 11,
     "notes": "Rally",
-    "role": "Rally"
+    "rarity": "Legendary"
   },
   {
     "name": "S3 Oliva",
     "season": "S3",
+    "role": "Garrison",
     "orv": 23,
     "srv": 11,
     "notes": "Garrison",
-    "role": "Garrison"
+    "rarity": "Legendary"
   },
   {
     "name": "S2 Lady Pandora",
     "season": "S2",
+    "role": "Tank",
     "orv": 20,
     "srv": 10,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "S2 Amanda",
     "season": "S2",
+    "role": "Infantry",
     "orv": 20,
     "srv": 10,
     "notes": "Infantry",
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "S2 Diana",
     "season": "S2",
+    "role": "Tank Destroyer",
     "orv": 20,
     "srv": 10,
     "notes": "Tank Destroyer",
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "S2 Natalia",
     "season": "S2",
+    "role": "Tank",
     "orv": 20,
     "srv": 10,
     "notes": "Tank",
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "Katherine",
     "season": "Original",
+    "role": "Tank",
     "orv": 0,
     "srv": 0,
     "notes": "Tank",
-    "readinessEligible": false,
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "Grace",
     "season": "Original",
+    "role": "Tank",
     "orv": 0,
     "srv": 0,
     "notes": "Tank",
-    "readinessEligible": false,
-    "role": "Tank"
+    "rarity": "Legendary"
   },
   {
     "name": "Chloe",
     "season": "Original",
+    "role": "Rally",
     "orv": 0,
     "srv": 0,
     "notes": "Rally",
-    "readinessEligible": false,
-    "role": "Rally"
+    "rarity": "Legendary"
   },
   {
     "name": "Ling",
     "season": "Original",
+    "role": "Tank Destroyer",
     "orv": 0,
     "srv": 0,
     "notes": "Tank Destroyer",
-    "readinessEligible": false,
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "Jessica",
     "season": "Original",
+    "role": "Tank Destroyer",
     "orv": 0,
     "srv": 0,
     "notes": "Tank Destroyer",
-    "readinessEligible": false,
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "Lilith",
     "season": "Original",
+    "role": "Tank Destroyer",
     "orv": 0,
     "srv": 0,
     "notes": "Tank Destroyer",
-    "readinessEligible": false,
-    "role": "Tank Destroyer"
+    "rarity": "Legendary"
   },
   {
     "name": "Angel",
     "season": "Original",
+    "role": "Gatherer",
     "orv": 0,
     "srv": 0,
     "notes": "Gatherer",
-    "readinessEligible": false,
-    "role": "Gatherer"
+    "rarity": "Legendary"
   },
   {
     "name": "Sakura",
     "season": "Original",
+    "role": "Infantry",
     "orv": 0,
     "srv": 0,
     "notes": "Infantry",
-    "readinessEligible": false,
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "Loubna",
     "season": "Original",
+    "role": "Infantry",
     "orv": 0,
     "srv": 0,
     "notes": "Infantry",
-    "readinessEligible": false,
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "Angelica",
     "season": "Original",
+    "role": "Infantry",
     "orv": 0,
     "srv": 0,
     "notes": "Infantry",
-    "readinessEligible": false,
-    "role": "Infantry"
+    "rarity": "Legendary"
   },
   {
     "name": "Ophelia",
     "season": "Original",
+    "role": "Rally",
     "orv": 0,
     "srv": 0,
     "notes": "Rally",
-    "readinessEligible": false,
-    "role": "Rally"
+    "rarity": "Legendary"
   },
   {
     "name": "Doireann",
     "season": "Original",
+    "role": "Garrison",
     "orv": 0,
     "srv": 0,
     "notes": "Garrison",
-    "readinessEligible": false,
-    "role": "Garrison"
+    "rarity": "Legendary"
+  },
+  {
+    "name": "Dorothea",
+    "season": "Original",
+    "role": "General",
+    "orv": 0,
+    "srv": 0,
+    "notes": "General",
+    "rarity": "Epic"
+  },
+  {
+    "name": "Abigail",
+    "season": "Original",
+    "role": "Tank",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank",
+    "rarity": "Epic"
+  },
+  {
+    "name": "Monica",
+    "season": "Original",
+    "role": "Tank Destroyer, Gatherer",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank Destroyer, Gatherer",
+    "rarity": "Epic"
+  },
+  {
+    "name": "Linda",
+    "season": "Original",
+    "role": "Tank",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank",
+    "rarity": "Epic"
+  },
+  {
+    "name": "Riven",
+    "season": "Original",
+    "role": "Infantry",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Infantry",
+    "rarity": "Epic"
+  },
+  {
+    "name": "Maria",
+    "season": "Original",
+    "role": "Tank Destroyer",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank Destroyer",
+    "rarity": "Epic"
+  },
+  {
+    "name": "Evelyn",
+    "season": "Original",
+    "role": "Infantry, Gatherer",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Infantry, Gatherer",
+    "rarity": "Epic"
+  },
+  {
+    "name": "Helena",
+    "season": "Original",
+    "role": "General",
+    "orv": 0,
+    "srv": 0,
+    "notes": "General",
+    "rarity": "Epic"
+  },
+  {
+    "name": "Marjorie",
+    "season": "Original",
+    "role": "Tank, Gatherer",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank, Gatherer",
+    "rarity": "Elite"
+  },
+  {
+    "name": "Jeanne",
+    "season": "Original",
+    "role": "Tank Destroyer, Gatherer",
+    "orv": 0,
+    "srv": 0,
+    "notes": "Tank Destroyer, Gatherer",
+    "rarity": "Elite"
   }
 ]
