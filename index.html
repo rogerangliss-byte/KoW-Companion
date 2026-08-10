@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.3.31</title>
+<title>KoW Companion v4.3.32</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -179,6 +179,19 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
  color:#fff !important;
  border-color:#d6aa35 !important;
 }
+
+.skill-strand-row.locked{opacity:.62}
+.skill-strand-row.locked .skill-strand-label{color:#aaa}
+.skill-lvl.locked,.skill-lvl:disabled{
+ background:#555 !important;
+ border-color:#777 !important;
+ color:#bbb !important;
+ cursor:not-allowed !important;
+ opacity:.72;
+}
+.strand-requirement{display:block;font-size:11px;font-weight:600;color:#c8c8c8;margin-top:3px}
+.quick-strand-row.locked{opacity:.62}
+.quick-strand-row.locked .quick-strand-select{background:#555;color:#bbb;cursor:not-allowed}
 
 </style>
 </head>
@@ -359,7 +372,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 </div>
 <div id="skillGrid" class="skill-strands"></div>
 <div id="nextSkillCostSummary" class="notice" style="margin-top:8px"></div>
-      <div class="notice">Level 1 is free on all four strands. Each additional skill level uses the next cost in the existing sequence: 10, 10, 15, 15, 30, 30, 40, 40, 45, 45, 50, 50, 75, 75, 80, 80 — regardless of which strand you increase.</div>
+      <div class="notice">Strands unlock with the Officer’s Current Star Level: unlocked at 0★ = Strand 1, 1★ = Strands 1–2, 2★ = Strands 1–3, and 3★+ = all four strands. Level 1 is free when a strand becomes available. Each additional skill level uses the next cost in the existing sequence: 10, 10, 15, 15, 30, 30, 40, 40, 45, 45, 50, 50, 75, 75, 80, 80 — regardless of which available strand you increase.</div>
       <label>Training Level: <b id="trainingLabel">0</b> / 180</label>
       <div style="display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center">
         <input id="training" type="range" min="0" max="180" value="0">
@@ -488,13 +501,14 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <h2>❓ Help & Instructions</h2>
 
 <div class="card" id="whatsNewV4329" style="margin-bottom:16px">
-  <h3 style="margin-top:0">✨ What’s New — v4.3.31</h3>
+  <h3 style="margin-top:0">✨ What’s New — v4.3.33 LIVE</h3>
   <div class="notice">
-    <b>v4.3.30 focuses on faster Officer progress entry, clearer progress tracking, and the new four-strand skill system.</b>
+    <b>v4.3.33 LIVE adds Star-based Skill Strand unlocking and visual locking while retaining the newest-first Progress ordering from v4.3.32.</b>
   </div>
 
   <h4>📊 Officer Progress</h4>
   <p>Officers are automatically classified as <b>MAXED</b>, <b>IN PROGRESS</b>, or <b>NOT STARTED</b>. The main Progress filters and Compare Officer Progress filters work independently.</p>
+  <p><b>New in v4.3.33 LIVE:</b> Skill Strands now follow Current Star Level: <b>0★ = Strand 1</b>, <b>1★ = Strands 1–2</b>, <b>2★ = Strands 1–3</b>, and <b>3★+ = all four strands</b>. Unavailable strands are greyed out, disabled and show the Star requirement.</p>
 
   <h4>🔎 Compare Officer Progress</h4>
   <p>Compare saved Officers in Season order. You can compare Not Started and In Progress Officers even when the main Officer Progress table is filtered differently.</p>
@@ -512,7 +526,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
   <p>Training can now be entered as an exact number from <b>0–180</b> as well as using the slider.</p>
 
   <h4>🧩 Four Independent Skill Strands</h4>
-  <p>Each Officer has four independent Skill Strands. Every strand begins at <b>Level 1 free</b> and can be advanced separately to Level 5. Combinations such as <b>1 / 3 / 5 / 2</b> are supported.</p>
+  <p>Each Officer has four independent Skill Strands. Strand availability follows Current Star Level: <b>0★ = Strand 1</b>, <b>1★ = Strands 1–2</b>, <b>2★ = Strands 1–3</b>, and <b>3★+ = all four strands</b>. Level 1 is free when each strand unlocks, and available strands can be advanced separately to Level 5.</p>
 
   <p>The 16 paid skill increases share one badge-cost sequence, regardless of which strand is increased:</p>
   <div class="notice"><b>10, 10, 15, 15, 30, 30, 40, 40, 45, 45, 50, 50, 75, 75, 80, 80</b></div>
@@ -522,7 +536,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
   <p>The Development screen now shows <b>Next Cost</b>, <b>badges used / 690</b>, and <b>badges remaining</b>. Select the <b>i</b> button to view the full cost sequence and current strand information.</p>
 
   <h4>🎨 Skill Progress Colours</h4>
-  <p><b>Gold</b> means that skill level has been reached. <b>Black/dark</b> means it has not yet been reached. Level 1 is gold because it is free and already available on every strand.</p>
+  <p><b>Gold</b> means that skill level has been reached. <b>Black/dark</b> means an available skill level has not yet been reached. <b>Grey</b> means the strand is not yet available at the Officer’s current Star Level. Locked strands show the Star requirement.</p>
 
   <h4>💾 Improved Saving & Synchronisation</h4>
   <p>Progress saved through Edit Officer Progress is written back to the Officer profile so the Officer, Stars, Develop, XP and Progress views stay synchronised.</p>
@@ -709,7 +723,21 @@ function getSkillStrandLevels(){
  }
  return levels;
 }
+function strandRequiredStars(strand){ return Math.max(0,Math.min(3,Number(strand)||0)); }
+function strandIsAvailable(strand,starValue=null,unlockedValue=null){
+ const stars=starValue===null ? Number($('currentStar')?.value||0) : Number(starValue||0);
+ const unlocked=unlockedValue===null ? !!$('unlocked')?.checked : !!unlockedValue;
+ return unlocked && stars>=strandRequiredStars(strand);
+}
+function strandRequirementText(strand,starValue=null,unlockedValue=null){
+ const unlocked=unlockedValue===null ? !!$('unlocked')?.checked : !!unlockedValue;
+ if(!unlocked)return 'Requires Officer unlock';
+ const req=strandRequiredStars(strand);
+ return req===0?'Available when Officer is unlocked':`Requires ${req}★`;
+}
+
 function setSkillStrandLevel(strand,level){
+ if(!strandIsAvailable(strand))return;
  level=Math.max(1,Math.min(5,Number(level)||1));
  for(let step=0;step<4;step++){
    skills[strand*4+step]=step < (level-1);
@@ -757,12 +785,13 @@ function renderSkillStrands(){
  g.innerHTML='';
  const levels=getSkillStrandLevels();
  for(let strand=0;strand<4;strand++){
+   const available=strandIsAvailable(strand);
    const row=document.createElement('div');
-   row.className='skill-strand-row';
+   row.className='skill-strand-row'+(available?'':' locked');
 
    const label=document.createElement('div');
    label.className='skill-strand-label';
-   label.textContent=`Strand ${strand+1}`;
+   label.innerHTML=`Strand ${strand+1}${available?'':`<span class="strand-requirement">${strandRequirementText(strand)}</span>`}`;
    row.appendChild(label);
 
    const controls=document.createElement('div');
@@ -771,9 +800,12 @@ function renderSkillStrands(){
    for(let level=1;level<=5;level++){
      const b=document.createElement('button');
      b.type='button';
-     b.className='skill-lvl'+(level===1?' free':'')+(level<=levels[strand]?' reached':'')+(levels[strand]===level?' active':'');
+     b.disabled=!available;
+     b.className='skill-lvl'+(level===1?' free':'')+(level<=levels[strand]?' reached':'')+(levels[strand]===level?' active':'')+(available?'':' locked');
      b.textContent=level===1?'Lv1 ✓':`Lv${level}`;
-     b.title=level===1?'Level 1 is free and already unlocked':`Set Strand ${strand+1} to Level ${level}`;
+     b.title=available
+       ? (level===1?'Level 1 is free on this unlocked strand':`Set Strand ${strand+1} to Level ${level}`)
+       : strandRequirementText(strand);
      b.onclick=()=>setSkillStrandLevel(strand,level);
      controls.appendChild(b);
    }
@@ -1322,7 +1354,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.3.31';
+const APP_VERSION='4.3.32';
 function syncVersionUI(){
  const v='v'+APP_VERSION;
  if($('headerVersion'))$('headerVersion').textContent=v;
@@ -1766,6 +1798,11 @@ async function init(){
   el.addEventListener('input',scheduleOfficerAutoSave);
   el.addEventListener('change',scheduleOfficerAutoSave);
  });
+ ['currentStar','unlocked'].forEach(id=>{
+  const el=$(id); if(!el)return;
+  el.addEventListener('input',renderSkillStrands);
+  el.addEventListener('change',renderSkillStrands);
+ });
  // Shared resources are also persisted automatically.
  ['ls1','ls2','ls3','srvHeld','universalBadgeHeld','legendaryBadgeChestHeld','legendaryBadgeChestMode','orvHeld'].forEach(id=>{
   const el=$(id); if(!el)return;
@@ -1861,7 +1898,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.31';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.32';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -1893,7 +1930,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
 
  loadProgress();
 
- // v4.3.31 feature wiring
+ // v4.3.32 feature wiring
  populateCompareOfficers();
  const compareSelect=$('compareOfficerSelect');
  if(compareSelect){
@@ -1992,7 +2029,20 @@ function savedOfficerProgressData(){
      name:displayName,season,overall,dev,stars,xp,
      badgeShort,starShort,xpShort,maxed,notStarted,status
    };
- }).sort((a,b)=>Number(b.maxed)-Number(a.maxed)||b.overall-a.overall||a.name.localeCompare(b.name));
+ }).sort((a,b)=>{
+   const statusRank=r=>r.maxed?0:(r.notStarted?2:1);
+   const seasonRank=s=>{
+     const v=String(s||'').trim().toLowerCase();
+     if(v==='original')return 0;
+     const m=v.match(/^s(\d+)$/);
+     return m?Number(m[1]):0;
+   };
+   const officerDbIndex=name=>officers.findIndex(o=>String(o.name||'').trim()===String(name||'').trim());
+   return statusRank(a)-statusRank(b) ||
+          seasonRank(b.season)-seasonRank(a.season) ||
+          officerDbIndex(a.name)-officerDbIndex(b.name) ||
+          String(a.name).localeCompare(String(b.name));
+ });
 }
 function progressStatusAllowed(r){
  const boxes=[...document.querySelectorAll('.progressStatusFilter')];
@@ -2049,7 +2099,7 @@ function renderProgressCompareChoices(){
    return m?Number(m[1]):999;
  };
  const rows=savedOfficerProgressData().filter(compareStatusAllowed).slice().sort((a,b)=>
-   seasonRank(a.season)-seasonRank(b.season) ||
+   seasonRank(b.season)-seasonRank(a.season) ||
    String(a.name).localeCompare(String(b.name))
  );
  box.innerHTML=rows.length?rows.map((r,i)=>`<label style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #4a3a12;border-radius:8px"><input type="checkbox" class="progressComparePick" value="${i}"> <span>${esc(r.name)}</span></label>`).join(''):'No saved Officer profiles.';
@@ -2132,38 +2182,43 @@ document.addEventListener('DOMContentLoaded',()=>{
  box.style.display='grid';
  box.style.gap='10px';
  const levels=getSkillStrandLevels();
+ const quickStars=Number(q('quickStarLevel')?.value??q('currentStar')?.value??0);
+ const quickUnlocked=!!(q('quickUnlocked')?.checked??q('unlocked')?.checked);
 
  for(let strand=0;strand<4;strand++){
+   const available=strandIsAvailable(strand,quickStars,quickUnlocked);
    const row=document.createElement('div');
-   row.className='quick-strand-row';
+   row.className='quick-strand-row'+(available?'':' locked');
    row.dataset.quickStrand=strand;
 
    const label=document.createElement('label');
    label.className='skill-strand-label';
-   label.textContent=`Strand ${strand+1}`;
+   label.innerHTML=`Strand ${strand+1}${available?'':`<span class="strand-requirement">${strandRequirementText(strand,quickStars,quickUnlocked)}</span>`}`;
    row.appendChild(label);
 
    const select=document.createElement('select');
    select.className='quick-strand-select';
    select.dataset.quickStrandSelect=strand;
+   select.disabled=!available;
    for(let level=1;level<=5;level++){
      const opt=document.createElement('option');
      opt.value=level;
-     opt.textContent=level===1?'Level 1 — Free / already unlocked':`Level ${level}`;
+     opt.textContent=level===1?'Level 1 — Free':`Level ${level}`;
      select.appendChild(opt);
    }
    select.value=levels[strand];
    row.dataset.selectedLevel=levels[strand];
+   select.title=available?`Set Strand ${strand+1} level`:strandRequirementText(strand,quickStars,quickUnlocked);
    select.onchange=()=>{
  row.dataset.selectedLevel=select.value;
  const paid=[...document.querySelectorAll('#quickSkills .quick-strand-select')].reduce((sum,x)=>sum+Math.max(0,(Number(x.value)||1)-1),0);
  const next=paid>=16?0:SKILL_COSTS[paid];
- const box=document.getElementById('quickNextSkillCostSummary');
- if(box){
+ const summaryBox=document.getElementById('quickNextSkillCostSummary');
+ if(summaryBox){
  const total=SKILL_COSTS.reduce((a,b)=>a+b,0);
  const spent=SKILL_COSTS.slice(0,paid).reduce((a,b)=>a+b,0);
  const remaining=Math.max(0,total-spent);
- box.innerHTML=paid>=16
+ summaryBox.innerHTML=paid>=16
   ? `<b>Skills complete · ${spent}/${total} badges used · 0 remaining.</b>`
   : `<b>Next cost: ${next} badges · ${spent}/${total} used · ${remaining} remaining.</b>`;
 }
@@ -2221,6 +2276,8 @@ document.addEventListener('DOMContentLoaded',()=>{
    alert(`${o?officerDisplayName(o):'Officer'} progress saved.`);
  }
  q('quickProgressBtn')?.addEventListener('click',openQuickProgress);
+ q('quickStarLevel')?.addEventListener('change',buildQuickSkills);
+ q('quickUnlocked')?.addEventListener('change',buildQuickSkills);
  q('skillCostInfoBtn')?.addEventListener('click',openSkillCostInfo);
  q('quickSkillCostInfoBtn')?.addEventListener('click',openSkillCostInfo);
  q('skillCostInfoClose')?.addEventListener('click',closeSkillCostInfo);
