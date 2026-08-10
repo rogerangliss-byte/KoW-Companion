@@ -1,4 +1,4 @@
-# ✨ What’s New — v4.3.29
+# ✨ What’s New — v4.3.30
 
 See the in-app Help tab for the full feature summary.
 

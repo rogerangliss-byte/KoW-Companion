@@ -1,15 +1,8 @@
 # Changelog
 
-## v4.3.28 LIVE
-- Recurring Release Calendar refined:
-  - highlights the current month;
-  - separately identifies the next scheduled release;
-  - repeats automatically every August → July cycle.
-- Version Integrity added:
-  - APP_VERSION is the single display source for Header, Settings and About;
-  - Settings reports Build integrity: OK or MISMATCH.
-- Mobile bottom navigation improved:
-  - horizontally scrollable on narrow screens;
-  - larger touch targets;
-  - labels no longer squeeze into unreadable widths.
-- Existing v4.3.27 English functionality, Officer data, portraits, forecasting, optimiser and saved-data logic retained.
+## v4.3.30 LIVE
+- Fixed incomplete cross-device Backup & Restore.
+- Export now commits the active Officer profile before creating the JSON snapshot.
+- Individual Officer Badges Held now transfer correctly.
+- Officer-specific progress and shared resource inventories are retained.
+- Restore avoids stale KoW Companion local-storage values on the destination device.

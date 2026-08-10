@@ -1,4 +1,4 @@
-const CACHE='kow-v4.2.13-fixed';
+const CACHE='kow-v4.3.30-live';
 const ASSETS=[
   './',
   './index.html',

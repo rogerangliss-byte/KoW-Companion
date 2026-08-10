@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.3.29</title>
+<title>KoW Companion v4.3.30</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -488,9 +488,9 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <h2>❓ Help & Instructions</h2>
 
 <div class="card" id="whatsNewV4329" style="margin-bottom:16px">
-  <h3 style="margin-top:0">✨ What’s New — v4.3.29</h3>
+  <h3 style="margin-top:0">✨ What’s New — v4.3.30</h3>
   <div class="notice">
-    <b>v4.3.29 focuses on faster Officer progress entry, clearer progress tracking, and the new four-strand skill system.</b>
+    <b>v4.3.30 focuses on faster Officer progress entry, clearer progress tracking, and the new four-strand skill system.</b>
   </div>
 
   <h4>📊 Officer Progress</h4>
@@ -716,6 +716,7 @@ function setSkillStrandLevel(strand,level){
  }
  renderSkillStrands();
  calculate();
+ scheduleOfficerAutoSave();
 }
 function totalPaidSkillUpgrades(){
  return getSkillStrandLevels().reduce((sum,lvl)=>sum+(lvl-1),0);
@@ -1314,7 +1315,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.3.29';
+const APP_VERSION='4.3.30';
 function syncVersionUI(){
  const v='v'+APP_VERSION;
  if($('headerVersion'))$('headerVersion').textContent=v;
@@ -1457,8 +1458,30 @@ function buildUpgradeSummary(){
   Remaining badge shortfall: <b>${Math.max(0,badgeNeed-usable).toLocaleString()}</b><br>
   <span class="muted">Preview only — resources are not spent.</span>${comparison}`;
  }
-}function exportFullBackup(){
+}
+let officerAutoSaveTimer=null;
+function scheduleOfficerAutoSave(){
+ clearTimeout(officerAutoSaveTimer);
+ officerAutoSaveTimer=setTimeout(()=>{
+  try{
+   if(loadedOfficerProfileIndex!==null && +$('officerSelect').value===loadedOfficerProfileIndex){
+    saveOfficerProfile(true);
+   }else{
+    saveGlobalResources();
+   }
+  }catch{}
+ },250);
+}
+function persistCurrentStateBeforeBackup(){
+ // Force the currently visible Officer-specific fields and shared inventory into localStorage
+ // before the browser storage snapshot is created. This prevents the latest unsaved badgeHeld,
+ // skill, training, level, stars and resource values being omitted from a cross-device backup.
+ if($('officerSelect') && officers[+$('officerSelect').value]) saveOfficerProfile(true);
+ else saveGlobalResources();
+}
+function exportFullBackup(){
  try{
+  persistCurrentStateBeforeBackup();
   const payload={app:'KoW Companion',version:APP_VERSION,exported:new Date().toISOString(),localStorage:{}};
   for(let i=0;i<localStorage.length;i++){
    const k=localStorage.key(i);
@@ -1484,8 +1507,12 @@ function buildUpgradeSummary(){
 async function restoreFullBackup(file){
  const payload=JSON.parse(await file.text());
  if(!payload||!payload.localStorage)throw new Error('Invalid KoW Companion backup file.');
- Object.entries(payload.localStorage).forEach(([k,v])=>localStorage.setItem(k,v));
- alert('Backup restored. The app will reload now.');location.reload();
+ if(payload.app && payload.app!=='KoW Companion')throw new Error('This is not a KoW Companion backup file.');
+ // Restore as an exact localStorage snapshot. Clearing first prevents stale keys on the target
+ // device from surviving when they were not present in the source-device backup.
+ localStorage.clear();
+ Object.entries(payload.localStorage).forEach(([k,v])=>{if(v!==null&&v!==undefined)localStorage.setItem(k,String(v));});
+ alert('Backup restored successfully. Officer profiles, Officer Badges Held and shared resources have been imported. The app will reload now.');location.reload();
 }
 
 let multiPlanOfficers=[];
@@ -1726,6 +1753,19 @@ async function init(){
  renderSkillStrands();
  XP_DENOMS.forEach(v=>{const d=document.createElement('div');d.className='xp-item';d.innerHTML=`<label>${v.toLocaleString()} XP</label><input id="xp${v}" type="number" min="0" step="1" inputmode="numeric" value="0">`;$('xpBooks').appendChild(d)});
  document.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',calculate));
+ // Auto-save Officer-specific progress so cross-device backups do not depend on pressing Save Progress.
+ ['currentStar','targetStar','unlocked','training','trainingExact','badgeHeld','currentLevel','targetLevel','goalSelect'].forEach(id=>{
+  const el=$(id); if(!el)return;
+  el.addEventListener('input',scheduleOfficerAutoSave);
+  el.addEventListener('change',scheduleOfficerAutoSave);
+ });
+ // Shared resources are also persisted automatically.
+ ['ls1','ls2','ls3','srvHeld','universalBadgeHeld','legendaryBadgeChestHeld','legendaryBadgeChestMode','orvHeld'].forEach(id=>{
+  const el=$(id); if(!el)return;
+  el.addEventListener('input',()=>{clearTimeout(officerAutoSaveTimer);officerAutoSaveTimer=setTimeout(saveGlobalResources,250)});
+  el.addEventListener('change',()=>{clearTimeout(officerAutoSaveTimer);officerAutoSaveTimer=setTimeout(saveGlobalResources,250)});
+ });
+ XP_DENOMS.forEach(v=>{const el=$('xp'+v);if(el)el.addEventListener('input',()=>{clearTimeout(officerAutoSaveTimer);officerAutoSaveTimer=setTimeout(saveGlobalResources,250)})});
  const RELEASES=[
  ['August','New Dogs'],
  ['September','Guns: Field · Jets: Fighter'],
@@ -1814,7 +1854,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.29';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.30';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -1846,7 +1886,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
 
  loadProgress();
 
- // v4.3.29 feature wiring
+ // v4.3.30 feature wiring
  populateCompareOfficers();
  const compareSelect=$('compareOfficerSelect');
  if(compareSelect){
