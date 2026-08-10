@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.3.32</title>
+<title>KoW Companion v4.3.33</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -1354,7 +1354,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.3.32';
+const APP_VERSION='4.3.33';
 function syncVersionUI(){
  const v='v'+APP_VERSION;
  if($('headerVersion'))$('headerVersion').textContent=v;
@@ -1898,7 +1898,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.32';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.33';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -1930,7 +1930,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
 
  loadProgress();
 
- // v4.3.32 feature wiring
+ // v4.3.33 feature wiring
  populateCompareOfficers();
  const compareSelect=$('compareOfficerSelect');
  if(compareSelect){
