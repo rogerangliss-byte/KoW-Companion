@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.3.30</title>
+<title>KoW Companion v4.3.31</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -488,7 +488,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
       <h2>❓ Help & Instructions</h2>
 
 <div class="card" id="whatsNewV4329" style="margin-bottom:16px">
-  <h3 style="margin-top:0">✨ What’s New — v4.3.30</h3>
+  <h3 style="margin-top:0">✨ What’s New — v4.3.31</h3>
   <div class="notice">
     <b>v4.3.30 focuses on faster Officer progress entry, clearer progress tracking, and the new four-strand skill system.</b>
   </div>
@@ -1104,6 +1104,13 @@ function officerProfileKey(index){
  const o=officers[+index];
  return o ? `${o.season||''}|${o.name||''}` : String(index);
 }
+function officerDisplayName(o){
+ if(!o)return 'Officer';
+ const season=String(o.season||'').trim();
+ const name=String(o.name||'').trim();
+ if(!season)return name||'Officer';
+ return name.toLowerCase().startsWith((season+' ').toLowerCase()) ? name : `${season} ${name}`.trim();
+}
 
 // Officer-specific progress only.
 function captureOfficerProgress(){
@@ -1171,7 +1178,7 @@ function saveGlobalResources(){
 }
 function updateProfileStatus(d){
  const o=currentOfficer(), n=$('profileOfficerName'), st=$('profileSavedStatus');
- if(n)n.textContent=o?(String(o.name).startsWith(String(o.season)+' ')?o.name:`${o.season} ${o.name}`):'—';
+ if(n)n.textContent=o?officerDisplayName(o):'—';
  if(st)st.textContent=d?.savedAt ? `Saved ${new Date(d.savedAt).toLocaleString()}` : 'Not saved yet';
 }
 function saveOfficerProfile(silent=false,index=null){
@@ -1183,7 +1190,7 @@ function saveOfficerProfile(silent=false,index=null){
  saveGlobalResources();
  loadedOfficerProfileIndex=idx;
  updateProfileStatus(d);
- if(!silent)alert(`${officers[idx].season} ${officers[idx].name} progress saved.`);
+ if(!silent)alert(`${officerDisplayName(officers[idx])} progress saved.`);
 }
 function loadOfficerProfile(index){
  const idx=+index, profiles=getOfficerProfiles(), d=profiles[officerProfileKey(idx)]||null;
@@ -1199,7 +1206,7 @@ function maxSelectedOfficerProfile(){
  const o=officers[idx];
  if(!o)return;
 
- const label=`${o.season||''} ${o.name||''}`.trim();
+ const label=officerDisplayName(o);
  if(!confirm(`Set ${label} to fully MAXED?\n\nThis will set:\n• 5 Stars\n• Level 70\n• Unlocked\n• All 4 Skill Strands at Level 5\n• Training Level 180\n\nShared ORV, SRV, badges, stars and XP inventory will not be spent or changed.`))return;
 
  $('currentStar').value=5;
@@ -1227,7 +1234,7 @@ function maxSelectedOfficerProfile(){
 
 function resetOfficerProfile(){
  const idx=+$('officerSelect').value,o=officers[idx];if(!o)return;
- if(!confirm(`Reset saved progress for ${o.season} ${o.name}? Shared resources will not be changed.`))return;
+ if(!confirm(`Reset saved progress for ${officerDisplayName(o)}? Shared resources will not be changed.`))return;
  const profiles=getOfficerProfiles();
  delete profiles[officerProfileKey(idx)];
  localStorage.setItem(OFFICER_PROFILE_KEY,JSON.stringify(profiles));
@@ -1315,7 +1322,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.3.30';
+const APP_VERSION='4.3.31';
 function syncVersionUI(){
  const v='v'+APP_VERSION;
  if($('headerVersion'))$('headerVersion').textContent=v;
@@ -1854,7 +1861,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.30';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.31';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -1886,7 +1893,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{docume
 
  loadProgress();
 
- // v4.3.30 feature wiring
+ // v4.3.31 feature wiring
  populateCompareOfficers();
  const compareSelect=$('compareOfficerSelect');
  if(compareSelect){
@@ -2085,11 +2092,11 @@ function runProgressComparison(){
  const best=picks[0];
  rec.style.display='block';
  if(best.maxed){
-   rec.innerHTML=`<b>${esc(best.season?`${best.season} ${best.name}`:best.name)}</b> is already MAXED.`;
+   rec.innerHTML=`<b>${esc(officerDisplayName(best))}</b> is already MAXED.`;
  }else if(picks.every(r=>r.notStarted)){
    rec.innerHTML='<b>No selected Officer has been started yet.</b>';
  }else{
-   rec.innerHTML=`<b>Highest actual progress:</b> ${esc(best.season?`${best.season} ${best.name}`:best.name)} at ${best.overall}%.`;
+   rec.innerHTML=`<b>Highest actual progress:</b> ${esc(officerDisplayName(best))} at ${best.overall}%.`;
  }
  wrap.style.display='block';
 }
@@ -2179,7 +2186,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  function openQuickProgress(){
    buildQuickSkills();
    const o=typeof currentOfficer==='function'?currentOfficer():null;
-   q('quickProgressOfficer').textContent=o?`${o.season} ${o.name}`:'Selected Officer';
+   q('quickProgressOfficer').textContent=o?officerDisplayName(o):'Selected Officer';
    q('quickStarLevel').value=q('currentStar')?.value??0;
    q('quickOfficerLevel').value=q('currentLevel')?.value??1;
    q('quickUnlocked').checked=!!q('unlocked')?.checked;
@@ -2211,7 +2218,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    if(typeof renderProgressCompareChoices==='function')renderProgressCompareChoices();
    closeQuickProgress();
    const o=typeof currentOfficer==='function'?currentOfficer():null;
-   alert(`${o?`${o.season} ${o.name}`:'Officer'} progress saved.`);
+   alert(`${o?officerDisplayName(o):'Officer'} progress saved.`);
  }
  q('quickProgressBtn')?.addEventListener('click',openQuickProgress);
  q('skillCostInfoBtn')?.addEventListener('click',openSkillCostInfo);

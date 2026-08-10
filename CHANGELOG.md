@@ -1,3 +1,6 @@
+## v4.3.31 LIVE
+- Fixed duplicate season prefix labels.
+
 # Changelog
 
 ## v4.3.30 LIVE
