@@ -178,4 +178,4 @@ Use Settings/reset functions carefully. Officer progress and resource inventorie
 
 ## 17. Version Identification
 
-This guide applies to **KoW Companion v4.3.35 LIVE**. The LIVE build must not display the red TEST VERSION / NOT LIVE banner.
+This guide applies to **KoW Companion v4.3.36 LIVE**. The LIVE build must not display the red TEST VERSION / NOT LIVE banner.
