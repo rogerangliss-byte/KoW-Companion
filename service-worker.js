@@ -1,4 +1,4 @@
-const CACHE='kow-v4.3.36-live-version-fixed-2';
+const CACHE='kow-v4.3.38-english-test-max-original-rules';
 const ASSETS=[
   './',
   './index.html',
