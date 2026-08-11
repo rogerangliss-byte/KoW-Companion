@@ -9,3 +9,5 @@ Promoted from the approved v4.3.39 English TEST build.
 - S2+ seasonal Legendary Officers can use ORV and SRV.
 - Planner wording uses **Legendary Officer Badge Chests**.
 - Universal Legendary Badge Planner accounting corrected.
+
+- Removed the red TEST/LIVE status banner from the production build; TEST builds retain their red warning banner.
