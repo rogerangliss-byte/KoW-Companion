@@ -1,7 +1,7 @@
 # KoW Companion — Comprehensive User Guide
-## Version 4.3.35
+## Version 4.3.36
 
-KoW Companion is an Officer planning and progress companion for Kiss of War. Version 4.3.35 supports Legendary, Epic and Elite Officer development rules and keeps each Officer's saved progress separate while shared resource inventories remain available when switching Officers.
+KoW Companion is an Officer planning and progress companion for Kiss of War. Version 4.3.36 supports Legendary, Epic and Elite Officer development rules and keeps each Officer's saved progress separate while shared resource inventories remain available when switching Officers.
 
 ## 1. Navigation
 
@@ -108,7 +108,7 @@ The Develop page must show **Elite: 100 badges per Training point**, **440 Promo
 
 ## 8. Rarity-Aware Development
 
-Version 4.3.35 refreshes Development calculations from the currently selected Officer.
+Version 4.3.36 refreshes Development calculations from the currently selected Officer.
 
 When changing between Legendary, Epic and Elite Officers, the Develop page should immediately change:
 
@@ -141,7 +141,7 @@ A MAX Officer is:
 
 **5★ + Level 70 + Unlocked + all four skills Level 5 + Training 180**
 
-Version 4.3.35 includes consistency work so a genuinely MAX Officer is represented as complete rather than remaining just below 100%.
+Version 4.3.36 includes consistency work so a genuinely MAX Officer is represented as complete rather than remaining just below 100%.
 
 ## 13. Planner
 

@@ -1,4 +1,4 @@
-const CACHE='kow-v4.3.36-live-max-ios-cross-platform';
+const CACHE='kow-v4.3.36-live-version-fixed-2';
 const ASSETS=[
   './',
   './index.html',

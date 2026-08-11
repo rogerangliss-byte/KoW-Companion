@@ -7,3 +7,6 @@
 - Compact iPhone Officer Progress controls and Safari input zoom protection.
 - Cross-platform target: iPhone/iPad Safari, Android Chrome, Windows Chrome/Edge, Mac Safari/Chrome.
 - TEST banner removed and production version reporting updated to v4.3.36.
+
+## Version reporting corrected
+- Header, Settings, About, update checker and Version Integrity now consistently report v4.3.36.
