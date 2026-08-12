@@ -1,3 +1,7 @@
+## v4.3.51 TEST
+- Planner: Central Inventory individual Officer Badges applied first and displayed separately.
+- Planner: Use current held resources reads Central Inventory directly.
+
 ## v4.3.36 TEST
 - Added Legendary / Epic / Elite rarity.
 - Added rarity filter and rarity colour indicator.

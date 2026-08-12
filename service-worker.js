@@ -1,4 +1,4 @@
-const CACHE='kow-v4.3.38-english-test-max-original-rules';
+const CACHE='kow-v4.3.52-planner-held-badges';
 const ASSETS=[
   './',
   './index.html',
