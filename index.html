@@ -872,10 +872,15 @@ nav.bottom-nav::-webkit-scrollbar,
       <h2>❓ Help & Instructions</h2>
 
 <div class="card" id="whatsNewV4329" style="margin-bottom:16px">
-  <h3 style="margin-top:0">✨ What’s New — v4.3.50 LIVE</h3>
+  <h3 style="margin-top:0">✨ What’s New — v4.3.55 LIVE</h3>
   <div class="notice">
-    <b>v4.3.50 LIVE adds rarity-specific Stars and Universal Badges, Legendary-only SRV/ORV, and confirmed Legendary/Epic/Elite promotion and Training totals.</b>
+    <b>v4.3.55 LIVE adds the new Central Inventory alongside rarity-specific Stars and Universal Badges, Legendary-only SRV/ORV, and confirmed Legendary/Epic/Elite promotion and Training totals.</b>
   </div>
+
+  <h4>📦 New Central Inventory</h4>
+  <p>Enter your shared resources once in <b>Inventory</b> and press <b>Save Inventory</b>. The saved values are then available throughout the app instead of being re-entered for each Officer.</p>
+  <p>Inventory includes ORV, SRV, Universal Legendary/Epic/Elite Badges, Legendary Officer Badge Chests and Selection Chests, rarity-specific Stars, XP Books, and individual Officer Badges. Individual Officer Badge quantities are stored separately for each Officer.</p>
+  <p><b>Recommended starting point:</b> update and save Inventory first so the Officer, Stars, Development, XP and Planner calculations can work from the resources you actually hold.</p>
 
   <h4>📊 Officer Progress</h4>
   <p>Officers are automatically classified as <b>MAXED</b>, <b>IN PROGRESS</b>, or <b>NOT STARTED</b>. The main Progress filters and Compare Officer Progress filters work independently.</p>
@@ -913,47 +918,52 @@ nav.bottom-nav::-webkit-scrollbar,
   <p>Progress saved through Edit Officer Progress is written back to the Officer profile so the Officer, Stars, Develop, XP and Progress views stay synchronised.</p>
 </div>
 
-      <div class="notice"><b>Recommended workflow:</b> work through Officer → Stars → Development → XP → Planner, then use <b>Save Progress</b>. Use <b>Backup & Restore</b> in Settings before major changes or when you want a portable copy of locally saved app data.</div>
+      <div class="notice"><b>Recommended workflow:</b> start with <b>Inventory</b> and save the resources you currently hold, then work through <b>Officer → Stars → Development → XP → Planner → Save Progress</b>. Use <b>Backup & Restore</b> in Settings before major changes or when you want a portable copy of locally saved app data.</div>
 
-      <h3>1. Officer</h3>
+      <h3>1. Inventory</h3>
+      <p>Start here. Enter the resources you currently hold and press <b>Save Inventory</b>. Inventory is shared throughout the app, so you only need to maintain these resource totals in one place.</p>
+      <p>Inventory includes <b>Officer Readiness Vouchers (ORV)</b>, <b>Star Readiness Vouchers (SRV)</b>, Universal Legendary/Epic/Elite Badges, Legendary Officer Badge Chests and Selection Chests, Legendary/Epic/Elite Stars, XP Books, and individual Officer Badges.</p>
+      <p>For individual Officer Badges, enter quantities against the appropriate Officer. Each Officer's badge quantity is stored separately. Update Inventory whenever your in-game resources change, then save it before planning upgrades.</p>
+
+      <h3>2. Officer</h3>
       <p>Use <b>Search</b>, <b>Season</b> and <b>Officer Type / Role</b> filters to narrow the Officer list. Select the Officer you want to calculate. A matching portrait is displayed automatically when its file is available in the <b>officer-portraits</b> folder.</p>
       <p>The selected Officer determines the cost of an Officer Badge in <b>Officer Readiness Vouchers (ORV)</b> and the cost of an Exclusive Star in <b>Star Readiness Vouchers (SRV)</b>.</p>
       <p>The <b>Officer Upgrade Summary</b> shows the remaining Officer Badges, Officer Stars and Officer XP for the currently selected Officer.</p>
       <p><b>Original Officers:</b> Officer Readiness Vouchers (ORV) and Star Readiness Vouchers (SRV) cannot be used for Original Officers.</p>
 
-      <h3>2. Stars</h3>
+      <h3>3. Stars</h3>
       <p>Set the Officer's current and target Star level. The Stars tab automatically follows the selected Officer rarity: Legendary, Epic or Elite Star I / II / III. <b>Star Readiness Vouchers (SRV)</b> are shown only for Legendary Officers and cannot be used by Epic or Elite Officers.</p>
 
-      <h3>3. Development</h3>
-      <p>Enter unlock status, the four independent Skill Strand levels and Training Level. Then enter Officer Badges Held, <b>Universal Legendary Badges Held</b>, <b>Legendary Officer Badge Chests Held</b> and <b>Officer Readiness Vouchers (ORV) Held</b>.</p>
+      <h3>4. Development</h3>
+      <p>Enter unlock status, the four independent Skill Strand levels and Training Level. Development uses the relevant saved Inventory resources when calculating what is available for the selected Officer.</p>
       <p>Each <b>Universal Legendary Badge</b> is worth <b>1 Officer Badge</b> for a Legendary Officer.</p>
       <p>Each <b>Legendary Officer Badge Selection Chest</b> can be used as <b>either</b> 1 Universal Legendary Badge <b>or</b> converted to the latest-Season Officer Readiness Voucher (ORV) value. A chest cannot count as both. With the current S7 database the benchmark is <b>600 ORV per chest</b>.</p>
 
-      <h3>4. XP</h3>
-      <p>Enter current and target Officer Level, then enter the number of Officer XP Books held in each denomination. The app calculates XP held, XP required and the remaining shortfall.</p>
+      <h3>5. XP</h3>
+      <p>Enter current and target Officer Level. Saved XP Book quantities from Inventory are used to calculate XP held, XP required and the remaining shortfall.</p>
 
-      <h3>5. Planner & Resource Optimiser</h3>
-      <p>Use Planner after entering Stars, Development and XP. Select a goal such as Max Officer, Next Star, Reach 5★, Max Skills or Max Training to see requirements, resources held and shortfalls.</p>
+      <h3>6. Planner & Resource Optimiser</h3>
+      <p>Use Planner after entering Inventory and the Officer's Stars, Development and XP progress. Select a goal such as Max Officer, Next Star, Reach 5★, Max Skills or Max Training to see requirements, resources held and shortfalls.</p>
       <p>The <b>Resource Optimiser</b> lets you select a second Officer in <b>Compare with Officer</b>. It compares the Officer Readiness Voucher (ORV) cost per Officer Badge for the two Officers.</p>
       <p><b>How to interpret the recommendation:</b> where both Officers can use ORV, the optimiser recommends favouring ORV on the Officer with the <b>lower ORV cost per badge</b> and favouring shared <b>Universal Legendary Badges / Legendary Officer Badge Chests</b> on the Officer with the <b>higher ORV cost per badge</b>. This protects the more expensive Officer from unnecessary ORV spending.</p>
       <p>The optimiser is <b>preview only</b>. It does not automatically spend, allocate or change your saved resources.</p>
 
-      <h3>5a. Multi-Officer Upgrade Planner</h3>
+      <h3>6a. Multi-Officer Upgrade Planner</h3>
       <p>The Multi-Officer Planner lets you create a priority list of several Officers, set the Officer Badges still needed for each, and preview how shared ORV, Universal Legendary Badges and Legendary Officer Badge Chests could cover the plan.</p>
-      <p>Use <b>Use current held resources</b> to copy the resources currently entered in Development. Plans are preview-only and do not spend or alter the normal calculator data. Named plans can be saved locally in the browser and loaded again later.</p>
+      <p>Plans are preview-only and do not spend or alter the saved Inventory. Named plans can be saved locally in the browser and loaded again later.</p>
 
-      <h3>6. Save Progress</h3>
+      <h3>7. Save Progress</h3>
       <p><b>MAX Officer:</b> use the ⭐ MAX Officer button to set the selected Officer to 5 Stars, Level 70, Unlocked, all 4 Skill Strands at Level 5 and Training Level 180. The Officer profile is saved immediately. Shared inventory is not spent or changed.</p>
-      <p>Use <b>Save Progress</b> after entering or changing calculator information. Progress is stored locally in the browser on the current device. Save Progress does not publish your personal data to other users.</p>
+      <p>Use <b>Save Progress</b> after entering or changing Officer progress information. Progress is stored locally in the browser on the current device. Save Progress does not publish your personal data to other users.</p>
 
-      <h3>7. Database</h3>
+      <h3>8. Database</h3>
       <p>The Database Manager controls the Officer master list. Use it to add or edit Officers and export the database. <b>Export CSV</b> exports the Officer database; it is different from Save Progress and App Backup.</p>
       <p>To publish new or edited Officers for everyone, update the published <b>officers.json</b> and <b>officers.csv</b> files in the GitHub repository.</p>
 
-      <h3>7a. Recurring Release Calendar</h3>
+      <h3>8a. Recurring Release Calendar</h3>
       <p>The <b>Releases</b> tab shows the recurring August → July annual KoW release cycle. The current month and next scheduled release are highlighted automatically, so the calendar does not require a yearly reset.</p>
 
-      <h3>8. Settings, Backup & Restore</h3>
+      <h3>9. Settings, Backup & Restore</h3>
       <p>Settings contains the app name, portrait and landscape backgrounds, update controls and <b>Backup & Restore</b>.</p>
       <p><b>Export App Backup</b> creates a JSON backup of KoW Companion data stored locally by the browser. Keep this file somewhere safe. <b>Restore App Backup</b> loads a previously exported JSON backup and reloads the app.</p>
       <p><b>Check for Updates</b> compares the installed version with the published version. <b>Refresh Latest Version</b> refreshes the KoW Companion application cache without intentionally deleting saved calculator progress.</p>
