@@ -1,18 +1,10 @@
 # KoW Companion English v4.3.59 LIVE
 
-## Unified Button Design System
+Maintenance update to the approved v4.3.59 LIVE build.
 
-This test build standardises button appearance throughout the English app without changing calculation or saved-data logic.
-
-- Gold: primary actions and current/selected states.
-- Navy: Save / commit actions.
-- Gold outline: secondary actions, navigation shortcuts and non-destructive utilities.
-- Red: destructive/reset/delete actions.
-- Guided Workflow, Home shortcuts, Officer actions, Inventory, Planner, Database, Releases, Settings and modal controls now use the same visual language.
-- Native browser file-picker controls remain native for cross-platform reliability.
-- Live build: test banner removed; About identifies v4.3.59.
-
-
-## v4.3.59 changes
-- Home Guided Workflow buttons now use the same visual treatment as the Home shortcut buttons below them.
-- Workflow order, completion ticks, state logic, next-step logic and navigation are unchanged.
+- Home Guided Workflow layout corrected for Android/tablet widths.
+- Tablet layout uses a clean 3-column workflow grid.
+- Small mobile layout uses a 2-column workflow grid.
+- Desktop layout remains unchanged.
+- Workflow icons, completion ticks, navigation and logic remain unchanged.
+- No Officer, Inventory, Planner, forecasting, saved-data or calculation logic changed.
