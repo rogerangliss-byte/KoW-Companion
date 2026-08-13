@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.3.55</title>
+<title>KoW Companion v4.3.59</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -60,6 +60,39 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 .table-wrap{overflow:auto;margin-top:12px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,.08);text-align:right}th:first-child,td:first-child{text-align:left}.db-table input{min-width:100px}.actions{display:flex;gap:6px}.actions button{padding:7px 9px}
 .bottom-nav{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);width:min(980px,calc(100% - 16px));display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;padding:8px;border:1px solid var(--line);border-radius:16px;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);z-index:20}
 .bottom-nav button{border:0;background:transparent;color:var(--muted);padding:7px 1px;border-radius:10px;min-width:0;white-space:nowrap;font-size:.9rem}.bottom-nav button.active{background:rgba(213,167,47,.17);color:var(--gold2)}.bottom-nav span{display:block;font-size:.62rem;margin-top:3px;white-space:nowrap}
+
+/* v4.3.59 — Unified Button Design System */
+/* Consistent app action system: gold action, navy save, outlined secondary, red destructive. */
+.app-action-primary,.app-action-save,.app-action-secondary,.app-action-danger{padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700;letter-spacing:.01em;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+.app-action-primary{background:linear-gradient(180deg,#795915,#5e4512)!important;border:1px solid rgba(244,197,78,.55)!important;color:#fff!important}
+.app-action-save{background:linear-gradient(180deg,#202a49,#10172c)!important;border:1px solid rgba(213,167,47,.75)!important;color:#fff!important}
+.app-action-secondary{background:rgba(213,167,47,.10)!important;border:1px solid rgba(213,167,47,.45)!important;color:var(--gold2)!important}
+.app-action-danger{background:rgba(120,30,30,.18)!important;border:1px solid rgba(211,95,95,.45)!important;color:#f0c5c5!important}
+.app-action-primary:hover,.app-action-save:hover,.app-action-secondary:hover,.app-action-danger:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(0,0,0,.25)}
+#guidedWorkflowSteps button{min-width:105px;padding:8px 11px;border-radius:8px;border:1px solid rgba(213,167,47,.45);background:rgba(0,0,0,.42);color:var(--gold2);cursor:pointer;font-weight:700;white-space:nowrap}
+#guidedWorkflowSteps button.completed{background:rgba(213,167,47,.18);border-color:rgba(244,197,78,.70);color:#fff}
+#guidedWorkflowSteps button.current{background:linear-gradient(180deg,#795915,#5e4512);border-color:rgba(244,197,78,.75);color:#fff}
+#kowAdvancedPlannerOptions{display:flex;gap:22px;flex-wrap:wrap;margin:10px 0;align-items:center}
+#kowAdvancedPlannerOptions label{display:inline-flex;margin:0;gap:8px;align-items:center;white-space:nowrap;color:var(--muted);font-size:.86rem}
+#kowAdvancedPlannerOptions input{width:auto;flex:0 0 auto}
+@media(max-width:520px){#kowAdvancedPlannerOptions{gap:10px 18px}#kowAdvancedPlannerOptions label{white-space:normal}}
+.inventory-save-actions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.inventory-save-actions button{min-width:150px}
+.db-table .actions button{border-radius:8px;font-weight:700;cursor:pointer}
+.planner-actions button{min-height:48px;margin-top:0;width:100%;font-weight:700;letter-spacing:.01em;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease,background .15s ease}
+.planner-actions button:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(0,0,0,.28)}
+.planner-actions button:active{transform:translateY(0);box-shadow:none}
+.planner-action-primary{background:linear-gradient(180deg,#795915,#5e4512)!important;border-color:rgba(244,197,78,.55)!important;color:#fff!important}
+.planner-action-save{background:linear-gradient(180deg,#202a49,#10172c)!important;border:1px solid rgba(213,167,47,.75)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.planner-action-secondary{background:rgba(213,167,47,.10)!important;border:1px solid rgba(213,167,47,.45)!important;color:var(--gold2)!important}
+.planner-action-danger{background:rgba(120,30,30,.18)!important;border:1px solid rgba(211,95,95,.45)!important;color:#f0c5c5!important}
+#multiPlannerCard .toolbar.planner-actions{grid-template-columns:2fr 1fr 1fr 1.2fr}
+#multiPlannerRows button[data-up],#multiPlannerRows button[data-down],#multiPlannerRows button[data-remove]{min-width:30px;height:30px;padding:0 7px;border-radius:8px;border:1px solid rgba(213,167,47,.42);background:rgba(213,167,47,.10);color:var(--gold2);cursor:pointer;font-weight:800}
+#multiPlannerRows button[data-remove]{border-color:rgba(211,95,95,.42);background:rgba(120,30,30,.18);color:#f0c5c5}
+#multiPlannerRows button:hover{background:rgba(213,167,47,.22)}
+#multiPlannerRows button[data-remove]:hover{background:rgba(120,30,30,.32)}
+@media(max-width:760px){#multiPlannerCard .toolbar.planner-actions{grid-template-columns:1fr 1fr}}
+
 @media(max-width:760px){
 .grid,.two{grid-template-columns:1fr}
 .toolbar{grid-template-columns:1fr 1fr}
@@ -549,6 +582,57 @@ nav.bottom-nav::-webkit-scrollbar,
 }
 </style>
 
+
+<style id="v4359-test6-unified-button-system">
+/* v4.3.59 LIVE — one button language across the whole app.
+   Gold = primary action, Navy = save/commit, Gold outline = secondary/navigation, Red = destructive. */
+:root{--btn-radius:10px;--btn-gold-top:#806018;--btn-gold-bottom:#5e4512;--btn-navy-top:#202a49;--btn-navy-bottom:#10172c;--btn-red-bg:rgba(120,30,30,.18);--btn-red-line:rgba(211,95,95,.45)}
+button,.button-like,.filebtn{font-weight:700;letter-spacing:.01em}
+button:not(.bottom-nav button):not(.skill),.button-like,.filebtn{border-radius:var(--btn-radius);transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease,background .15s ease,color .15s ease}
+.primary,.app-action-primary,.planner-action-primary{background:linear-gradient(180deg,var(--btn-gold-top),var(--btn-gold-bottom))!important;border:1px solid rgba(244,197,78,.62)!important;color:#fff!important}
+.app-action-save,.planner-action-save{background:linear-gradient(180deg,var(--btn-navy-top),var(--btn-navy-bottom))!important;border:1px solid rgba(213,167,47,.75)!important;color:#fff!important}
+.app-action-secondary,.planner-action-secondary,.button-like,.filebtn{background:rgba(213,167,47,.08)!important;border:1px solid rgba(213,167,47,.50)!important;color:var(--gold2)!important}
+.app-action-danger,.planner-action-danger{background:var(--btn-red-bg)!important;border:1px solid var(--btn-red-line)!important;color:#f0c5c5!important}
+.primary:hover,.app-action-primary:hover,.planner-action-primary:hover,.app-action-save:hover,.planner-action-save:hover,.app-action-secondary:hover,.planner-action-secondary:hover,.app-action-danger:hover,.planner-action-danger:hover,.button-like:hover,.filebtn:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(0,0,0,.25)}
+.primary:active,.app-action-primary:active,.planner-action-primary:active,.app-action-save:active,.planner-action-save:active,.app-action-secondary:active,.planner-action-secondary:active,.app-action-danger:active,.planner-action-danger:active,.button-like:active,.filebtn:active{transform:translateY(0);box-shadow:none}
+button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-action-secondary:disabled,.app-action-danger:disabled{opacity:.48;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+/* Save buttons share one navy treatment and sensible sizing. */
+#saveOfficerProfile,#saveProgress,#quickProgressSave,#saveInventory,#dbSave,#multiSavePlan,#saveScenario{background:linear-gradient(180deg,var(--btn-navy-top),var(--btn-navy-bottom))!important;border:1px solid rgba(213,167,47,.75)!important;color:#fff!important}
+#saveOfficerProfile,#saveProgress{width:100%;margin-top:12px;padding:10px 12px}
+/* Home shortcut strip: never fall back to browser-white controls. */
+#dashboard .toolbar button[data-go-view]{background:rgba(213,167,47,.08)!important;border:1px solid rgba(213,167,47,.50)!important;color:var(--gold2)!important;padding:8px 12px}
+/* Guided Workflow uses the same visual button treatment as the Home shortcut row below.
+   Completion ticks and the current-step class remain logic/state markers only. */
+#guidedWorkflowSteps button,
+#guidedWorkflowSteps button.completed,
+#guidedWorkflowSteps button.current{
+  border-radius:var(--btn-radius)!important;
+  background:rgba(213,167,47,.08)!important;
+  border:1px solid rgba(213,167,47,.50)!important;
+  color:var(--gold2)!important;
+  padding:8px 12px!important;
+}
+/* Rarity filters match secondary controls, with gold selected state. */
+.inv-rarity-btn{border-radius:var(--btn-radius)!important;background:rgba(213,167,47,.08)!important;border:1px solid rgba(213,167,47,.50)!important;color:var(--gold2)!important}
+.inv-rarity-btn.active{background:linear-gradient(180deg,var(--btn-gold-top),var(--btn-gold-bottom))!important;border-color:rgba(244,197,78,.78)!important;color:#fff!important}
+/* Compact icon buttons and planner row order controls. */
+.app-icon-button{width:34px!important;height:34px!important;min-width:34px!important;padding:0!important;display:inline-flex!important;align-items:center;justify-content:center}
+#skillCostInfoBtn{background:rgba(213,167,47,.08)!important;border:1px solid rgba(213,167,47,.50)!important;color:var(--gold2)!important;cursor:pointer}
+#multiPlannerRows button[data-up],#multiPlannerRows button[data-down]{background:rgba(213,167,47,.08)!important;border-color:rgba(213,167,47,.50)!important;color:var(--gold2)!important}
+#multiPlannerRows button[data-remove]{background:var(--btn-red-bg)!important;border-color:var(--btn-red-line)!important;color:#f0c5c5!important}
+/* Database Import CSV label should read as secondary, while Save remains navy. */
+#database .filebtn{background:rgba(213,167,47,.08)!important;color:var(--gold2)!important}
+/* Backup actions: equal sizing, visually distinct intent. */
+#backupActions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important}
+#backupAppData,#restoreAppDataLabel{width:100%!important;min-height:52px!important;display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important}
+#backupAppData{background:linear-gradient(180deg,var(--btn-gold-top),var(--btn-gold-bottom))!important;border:1px solid rgba(244,197,78,.62)!important;color:#fff!important}
+#restoreAppDataLabel{background:linear-gradient(180deg,#652b32,#43191e)!important;border:1px solid rgba(211,95,95,.72)!important;color:#fff!important}
+@media(max-width:700px){#backupActions{grid-template-columns:1fr!important}}
+/* Native file picker buttons in Settings are intentionally left browser-native for reliability. */
+#settings input[type=file]::file-selector-button{font-weight:600}
+/* Modal cancel/close controls should not look browser-default. */
+#quickProgressCancel,#quickProgressClose,#skillCostInfoClose{background:rgba(213,167,47,.08)!important;border:1px solid rgba(213,167,47,.50)!important;color:var(--gold2)!important;cursor:pointer}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -603,7 +687,7 @@ nav.bottom-nav::-webkit-scrollbar,
   </div>
   <div id="dashWarning" class="notice" style="margin-top:10px">Enter resources to see planning guidance.</div>
   <div style="display:flex;gap:8px;overflow-x:auto;margin-top:10px">
-    <button type="button" data-go-view="development">🏅 Development</button><button type="button" data-go-view="stars">⭐ Stars</button><button type="button" data-go-view="xp">📘 XP</button><button type="button" data-go-view="planner">🎯 Planner</button><button type="button" data-go-view="releases">📅 Releases</button>
+    <button type="button" class="app-action-secondary" data-go-view="development">🏅 Development</button><button type="button" class="app-action-secondary" data-go-view="stars">⭐ Stars</button><button type="button" class="app-action-secondary" data-go-view="xp">📘 XP</button><button type="button" class="app-action-secondary" data-go-view="planner">🎯 Planner</button><button type="button" class="app-action-secondary" data-go-view="releases">📅 Releases</button>
   </div>
 </article>
 
@@ -652,9 +736,9 @@ nav.bottom-nav::-webkit-scrollbar,
       <label><input type="checkbox" class="compareStatusFilter" value="notStarted" checked> NOT STARTED</label>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:nowrap;margin-bottom:12px">
-      <button type="button" id="compareProgressSelectAll">Select All</button>
-      <button type="button" id="compareProgressClear">Clear All</button>
-      <button type="button" id="compareProgressRun" class="primary" style="width:auto;margin-top:0">Compare Selected</button>
+      <button type="button" id="compareProgressSelectAll" class="app-action-secondary">Select All</button>
+      <button type="button" id="compareProgressClear" class="app-action-secondary">Clear All</button>
+      <button type="button" id="compareProgressRun" class="app-action-primary" style="width:auto;margin-top:0">Compare Selected</button>
     </div>
     <div id="compareProgressChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px"></div>
     <div id="compareProgressRecommendation" class="notice" style="display:none;margin-top:12px"></div>
@@ -710,10 +794,10 @@ nav.bottom-nav::-webkit-scrollbar,
         <div><div class="stat"><span>Saved status</span><b id="profileSavedStatus">Not saved yet</b></div></div>
       </div>
       <div class="toolbar">
-        <button id="saveOfficerProfile" class="primary">Save This Officer</button>
+        <button id="saveOfficerProfile" class="app-action-save">Save This Officer</button>
 <button id="quickProgressBtn" class="primary" type="button">✏️ Edit Officer Progress</button>
 <button id="maxOfficerProfile" class="primary" type="button" style="margin-top:8px">⭐ MAX Officer</button>
-        <button id="resetOfficerProfile">Reset This Officer</button>
+        <button id="resetOfficerProfile" class="app-action-secondary">Reset This Officer</button>
       </div>
       <div class="notice">Changing Officer saves/loads Officer-specific progress only. Shared Stars, vouchers, Universal Badges, Selection Chests and XP Books remain unchanged.</div>
     </article>
@@ -823,7 +907,37 @@ nav.bottom-nav::-webkit-scrollbar,
   </section>
 
   <section id="planner" class="view">
-    <article class="card">
+    
+<article class="card" id="futurePlanningTargets">
+  <h2>🎯 Future Officer Targets & Saved Scenarios</h2>
+  <p class="muted">Create a reusable future-Officer target without changing Inventory. Saved scenarios are stored on this device.</p>
+  <div class="two">
+    <div><label>Target release session</label>
+      <select id="scenarioSession">
+        <option value="next">Next Officer session</option>
+        <option value="october">October — Rally / Garrison</option>
+        <option value="january">January — Infantry</option>
+        <option value="april">April — Tanks</option>
+        <option value="july">July — Tank Destroyers</option>
+      </select>
+    </div>
+    <div><label>Projected Officers</label>
+      <select id="scenarioOfficerCount"><option value="1">1 Officer</option><option value="2">2 Officers</option></select>
+    </div>
+  </div>
+  <div class="two">
+    <div><label>Scenario name</label><input id="scenarioName" placeholder="e.g. April S8 Tank"></div>
+    <div><label>Target year</label><input id="scenarioYear" type="number" min="2026" max="2100"></div>
+  </div>
+  <div class="two planner-actions">
+    <button type="button" class="planner-action-primary" id="calculateScenario">📊 Calculate Target</button>
+    <button type="button" class="planner-action-save" id="saveScenario">💾 Save Planning Scenario</button>
+  </div>
+  <div id="scenarioResult" class="notice" style="margin-top:10px">Choose a target session and calculate the scenario.</div>
+  <h3 style="margin-top:14px">Saved Planning Scenarios</h3>
+  <div id="savedScenarioList" class="muted">No planning scenarios saved yet.</div>
+</article>
+<article class="card">
       <h2>🎯 Goals Planner</h2>
       <label>Goal</label>
       <select id="goalSelect">
@@ -834,7 +948,7 @@ nav.bottom-nav::-webkit-scrollbar,
         <option value="maxTraining">Max Training</option>
       </select>
       <div class="table-wrap"><table><thead><tr><th>Resource</th><th>Required</th><th>Held</th><th>Shortfall</th></tr></thead><tbody id="plannerRows"></tbody></table></div>
-      <button id="saveProgress" class="primary">Save Progress</button>
+      <button id="saveProgress" class="app-action-save">Save Progress</button>
     </article>
       <article class="card">
       <h2>🧮 Resource Optimiser — Preview</h2>
@@ -864,11 +978,11 @@ nav.bottom-nav::-webkit-scrollbar,
         <div><label>Chest strategy</label><select id="multiChestMode"><option value="optimise">Optimise automatically</option><option value="badge">Use as Universal Badges</option><option value="orv">Convert to ORV (600 each)</option></select></div>
       </div>
 
-      <div class="toolbar" style="margin-top:10px">
-        <button id="multiUseCurrent">Use current held resources</button>
-        <button id="multiAddOfficer">+ Add Officer</button>
-        <button id="multiSavePlan" class="primary">Save Plan</button>
-        <button id="multiDeletePlan">Delete Saved Plan</button>
+      <div class="toolbar planner-actions" style="margin-top:10px">
+        <button id="multiUseCurrent" class="planner-action-primary">📦 Use Current Held Resources</button>
+        <button id="multiAddOfficer" class="planner-action-secondary">＋ Add Officer</button>
+        <button id="multiSavePlan" class="planner-action-save">💾 Save Plan</button>
+        <button id="multiDeletePlan" class="planner-action-danger">🗑 Delete Saved Plan</button>
       </div>
 
       <div class="table-wrap" style="margin-top:10px">
@@ -909,19 +1023,19 @@ nav.bottom-nav::-webkit-scrollbar,
     </select></div>
   </div>
   <div class="notice" style="margin-bottom:10px">Future Officers are planning placeholders only. The session can suggest a type, or Future Officer Type can override it manually.</div>
-  <div style="display:flex;gap:18px;flex-wrap:wrap;margin:10px 0;align-items:center">
-    <label style="display:flex;gap:7px;align-items:center"><input id="kowPlannerIncludeNotStarted" type="checkbox"> Include Not Started</label>
-    <label style="display:flex;gap:7px;align-items:center"><input id="kowPlannerIncludeOriginals" type="checkbox"> Include Original Officers</label>
+  <div id="kowAdvancedPlannerOptions">
+    <label><input id="kowPlannerIncludeNotStarted" type="checkbox"> <span>Include Not Started</span></label>
+    <label><input id="kowPlannerIncludeOriginals" type="checkbox"> <span>Include Original Officers</span></label>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">
     <button class="primary" type="button" onclick="kowRunAdvancedPlanner()">Analyse Planning Session</button>
-    <button type="button" onclick="kowRunAdvancedPlanner(true)">Refresh Recommendation</button>
+    <button type="button" class="app-action-secondary" onclick="kowRunAdvancedPlanner(true)">Refresh Recommendation</button>
   </div>
   <div id="kowAdvancedPlannerSummary" class="notice">Save progress for the Officers you are considering, then run the analysis.</div>
   <div id="kowAdvancedPlannerResults" style="margin-top:10px"></div>
   <div id="kowPlannerResultControls" style="display:none;gap:8px;flex-wrap:wrap;margin-top:10px">
-    <button type="button" id="kowPlannerShowAll" onclick="kowPlannerToggleAll(true)">Show all</button>
-    <button type="button" id="kowPlannerCollapse" onclick="kowPlannerToggleAll(false)" style="display:none">Collapse</button>
+    <button type="button" id="kowPlannerShowAll" class="app-action-secondary" onclick="kowPlannerToggleAll(true)">Show all</button>
+    <button type="button" id="kowPlannerCollapse" class="app-action-secondary" onclick="kowPlannerToggleAll(false)" style="display:none">Collapse</button>
   </div>
   <div id="kowProjectedResourceForecast" style="margin-top:12px"></div>
 </div>
@@ -933,11 +1047,11 @@ nav.bottom-nav::-webkit-scrollbar,
       <div class="toolbar">
         <input id="dbSearch" placeholder="Search officers">
         <select id="dbSeason"><option value="">All seasons</option></select>
-        <button id="dbAdd">Add Officer</button>
-        <button id="dbSave">Save</button>
-        <button id="dbExport">Export CSV</button>
+        <button id="dbAdd" class="app-action-primary">Add Officer</button>
+        <button id="dbSave" class="app-action-save">Save</button>
+        <button id="dbExport" class="app-action-secondary">Export CSV</button>
         <label class="filebtn">Import CSV<input id="dbImport" type="file" accept=".csv,text/csv"></label>
-        <button id="dbRestore">Restore Defaults</button>
+        <button id="dbRestore" class="app-action-danger">Restore Defaults</button>
       </div>
       <div class="table-wrap"><table class="db-table"><thead><tr><th>Name</th><th>Season</th><th>ORV</th><th>SRV</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="dbRows"></tbody></table></div>
       <div id="dbValidation" class="notice"></div>
@@ -1264,7 +1378,7 @@ nav.bottom-nav::-webkit-scrollbar,
 <button type="button" class="inv-rarity-btn" data-rarity="Legendary">Legendary</button>
 </div><div id="invOfficerBadgeGrid" class="inv-officer-badge-grid"><label class="inv-officer-badge-row" data-rarity="Elite"><span>Marjorie</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Marjorie" aria-label="Marjorie Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Elite"><span>Jeanne</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Jeanne" aria-label="Jeanne Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Epic"><span>Dorothea</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Dorothea" aria-label="Dorothea Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Epic"><span>Abigail</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Abigail" aria-label="Abigail Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Epic"><span>Monica</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Monica" aria-label="Monica Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Epic"><span>Linda</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Linda" aria-label="Linda Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Epic"><span>Riven</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Riven" aria-label="Riven Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Epic"><span>Maria</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Maria" aria-label="Maria Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Epic"><span>Evelyn</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Evelyn" aria-label="Evelyn Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Epic"><span>Helena</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Helena" aria-label="Helena Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Katherine</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Katherine" aria-label="Katherine Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Grace</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Grace" aria-label="Grace Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Chloe</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Chloe" aria-label="Chloe Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Ling</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Ling" aria-label="Ling Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Jessica</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Jessica" aria-label="Jessica Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Lilith</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Lilith" aria-label="Lilith Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Angel</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Angel" aria-label="Angel Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Sakura</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Sakura" aria-label="Sakura Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Loubna</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Loubna" aria-label="Loubna Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Angelica</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Angelica" aria-label="Angelica Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Ophelia</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Ophelia" aria-label="Ophelia Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>Doireann</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="Doireann" aria-label="Doireann Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S2 Lady Pandora</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S2 Lady Pandora" aria-label="S2 Lady Pandora Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S2 Amanda</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S2 Amanda" aria-label="S2 Amanda Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S2 Diana</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S2 Diana" aria-label="S2 Diana Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S2 Natalia</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S2 Natalia" aria-label="S2 Natalia Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S3 Su</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S3 Su" aria-label="S3 Su Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S3 Erica</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S3 Erica" aria-label="S3 Erica Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S3 Aurora</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S3 Aurora" aria-label="S3 Aurora Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S3 Ada</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S3 Ada" aria-label="S3 Ada Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S3 Hannah</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S3 Hannah" aria-label="S3 Hannah Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S3 Christina</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S3 Christina" aria-label="S3 Christina Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S3 Sophia</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S3 Sophia" aria-label="S3 Sophia Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S3 Oliva</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S3 Oliva" aria-label="S3 Oliva Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S4 Melina</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S4 Melina" aria-label="S4 Melina Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S4 Jane</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S4 Jane" aria-label="S4 Jane Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S4 Anna</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S4 Anna" aria-label="S4 Anna Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S4 Yuki</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S4 Yuki" aria-label="S4 Yuki Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S4 Eunice</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S4 Eunice" aria-label="S4 Eunice Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S4 Derya</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S4 Derya" aria-label="S4 Derya Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S4 Hardwin</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S4 Hardwin" aria-label="S4 Hardwin Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S4 Erin</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S4 Erin" aria-label="S4 Erin Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S5 Feng</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S5 Feng" aria-label="S5 Feng Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S5 Halina</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S5 Halina" aria-label="S5 Halina Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S5 Eva</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S5 Eva" aria-label="S5 Eva Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S5 Elsa</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S5 Elsa" aria-label="S5 Elsa Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S5 Camile</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S5 Camile" aria-label="S5 Camile Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S5 Betty</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S5 Betty" aria-label="S5 Betty Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S5 Miyeon</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S5 Miyeon" aria-label="S5 Miyeon Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S5 Julia</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S5 Julia" aria-label="S5 Julia Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S6 Regina</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S6 Regina" aria-label="S6 Regina Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S6 Veronica</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S6 Veronica" aria-label="S6 Veronica Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S6 Silverhand</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S6 Silverhand" aria-label="S6 Silverhand Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S6 Red Queen</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S6 Red Queen" aria-label="S6 Red Queen Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S6 Samantha</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S6 Samantha" aria-label="S6 Samantha Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S6 Saoirse</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S6 Saoirse" aria-label="S6 Saoirse Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S6 Emily</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S6 Emily" aria-label="S6 Emily Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S6 Zoya</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S6 Zoya" aria-label="S6 Zoya Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S7 Roisin</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S7 Roisin" aria-label="S7 Roisin Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S7 Barbara</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S7 Barbara" aria-label="S7 Barbara Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S7 Romana</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S7 Romana" aria-label="S7 Romana Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S7 Liora</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S7 Liora" aria-label="S7 Liora Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S7 Stella</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S7 Stella" aria-label="S7 Stella Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S7 Klara</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S7 Klara" aria-label="S7 Klara Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S7 Code</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S7 Code" aria-label="S7 Code Badges Held"></label><label class="inv-officer-badge-row" data-rarity="Legendary"><span>S7 Kamila</span><input class="inv-officer-badge-input" type="number" min="0" value="0" data-officer="S7 Kamila" aria-label="S7 Kamila Badges Held"></label></div>
 <div id="invOfficerList" class="notice">No individual Officer Badges entered.</div>
-<div class="inventory-save-actions"><button id="saveInventory" type="button">Save Inventory</button><button id="resetInventory" type="button">Reset Inventory</button></div>
+<div class="inventory-save-actions"><button id="saveInventory" type="button" class="app-action-save">Save Inventory</button><button id="resetInventory" type="button" class="app-action-danger">Reset Inventory</button></div>
 </div></section>
 <section id="settings" class="view">
     <article class="card">
@@ -1278,29 +1392,29 @@ nav.bottom-nav::-webkit-scrollbar,
       <label>Landscape Background (PC / Landscape)</label>
       <input id="landscapeBackgroundPicker" type="file" accept="image/*">
       <div class="background-status"><span>Active landscape background</span><b id="landscapeBgStatus">Built-in default landscape</b></div>
-      <button id="resetAppearance" class="primary">Reset Appearance & Backgrounds</button>
+      <button id="resetAppearance" class="app-action-secondary">Reset Appearance & Backgrounds</button>
       <h3>App Updates</h3>
       <div class="notice">
         <div><b>Installed version:</b> <span id="installedVersion"></span></div>
         <div id="updateStatus">Tap Check for Updates to compare with the latest GitHub Pages version.</div>
       </div>
       <div class="two">
-        <button id="checkUpdates" class="primary">Check for Updates</button>
-        <button id="refreshLatest" class="primary">Refresh Latest Version</button>
+        <button id="checkUpdates" class="app-action-secondary">Check for Updates</button>
+        <button id="refreshLatest" class="app-action-primary">Refresh Latest Version</button>
       </div>
       <h3>About</h3>
-      <p class="notice"><b>KoW Companion <span id="aboutVersion"></span> LIVE</b><br>Created by FireStorm (371)</p>
+      <p class="notice"><b>KoW Companion <span id="aboutVersion"></span></b><br>Created by FireStorm (371)</p>
       <h3>Version Integrity</h3>
       <div id="versionIntegrity" class="notice">Checking build version consistency…</div>
 
       <h3>Help & Instructions</h3>
       <p class="notice">Open the in-app User Guide for the recommended setup order, explanations of every tab, saving, database publishing, vouchers, badges and Original Officer restrictions.</p>
-      <button id="openUserGuide" class="primary">📖 User Guide</button>
+      <button id="openUserGuide" class="app-action-primary">📖 User Guide</button>
           <h3>Backup & Restore</h3>
       <p class="notice">Export all locally saved KoW Companion browser data, or restore a previous JSON backup.</p>
-      <div class="two">
-        <button id="backupAppData" class="primary">⬇ Export App Backup</button>
-        <label class="button-like">⬆ Restore App Backup<input id="restoreAppData" type="file" accept=".json,application/json" hidden></label>
+      <div class="two" id="backupActions">
+        <button id="backupAppData" class="app-action-primary">⬇ Export App Backup</button>
+        <label id="restoreAppDataLabel" class="button-like app-action-danger">⬆ Restore App Backup<input id="restoreAppData" type="file" accept=".json,application/json" hidden></label>
       </div>
       <div id="backupStatus" class="notice" style="margin-top:10px">No backup created yet.</div>
 </article>
@@ -1793,7 +1907,7 @@ function renderDb(){
  filter.value=seasons.includes(requested)?requested:'';
  const season=filter.value;
  const rows=officers.map((o,i)=>({...normalizeOfficer(o),_i:i})).filter(o=>(!q||o.name.toLowerCase().includes(q))&&(!season||o.season===season));
- tbody.innerHTML=rows.map(o=>`<tr data-i="${o._i}"><td><input data-f="name" value="${esc(o.name)}"></td><td><input data-f="season" value="${esc(o.season)}"></td><td><input data-f="orv" type="number" min="1" step="1" value="${o.orv}"></td><td><input data-f="srv" type="number" min="1" step="1" value="${o.srv}"></td><td><input data-f="notes" value="${esc(o.notes)}"></td><td class="actions"><button data-copy>Copy</button><button data-del>Delete</button></td></tr>`).join('');
+ tbody.innerHTML=rows.map(o=>`<tr data-i="${o._i}"><td><input data-f="name" value="${esc(o.name)}"></td><td><input data-f="season" value="${esc(o.season)}"></td><td><input data-f="orv" type="number" min="1" step="1" value="${o.orv}"></td><td><input data-f="srv" type="number" min="1" step="1" value="${o.srv}"></td><td><input data-f="notes" value="${esc(o.notes)}"></td><td class="actions"><button data-copy class="app-action-secondary">Copy</button><button data-del class="app-action-danger">Delete</button></td></tr>`).join('');
  tbody.querySelectorAll('input').forEach(x=>x.oninput=e=>{const tr=e.target.closest('tr'),i=+tr.dataset.i,f=e.target.dataset.f;officers[i][f]=(f==='orv'||f==='srv')?Number(e.target.value):e.target.value;$('dbValidation').textContent=validateDb().join(' · ')||`${rows.length} officers shown · Database validation passed.`});
  tbody.querySelectorAll('[data-copy]').forEach(b=>b.onclick=e=>{const i=+e.target.closest('tr').dataset.i;officers.splice(i+1,0,{...officers[i],name:officers[i].name+' Copy'});renderDb();renderOfficerOptions();calculate()});
  tbody.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{const i=+e.target.closest('tr').dataset.i;if(officers.length>1)officers.splice(i,1);renderDb();renderOfficerOptions();calculate()});
@@ -2058,7 +2172,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.3.58';
+const APP_VERSION='4.3.59';
 function syncVersionUI(){
  const v='v'+APP_VERSION;
  if($('headerVersion'))$('headerVersion').textContent=v;
@@ -3079,7 +3193,7 @@ window.KOW_PLANNER_BRIDGE = {
 
 <div id="skillCostInfoModal" style="display:none;position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.82);padding:18px;overflow:auto">
 <article class="card" style="max-width:720px;margin:5vh auto">
-<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="margin:0">ℹ️ Skill Strand Costs</h2><button id="skillCostInfoClose" type="button">✕</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="margin:0">ℹ️ Skill Strand Costs</h2><button id="skillCostInfoClose" class="app-action-secondary app-icon-button" type="button">✕</button></div>
 <div id="skillCostCurrent" class="notice" style="margin:14px 0"></div>
 <p>Each strand starts at <b>Level 1 for free</b>. Every extra level on any strand uses the next cost in the shared sequence.</p>
 <div class="table-wrap"><table><thead><tr><th>Paid upgrade #</th><th>Badge cost</th></tr></thead><tbody id="skillCostSequenceRows"></tbody></table></div>
@@ -3087,7 +3201,7 @@ window.KOW_PLANNER_BRIDGE = {
 </article></div>
 <div id="quickProgressModal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.8);padding:18px;overflow:auto">
  <article class="card" style="max-width:820px;margin:3vh auto">
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2>✏️ Edit Officer Progress</h2><button id="quickProgressClose" type="button">✕</button></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2>✏️ Edit Officer Progress</h2><button id="quickProgressClose" class="app-action-secondary app-icon-button" type="button">✕</button></div>
   <div id="quickProgressOfficer" class="notice"></div>
   <div class="two">
    <div><label>Current Star Level</label><select id="quickStarLevel"><option value="0">0★</option><option value="1">1★</option><option value="2">2★</option><option value="3">3★</option><option value="4">4★</option><option value="5">5★</option></select></div>
@@ -3100,7 +3214,7 @@ window.KOW_PLANNER_BRIDGE = {
     <input id="quickTraining" type="range" min="0" max="180" value="0" style="width:100%">
     <input id="quickTrainingExact" type="number" min="0" max="180" step="1" inputmode="numeric" value="0" aria-label="Exact Training Level">
   </div>
-  <div class="toolbar" style="margin-top:16px"><button id="quickProgressSave" class="primary" type="button">💾 Save Progress</button><button id="quickProgressMax" class="primary" type="button">⭐ MAX Officer</button><button id="quickProgressCancel" type="button">Cancel</button></div>
+  <div class="toolbar" style="margin-top:16px"><button id="quickProgressSave" class="app-action-save" type="button">💾 Save Progress</button><button id="quickProgressMax" class="primary" type="button">⭐ MAX Officer</button><button id="quickProgressCancel" class="app-action-secondary" type="button">Cancel</button></div>
   <div class="notice">Officer-specific progress only. Shared resources remain on Stars, Develop and XP.</div>
  </article>
 </div>
@@ -3122,7 +3236,7 @@ function kowInventoryIntelligence(){
  set('invIntelBadges',fmtN(universal)+' universal + '+fmtN(chests)+' chests');set('invIntelStars',fmtN(star)+' Legendary Star value');set('invIntelXP',fmtN(xp));set('invIntelOfficerBadges',fmtN(ob));
  const s=document.getElementById('inventoryReadinessSummary');if(s)s.innerHTML=x.savedAt?'<b>Inventory saved</b><br>Last updated '+new Date(x.savedAt).toLocaleString():'<b>Inventory not yet saved.</b><br>Start here before planning upgrades.';
  const steps=[['inventory','Inventory',!!x.savedAt],['officer','Officer',true],['stars','Stars',false],['development','Development',false],['xp','XP',false],['planner','Planner',false]];
- const box=document.getElementById('guidedWorkflowSteps');if(box)box.innerHTML=steps.map((s,i)=>'<button type="button" data-go-view="'+s[0]+'" style="min-width:105px">'+(s[2]?'✓ ':'')+(i+1)+'. '+s[1]+'</button>').join('');
+ const box=document.getElementById('guidedWorkflowSteps');if(box){const firstIncomplete=steps.findIndex(s=>!s[2]);const workflowIcons={inventory:'📦',officer:'👤',stars:'⭐',development:'🏅',xp:'📘',planner:'🎯'};box.innerHTML=steps.map((s,i)=>'<button type="button" class="'+(s[2]?'completed':(i===firstIncomplete?'current':''))+'" data-go-view="'+s[0]+'">'+(workflowIcons[s[0]]||'')+' '+(s[2]?'✓ ':'')+(i+1)+'. '+s[1]+'</button>').join('');}
  const next=document.getElementById('guidedNextStep');if(next)next.innerHTML=x.savedAt?'<b>Next suggested step:</b> Select an Officer and confirm their current progress.':'<b>Next suggested step:</b> Enter and Save Inventory.';
 }
 function kowOfficerReadiness(){
@@ -3611,6 +3725,87 @@ document.addEventListener("click",function(e){
     }
     projectedResourceHtml(projected,inv);
   };
+})();
+</script>
+
+
+<script id="v4359-future-targets">
+(function(){
+'use strict';
+const KEY='kow_v4359_planning_scenarios';
+const INV_KEY='kow_central_inventory_v1';
+const TOTAL={badges:1600,stars:98000,xp:199646700};
+const LABEL={next:'Next Officer session',october:'October — Rally / Garrison',january:'January — Infantry',april:'April — Tanks',july:'July — Tank Destroyers'};
+const STEP={next:1,october:1,january:2,april:3,july:4};
+let current=null;
+function n(id){return Number(document.getElementById(id)?.value||0);}
+function savedInventory(){try{return JSON.parse(localStorage.getItem(INV_KEY)||'{}')}catch(e){return {}}}
+function getHeld(){
+ const x=savedInventory();
+ const val=id=>Math.max(0,Number(x[id]||0));
+ // Future Legendary Officers can use shared Legendary badge resources. Each chest is one badge-equivalent.
+ const universal=val('invUniversalLegendary');
+ const badgeChests=val('invLegendaryBadgeChests');
+ const selectionChests=val('invLegendarySelectionChests');
+ const stars=val('invLegStar1')*110+val('invLegStar2')*420+val('invLegStar3')*960;
+ const denoms=[50,100,500,1000,5000,10000,20000,50000];
+ const xp=denoms.reduce((sum,v)=>sum+val('invXp'+v)*v,0);
+ return {badges:universal+badgeChests+selectionChests,stars,xp,orv:val('invOrv'),srv:val('invSrv'),badgeParts:{universal,badgeChests,selectionChests},savedAt:x.savedAt||null};
+}
+function forecast(session,count){
+ const growth=Math.max(0,Number(document.getElementById('forecastGrowth')?.value||20))/100;
+ const steps=STEP[session]||1;
+ const orvPerBadge=Math.round(600*Math.pow(1+growth,steps));
+ const srvPerStar=Math.round(300*Math.pow(1+growth,steps));
+ const badges=TOTAL.badges*count;
+ const exclusiveStars=Math.ceil((TOTAL.stars*count)/110);
+ return {growth,steps,orvPerBadge,srvPerStar,orv:badges*orvPerBadge,srv:exclusiveStars*srvPerStar};
+}
+function fmt(x){return Math.max(0,Math.round(x)).toLocaleString();}
+function pct(h,r){return r?Math.min(100,(h/r)*100):100}
+function statusLine(label,held,req,short,unit=''){
+ return `<b>${label}:</b> ${fmt(held)} / ${fmt(req)}${unit} — ${short?'<b>SHORT '+fmt(short)+'</b>':'<b>READY</b>'}`;
+}
+function calculate(){
+ const session=document.getElementById('scenarioSession').value;
+ const count=n('scenarioOfficerCount')||1;
+ const year=n('scenarioYear')||new Date().getFullYear()+1;
+ const held=getHeld(), req={badges:TOTAL.badges*count,stars:TOTAL.stars*count,xp:TOTAL.xp*count};
+ const short={badges:Math.max(0,req.badges-held.badges),stars:Math.max(0,req.stars-held.stars),xp:Math.max(0,req.xp-held.xp)};
+ const overall=Math.min(pct(held.badges,req.badges),pct(held.stars,req.stars),pct(held.xp,req.xp));
+ const fc=forecast(session,count);
+ current={id:Date.now(),name:document.getElementById('scenarioName').value.trim()||`${LABEL[session]} — ${count} Officer${count>1?'s':''}`,session,count,year,held,req,short,overall,forecast:fc};
+ const invNote=held.savedAt?'Saved Central Inventory: '+new Date(held.savedAt).toLocaleString():'WARNING: Central Inventory has not been saved yet.';
+ document.getElementById('scenarioResult').innerHTML=
+ `<b>${current.name}</b><br>Target: ${LABEL[session]} ${year} · ${count} projected Officer${count>1?'s':''}<br>`+
+ `<b>Current readiness: ${overall.toFixed(1)}%</b><br>`+
+ statusLine('Badges',held.badges,req.badges,short.badges)+'<br>'+statusLine('Stars',held.stars,req.stars,short.stars,' Star value')+'<br>'+statusLine('XP',held.xp,req.xp,short.xp)+'<br><br>'+ 
+ `<b>Projected voucher requirement — FORECAST</b><br>`+
+ `ORV: ${fmt(fc.orv)} FORECAST (${fmt(fc.orvPerBadge)} per badge) · Held ${fmt(held.orv)} · ${held.orv>=fc.orv?'<b>READY</b>':'<b>SHORT '+fmt(fc.orv-held.orv)+'</b>'}<br>`+
+ `SRV: ${fmt(fc.srv)} FORECAST (${fmt(fc.srvPerStar)} per Exclusive Star) · Held ${fmt(held.srv)} · ${held.srv>=fc.srv?'<b>READY</b>':'<b>SHORT '+fmt(fc.srv-held.srv)+'</b>'}<br>`+
+ `<small>${invNote}<br>Preview only. Inventory has not been changed. Future ORV/SRV figures use the Releases growth forecast and remain FORECAST until published.</small>`;
+ return current;
+}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}
+function store(a){localStorage.setItem(KEY,JSON.stringify(a))}
+function render(){
+ const box=document.getElementById('savedScenarioList'); if(!box)return;
+ const a=load(); if(!a.length){box.innerHTML='No planning scenarios saved yet.';return}
+ box.innerHTML=a.map((s,i)=>{
+   const f=s.forecast||{};
+   return `<div class="result-box"><b>${s.name}</b><br>${LABEL[s.session]||s.session} ${s.year} · ${s.count} Officer${s.count>1?'s':''} · Readiness ${Number(s.overall||0).toFixed(1)}%<br>`+
+   `<small>${s.short.badges?'<b>Badges: SHORT '+fmt(s.short.badges)+'</b>':'<b>Badges: READY</b>'}<br>${s.short.stars?'<b>Stars: SHORT '+fmt(s.short.stars)+'</b>':'<b>Stars: READY</b>'}<br>${s.short.xp?'<b>XP: SHORT '+fmt(s.short.xp)+'</b>':'<b>XP: READY</b>'}`+
+   (f.orv!==undefined?`<br>ORV: ${fmt(f.orv)} FORECAST · SRV: ${fmt(f.srv)} FORECAST`:'')+`</small><br><button type="button" class="app-action-secondary" data-load-scenario="${i}">Load</button> <button type="button" class="app-action-danger" data-delete-scenario="${i}">Delete</button></div>`;
+ }).join('');
+}
+function save(){const s=calculate();const a=load();a.unshift(s);store(a);render()}
+document.addEventListener('click',e=>{
+ if(e.target?.id==='calculateScenario')calculate();
+ if(e.target?.id==='saveScenario')save();
+ const li=e.target?.dataset?.loadScenario;if(li!==undefined){const s=load()[Number(li)];if(!s)return;document.getElementById('scenarioSession').value=s.session;document.getElementById('scenarioOfficerCount').value=s.count;document.getElementById('scenarioName').value=s.name;document.getElementById('scenarioYear').value=s.year;calculate();}
+ const di=e.target?.dataset?.deleteScenario;if(di!==undefined){const a=load();a.splice(Number(di),1);store(a);render();}
+});
+document.addEventListener('DOMContentLoaded',()=>{const y=document.getElementById('scenarioYear');if(y&&!y.value)y.value=new Date().getFullYear()+1;render()});
 })();
 </script>
 
