@@ -378,6 +378,9 @@ html.ios-safari{
 }
 
 
+
+/* FIX9 planner bottom clearance */
+#view-planner{padding-bottom:140px}
 </style>
 <script>
 (function(){
@@ -557,6 +560,32 @@ nav.bottom-nav::-webkit-scrollbar,
 </header>
 <main class="app">
   <section id="dashboard" class="view active">
+<article class="card" id="guidedWorkflowCard">
+  <h2>🧭 Guided Workflow</h2>
+  <p class="notice">Recommended order: <b>Inventory → Officer → Stars → Development → XP → Planner → Save Progress</b>. You can still use any tab at any time.</p>
+  <div id="guidedWorkflowSteps" style="display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px"></div>
+  <div id="guidedNextStep" class="result-box">Start by saving your Inventory.</div>
+</article>
+<article class="card" id="inventoryIntelligenceCard">
+  <h2>📦 Inventory Readiness</h2>
+  <div id="inventoryReadinessSummary" class="result-box">Save Inventory to see a readiness summary.</div>
+  <div class="two">
+    <div class="result-box"><b>Badge resources</b><br><span id="invIntelBadges">—</span></div>
+    <div class="result-box"><b>Star value</b><br><span id="invIntelStars">—</span></div>
+  </div>
+  <div class="two">
+    <div class="result-box"><b>XP held</b><br><span id="invIntelXP">—</span></div>
+    <div class="result-box"><b>Individual Officer Badges</b><br><span id="invIntelOfficerBadges">—</span></div>
+  </div>
+  <button type="button" data-go-view="inventory" class="primary" style="margin-top:10px">📦 Open Inventory</button>
+</article>
+<article class="card" id="officerReadinessCard">
+  <h2>🧠 Officer Readiness Intelligence</h2>
+  <div id="officerReadinessTitle" class="result-box"><b>Select an Officer</b> to see what your saved Inventory can achieve now.</div>
+  <div id="officerReadinessGrid" class="grid" style="margin-top:10px"></div>
+  <div id="officerReadinessShortfall" class="notice" style="margin-top:10px">Readiness is calculated from the selected Officer's saved progress plus the resources currently available from Inventory.</div>
+<button type="button" data-go-view="officer" class="primary" style="margin-top:10px">👤 Open Officer Progress</button>
+</article>
 <article class="card" id="smartDashboardCard">
   <h2>🎯 Smart Dashboard</h2>
   <div id="readinessStatus" class="result-box"><b>Readiness:</b> Select an Officer and enter your resources.</div>
@@ -573,6 +602,9 @@ nav.bottom-nav::-webkit-scrollbar,
     <div class="result-box"><b>Upcoming Release</b><br><span id="dashRelease">—</span></div>
   </div>
   <div id="dashWarning" class="notice" style="margin-top:10px">Enter resources to see planning guidance.</div>
+  <div style="display:flex;gap:8px;overflow-x:auto;margin-top:10px">
+    <button type="button" data-go-view="development">🏅 Development</button><button type="button" data-go-view="stars">⭐ Stars</button><button type="button" data-go-view="xp">📘 XP</button><button type="button" data-go-view="planner">🎯 Planner</button><button type="button" data-go-view="releases">📅 Releases</button>
+  </div>
 </article>
 
     <div class="grid">
@@ -847,6 +879,52 @@ nav.bottom-nav::-webkit-scrollbar,
       </div>
       <div id="multiPlannerSummary" class="result-box">Add Officers to build an upgrade plan.</div>
     </article>
+
+<div class="card" id="advancedMultiOfficerPlanning" style="margin-top:14px">
+  <h2>🧠 Advanced Multi-Officer Planning</h2>
+  <p class="muted">Preview-only recommendations. This tool never spends or changes Inventory.</p>
+  <div class="two" style="margin:10px 0">
+    <div><label>Planning session</label><select id="kowPlannerSession">
+      <option value="saved">Saved Officers only</option>
+      <option value="all">All Officer sessions</option>
+      <option value="next">Next Officer session</option>
+      <option value="october">October — Rally / Garrison</option>
+      <option value="january">January — Infantry</option>
+      <option value="april">April — Tanks</option>
+      <option value="july">July — Tank Destroyers</option>
+    </select></div>
+    <div><label>Officer Session / Season</label><select id="kowPlannerSeasonFilter">
+      <option value="all">All Sessions</option>
+      <option value="original">Original</option>
+      <option value="S2">S2</option><option value="S3">S3</option><option value="S4">S4</option>
+      <option value="S5">S5</option><option value="S6">S6</option><option value="S7">S7</option>
+    </select></div>
+    <div><label>Future Officer Type</label><select id="kowFutureOfficerType">
+      <option value="auto">All applicable types / session default</option>
+      <option value="Tank">Tank</option>
+      <option value="Tank Destroyer">Tank Destroyer</option>
+      <option value="Infantry">Infantry</option>
+      <option value="Rally">Rally</option>
+      <option value="Garrison">Garrison</option>
+    </select></div>
+  </div>
+  <div class="notice" style="margin-bottom:10px">Future Officers are planning placeholders only. The session can suggest a type, or Future Officer Type can override it manually.</div>
+  <div style="display:flex;gap:18px;flex-wrap:wrap;margin:10px 0;align-items:center">
+    <label style="display:flex;gap:7px;align-items:center"><input id="kowPlannerIncludeNotStarted" type="checkbox"> Include Not Started</label>
+    <label style="display:flex;gap:7px;align-items:center"><input id="kowPlannerIncludeOriginals" type="checkbox"> Include Original Officers</label>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">
+    <button class="primary" type="button" onclick="kowRunAdvancedPlanner()">Analyse Planning Session</button>
+    <button type="button" onclick="kowRunAdvancedPlanner(true)">Refresh Recommendation</button>
+  </div>
+  <div id="kowAdvancedPlannerSummary" class="notice">Save progress for the Officers you are considering, then run the analysis.</div>
+  <div id="kowAdvancedPlannerResults" style="margin-top:10px"></div>
+  <div id="kowPlannerResultControls" style="display:none;gap:8px;flex-wrap:wrap;margin-top:10px">
+    <button type="button" id="kowPlannerShowAll" onclick="kowPlannerToggleAll(true)">Show all</button>
+    <button type="button" id="kowPlannerCollapse" onclick="kowPlannerToggleAll(false)" style="display:none">Collapse</button>
+  </div>
+  <div id="kowProjectedResourceForecast" style="margin-top:12px"></div>
+</div>
 </section>
 
   <section id="database" class="view">
@@ -872,11 +950,150 @@ nav.bottom-nav::-webkit-scrollbar,
       <h2>❓ Help & Instructions</h2>
 
 <div class="card" id="whatsNewV4329" style="margin-bottom:16px">
-  <h3 style="margin-top:0">✨ What’s New — v4.3.55 LIVE</h3>
+  <h3 style="margin-top:0">✨ What’s New — v4.3.58 LIVE</h3>
   <div class="notice">
-    <b>v4.3.55 LIVE adds the new Central Inventory alongside rarity-specific Stars and Universal Badges, Legendary-only SRV/ORV, and confirmed Legendary/Epic/Elite promotion and Training totals.</b>
+    <b>v4.3.58 LIVE adds Advanced Multi-Officer Planning, Future Officer forecasting, focused Session/Season/Type filtering, saved Officer analysis, XP/Inventory integration and direct Releases-to-Planner navigation.</b>
   </div>
 
+  
+<h3>📘 v4.3.58 — Advanced Planning & Future Officer Forecasting Guide</h3>
+
+<h4>What’s New in v4.3.58</h4>
+<p>v4.3.58 expands KoW Companion from single-Officer resource tracking into advanced multi-Officer and future-session planning. It links your saved Officer progress, shared Inventory, recurring release schedule and projected future Officer costs so you can decide whether to finish current Officers or preserve resources for future releases.</p>
+<ul>
+  <li><b>Advanced Multi-Officer Planning</b> with saved Officer analysis.</li>
+  <li><b>Future Officer Planning</b> using recurring October, January, April and July release sessions.</li>
+  <li><b>Future Officer Type</b> selection for Rally, Garrison, Infantry, Tank and Tank Destroyer.</li>
+  <li><b>Officer Session / Season filtering</b> for All Sessions, Original and S2–S7.</li>
+  <li><b>Combined Season + Type reports</b>, for example S6 + Tank.</li>
+  <li><b>Focused future-session reports</b>: April — Tanks shows only S8 Tank — PROJECTED.</li>
+  <li><b>Projected S8 resources</b> for one or two future Legendary Officers.</li>
+  <li><b>ORV/SRV forecasts</b> linked to the Releases forecast growth setting.</li>
+  <li><b>Inventory-aware readiness</b> using ORV, SRV, Universal Badges, Selection Chests, Stars and XP Books.</li>
+  <li><b>Top 10 compact results</b> for larger Saved/All reports, with Show all and Collapse.</li>
+  <li><b>Releases → Planner shortcut</b> for Advanced Future Officer Planning.</li>
+  <li><b>MAXED Officers excluded</b> from Advanced Planner recommendations.</li>
+</ul>
+
+<h4>Recommended Flow</h4>
+<ol>
+  <li><b>Inventory first:</b> enter and save the resources you currently hold.</li>
+  <li><b>Officer:</b> enter each Officer’s current progress and save the Officer profile.</li>
+  <li><b>Progress:</b> confirm Officers are correctly shown as MAXED, IN PROGRESS or NOT STARTED.</li>
+  <li><b>Releases:</b> review the recurring release schedule and set the forecast increase percentage.</li>
+  <li><b>Planner:</b> run Advanced Multi-Officer Planning using the session, season and type filters required.</li>
+  <li><b>Review the forecast:</b> compare current candidates with projected future resource requirements before committing flexible resources.</li>
+</ol>
+
+<h4>1. Prepare Inventory</h4>
+<p>Advanced Planning uses the same shared resource information as the rest of the app. Before running a report, update Inventory with your current ORV, SRV, Universal Legendary Badges, Legendary Officer Badge Selection Chests, Star resources and XP Books. XP is calculated from the quantities entered for each XP Book denomination.</p>
+<p>The Planner is <b>preview-only</b>. Running or refreshing a recommendation does not spend, deduct or change Inventory.</p>
+
+<h4>2. Save Officer Progress</h4>
+<p>For each Officer you want included in current-Officer planning, open the Officer page, enter the Officer’s current Stars, Level, Skills, Training and Officer-specific resources, then save the profile. Advanced Planning reads the same Progress information used by the Progress screen.</p>
+<p><b>MAXED Officers are always excluded</b> from Advanced Planner recommendations because no further development resources are required for them.</p>
+
+<h4>3. Planning Session</h4>
+<p>The <b>Planning session</b> selector controls the overall purpose of the report:</p>
+<ul>
+  <li><b>Saved Officers only</b> — analyse eligible saved/current Officers only.</li>
+  <li><b>All Officer sessions</b> — combine projected future Officer scenarios with eligible saved/current Officers.</li>
+  <li><b>Next Officer session</b> — plan for the next recurring future release session.</li>
+  <li><b>October — Rally / Garrison</b> — focused future Rally/Garrison planning.</li>
+  <li><b>January — Infantry</b> — focused future Infantry planning.</li>
+  <li><b>April — Tanks</b> — focused future Tank planning.</li>
+  <li><b>July — Tank Destroyers</b> — focused future Tank Destroyer planning.</li>
+</ul>
+<p>When a <b>specific future session</b> is selected, the results intentionally show only that projected future Officer scenario. For example, <b>April — Tanks</b> shows <b>S8 Tank — PROJECTED</b>. Use <b>All Officer sessions</b> when you want projected Officers and saved/current Officers in the same report.</p>
+
+<h4>4. Officer Session / Season Filter</h4>
+<p>The <b>Officer Session / Season</b> filter narrows the saved/current Officer side of a report. Available choices are All Sessions, Original, S2, S3, S4, S5, S6 and S7.</p>
+<p>Example: choose <b>Saved Officers only → S6 → Tank</b> to analyse eligible saved S6 Tank Officers only.</p>
+
+<h4>5. Future Officer Type</h4>
+<p><b>All applicable types / session default</b> uses the Officer type expected for the selected recurring release session. You can override it with Rally, Garrison, Infantry, Tank or Tank Destroyer.</p>
+<p>The type selector also works with the Season filter for saved/current reports. This enables focused reports such as <b>S6 + Tank</b> or <b>S7 + Infantry</b>.</p>
+
+<h4>6. Include Not Started / Include Original Officers</h4>
+<p><b>Include Not Started</b> adds eligible Officers that are marked NOT STARTED. Leave it off when you only want active development candidates.</p>
+<p><b>Include Original Officers</b> allows Original Officers to be included where relevant. Original Officers remain subject to their own resource eligibility rules and should not be treated as seasonal ORV/SRV Officers.</p>
+
+<h4>7. Analyse Planning Session</h4>
+<p>Select the required options and press <b>Analyse Planning Session</b>. The summary explains the active session/filter combination and the recommendation. <b>Refresh Recommendation</b> recalculates the report using the latest saved Progress and Inventory.</p>
+<p>For larger Saved Officers or All Sessions reports, the Planner displays the <b>Top 10</b> results initially. Use <b>Show all</b> to display the full report and <b>Collapse</b> to return to the compact view.</p>
+
+<h4>8. Understanding PROJECTED Officers</h4>
+<p>A row such as <b>S8 Tank — PROJECTED</b> is a planning placeholder, not a published Officer record. It allows resources to be reserved before the actual Officer details are known. The projection does not add an unpublished Officer to the Officer Database and does not assume that forecast ORV/SRV costs are confirmed.</p>
+
+<h4>9. Projected S8 Resource Requirement</h4>
+<p>For projected Legendary Officers, the Planner shows resource requirements for both <b>one Officer</b> and <b>two Officers</b>.</p>
+<table style="width:100%;border-collapse:collapse">
+<thead><tr><th>Scenario</th><th>Badges</th><th>Star value</th><th>XP</th></tr></thead>
+<tbody>
+<tr><td>1 projected Legendary Officer</td><td>1,600</td><td>98,000</td><td>199,646,700</td></tr>
+<tr><td>2 projected Legendary Officers</td><td>3,200</td><td>196,000</td><td>399,293,400</td></tr>
+</tbody>
+</table>
+<p>The Planner compares these requirements with held resources and reports the expected readiness or shortfall for badges, Stars and XP.</p>
+
+<h4>10. ORV/SRV Forecasts</h4>
+<p>The Releases page field <b>Forecast increase per Officer release (%)</b> controls projected cost growth. The default shown by the app is a percentage, not a fixed number of ORV/SRV.</p>
+<p>Future ORV/SRV figures are labelled <b>FORECAST</b>. They are estimates derived from the latest published cost baseline and the selected percentage/release distance. When actual future Officer costs are published, the published values should replace the forecast.</p>
+
+<h4>11. Releases → Advanced Planner</h4>
+<p>The <b>Future Officer Cost Forecast</b> section on Releases includes an <b>Advanced Future Officer Planning</b> note and an <b>Open Advanced Planner</b> button. Use it after reviewing a future release forecast to move directly to the Planner and compare the projected release against your saved resources.</p>
+
+<h4>12. Example — Planning for April S8 Tanks</h4>
+<ol>
+  <li>Update and save Inventory.</li>
+  <li>Review Releases and confirm the forecast percentage.</li>
+  <li>Open Advanced Planner.</li>
+  <li>Select <b>April — Tanks</b>.</li>
+  <li>Leave Future Officer Type on the session default, or select Tank manually.</li>
+  <li>Run <b>Analyse Planning Session</b>.</li>
+  <li>The focused result shows <b>S8 Tank — PROJECTED</b>.</li>
+  <li>Review the one-Officer and two-Officer badge, Star, XP, ORV and SRV forecast.</li>
+</ol>
+
+<h4>13. Example — S6 Tank Development Report</h4>
+<ol>
+  <li>Select <b>Saved Officers only</b>.</li>
+  <li>Select <b>S6</b> under Officer Session / Season.</li>
+  <li>Select <b>Tank</b> as Officer Type.</li>
+  <li>Choose whether to include Not Started Officers.</li>
+  <li>Press <b>Analyse Planning Session</b>.</li>
+</ol>
+<p>The result contains only eligible S6 Tank candidates matching those settings.</p>
+
+<h4>Important Forecasting Notes</h4>
+<ul>
+  <li>PROJECTED future Officers are planning scenarios only.</li>
+  <li>ORV/SRV forecasts are estimates until actual costs are published.</li>
+  <li>Inventory and saved Officer progress are never automatically spent by the Planner.</li>
+  <li>MAXED Officers are intentionally excluded.</li>
+  <li>Use Saved Officers only for current development decisions; use All Officer sessions for current-versus-future comparison; use a specific future session for a focused future-release report.</li>
+</ul>
+
+<h4>🔎 Focused Session, Season & Type Filtering</h4>
+<p><b>New in this build:</b> specific future sessions now show only their selected projected Officer (for example April — Tanks → S8 Tank — PROJECTED); Saved/All reports use a Top 10 view with Show all / Collapse; Officer Session / Season filtering supports All, Original and S2–S7; Season and Officer Type can be combined for reports such as S6 + Tank; projected S8 planning includes one- and two-Officer resource requirements; Releases links directly to Advanced Planner; and future ORV/SRV costs remain clearly identified as forecasts.</p>
+<h4>🔗 Planner Integration & Releases Link</h4>
+<p>The Advanced Planner now receives saved Progress, Officer database data, XP Books and shared Inventory through an explicit bridge from the main app module. This resolves the module-scope issue that prevented Saved Officers and XP held from appearing in Advanced Planning. The Releases Future Officer Cost Forecast now also includes a note and direct <b>Open Advanced Planner</b> button.</p>
+<h4>🔧 Progress, XP & Inventory Integration</h4>
+<p>The Advanced Planner now reads current Officer candidates from the exact same <b>Progress</b> data source used by the Progress screen, and reads XP Books and shared resources from the exact same global resource store used by the XP and Inventory calculations. This fixes Saved Officers / All Sessions candidate detection and projected XP readiness.</p>
+<h4>🛠 Saved/All Sessions & ORV/SRV Forecasting</h4>
+<p>Saved Officers and All Officer Sessions now use the actual saved profile store. MAXED Officers remain excluded. The Projected S8 Resource Requirement now shows ORV and SRV forecasts derived from the Releases percentage growth setting, and the Releases input label now explicitly shows <b>(%)</b> for clarity.</p>
+<h4>🔮 Saved Officers & S8 Resource Forecast</h4>
+<p>Saved Officers mode now reads actual saved Officer profiles correctly. The Advanced Planner also shows projected resource requirements for one and two future S8 Legendary Officers, including 1,600 / 3,200 badges, 98,000 / 196,000 Star value, and 199,646,700 / 399,293,400 XP. ORV and SRV amounts are explicitly labelled FORECAST until S8 costs are published.</p>
+<h4>🧭 Saved Officers & Session Scope</h4>
+<p>Advanced Planning now uses only genuinely saved Officer profiles for current candidates. Planning Session can be set to Saved Officers only, All Officer sessions, Next Officer session, or a specific recurring Officer session. Include Not Started and Include Original Officers remain optional toggles. MAXED Officers remain excluded, and future scenarios are projected as S8+ Officer types without assuming unpublished ORV/SRV costs.</p>
+<h4>🎯 Focused Advanced Planner</h4>
+  <p>Advanced Planning now excludes MAXED Officers, shows In Progress seasonal Officers by default, adds optional Not Started and Original Officer toggles, corrects future projections to the next database season (S8 with the current S7 database), and places PROJECTED scenarios prominently in the comparison.</p>
+  <h4>🔭 Future Session & Officer Type Planning</h4>
+<p>Advanced Multi-Officer Planning can now select a future Officer session and a specific future Officer Type: Tank, Tank Destroyer, Infantry, Rally or Garrison. Session defaults can be overridden manually. Future entries are clearly marked PROJECTED, MAXED Officers are excluded, and the Home Officer Readiness card includes an Open Officer Progress shortcut.</p>
+<h4>🧠 Officer Readiness Intelligence</h4>
+  <p>The Home screen now analyses the selected Officer against saved Inventory and shows <b>Ready / Shortfall</b> for Unlock, Next Star, 5★, Skills, Training, Level 70 XP and MAX Officer. Guided Workflow steps are clickable and take you directly to each stage.</p>
+  <h4>🧭 Guided Workflow & Inventory Intelligence</h4>
+  <p>The Home screen now guides users through the recommended Inventory-first workflow and shows the next suggested step. A new Inventory Readiness panel summarises saved badge resources, Star value, XP and individual Officer Badges. Smart Dashboard shortcut buttons take you directly to the relevant calculator.</p>
   <h4>📦 New Central Inventory</h4>
   <p>Enter your shared resources once in <b>Inventory</b> and press <b>Save Inventory</b>. The saved values are then available throughout the app instead of being re-entered for each Officer.</p>
   <p>Inventory includes ORV, SRV, Universal Legendary/Epic/Elite Badges, Legendary Officer Badge Chests and Selection Chests, rarity-specific Stars, XP Books, and individual Officer Badges. Individual Officer Badge quantities are stored separately for each Officer.</p>
@@ -993,7 +1210,7 @@ nav.bottom-nav::-webkit-scrollbar,
       </select>
     </div>
     <div>
-      <label>Forecast increase per Officer release</label>
+      <label>Forecast increase per Officer release (%)</label>
       <input id="forecastGrowth" type="number" min="0" max="100" step="0.1" value="20">
     </div>
   </div>
@@ -1018,6 +1235,10 @@ nav.bottom-nav::-webkit-scrollbar,
     <div class="result-box"><b>Estimated SRV to fund Stars</b><br><span id="forecastTotalSrv">—</span></div>
   </div>
   <div class="notice" id="forecastNote">Forecast only — actual release costs should replace the estimate when published.</div>
+  <div class="notice" style="margin-top:12px">
+    <b>Advanced Future Officer Planning:</b> Use the Planner to compare your current saved Officers and Inventory against projected future Officer sessions, including expected resources for one or two future Officers.
+  </div>
+  <button type="button" data-go-view="planner" class="primary" style="margin-top:10px;width:100%">🧠 Open Advanced Planner</button>
 </article>
 
  <article class="card">
@@ -1535,6 +1756,7 @@ function calculate(){
 
  renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHeld+universalBadgesAvailable,orvHeld,xpHeld,xpRequired);
  if(typeof updateSmartDashboard==='function')updateSmartDashboard();
+ if(typeof kowOfficerReadiness==='function')kowOfficerReadiness();
 }
 
 function renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHeld,orvHeld,xpHeld,xpRequiredSelected){
@@ -1836,7 +2058,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.3.55';
+const APP_VERSION='4.3.58';
 function syncVersionUI(){
  const v='v'+APP_VERSION;
  if($('headerVersion'))$('headerVersion').textContent=v;
@@ -2830,6 +3052,29 @@ document.addEventListener('DOMContentLoaded',()=>{
  });
  q('quickProgressModal')?.addEventListener('click',e=>{if(e.target===q('quickProgressModal'))closeQuickProgress();});
 })();;
+
+
+// v4.3.58 FIX7 — explicit bridge for non-module Advanced Planner code.
+// This prevents the Planner from seeing module-scoped data/functions as undefined.
+window.KOW_PLANNER_BRIDGE = {
+  progressRows: () => (typeof savedOfficerProgressData === 'function' ? savedOfficerProgressData() : []),
+  globalResources: () => (typeof getGlobalResources === 'function' ? getGlobalResources() : {}),
+  officers: () => (Array.isArray(officers) ? officers : []),
+  xpDenoms: () => (Array.isArray(XP_DENOMS) ? XP_DENOMS : [50,100,500,1000,5000,10000,20000,50000]),
+  releaseForecast: () => {
+    const growth = Number(document.getElementById('forecastGrowth')?.value || 20);
+    const latestOrv = 600, latestSrv = 300;
+    const releaseStep = Math.max(1, Number(document.getElementById('forecastRelease')?.value || 1));
+    const factor = Math.pow(1 + growth / 100, releaseStep);
+    return {
+      growth,
+      releaseStep,
+      orvPerBadge: Math.round(latestOrv * factor),
+      srvPerStar: Math.round(latestSrv * factor),
+      source: `Latest published S7 cost (600 ORV / 300 SRV), ${growth}% compounded for ${releaseStep} future Officer release${releaseStep===1?'':'s'}`
+    };
+  }
+};
 </script>
 
 <div id="skillCostInfoModal" style="display:none;position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.82);padding:18px;overflow:auto">
@@ -2860,6 +3105,59 @@ document.addEventListener('DOMContentLoaded',()=>{
  </article>
 </div>
 <script>
+function kowGoView(view){
+ const b=document.querySelector('.bottom-nav button[data-view="'+view+'"]');
+ if(b){b.click();window.scrollTo({top:0,behavior:'smooth'});}
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go-view]');if(b)kowGoView(b.dataset.goView);});
+function kowInventoryIntelligence(){
+ const get=()=>{try{return JSON.parse(localStorage.getItem('kow_central_inventory_v1')||'{}')}catch(e){return {}}};
+ const x=get(), f=n=>Math.max(0,+x[n]||0), fmtN=n=>Math.round(n).toLocaleString();
+ const xp=f('invXp50')*50+f('invXp100')*100+f('invXp500')*500+f('invXp1000')*1000+f('invXp5000')*5000+f('invXp10000')*10000+f('invXp20000')*20000+f('invXp50000')*50000;
+ const star=f('invLegStar1')*110+f('invLegStar2')*420+f('invLegStar3')*960;
+ const universal=f('invUniversalLegendary')+f('invUniversalEpic')+f('invUniversalElite');
+ const chests=f('invLegendaryBadgeChests')+f('invLegendarySelectionChests');
+ const ob=Object.values(x.officerBadges||{}).reduce((a,b)=>a+Math.max(0,+b||0),0);
+ const set=(id,t)=>{const e=document.getElementById(id);if(e)e.textContent=t};
+ set('invIntelBadges',fmtN(universal)+' universal + '+fmtN(chests)+' chests');set('invIntelStars',fmtN(star)+' Legendary Star value');set('invIntelXP',fmtN(xp));set('invIntelOfficerBadges',fmtN(ob));
+ const s=document.getElementById('inventoryReadinessSummary');if(s)s.innerHTML=x.savedAt?'<b>Inventory saved</b><br>Last updated '+new Date(x.savedAt).toLocaleString():'<b>Inventory not yet saved.</b><br>Start here before planning upgrades.';
+ const steps=[['inventory','Inventory',!!x.savedAt],['officer','Officer',true],['stars','Stars',false],['development','Development',false],['xp','XP',false],['planner','Planner',false]];
+ const box=document.getElementById('guidedWorkflowSteps');if(box)box.innerHTML=steps.map((s,i)=>'<button type="button" data-go-view="'+s[0]+'" style="min-width:105px">'+(s[2]?'✓ ':'')+(i+1)+'. '+s[1]+'</button>').join('');
+ const next=document.getElementById('guidedNextStep');if(next)next.innerHTML=x.savedAt?'<b>Next suggested step:</b> Select an Officer and confirm their current progress.':'<b>Next suggested step:</b> Enter and Save Inventory.';
+}
+function kowOfficerReadiness(){
+ try{
+  const o=typeof currentOfficer==='function'?currentOfficer():null;if(!o)return;
+  const fmt=n=>Math.max(0,Math.ceil(Number(n)||0)).toLocaleString();
+  const cs=Math.max(0,Math.min(5,Number(document.getElementById('currentStar')?.value)||0));
+  const usedBadges=Number(String(document.getElementById('badgesUsed')?.textContent||'0').replace(/[^0-9.-]/g,''))||0;
+  const badgeShort=Number(String(document.getElementById('badgesRequired')?.textContent||'0').replace(/[^0-9.-]/g,''))||0;
+  const maxBadges=typeof maxBadgesForOfficer==='function'?maxBadgesForOfficer(o):1600;
+  const badgeAvailable=Math.max(0,maxBadges-usedBadges-badgeShort);
+  const totalBadgePower=usedBadges+badgeAvailable;
+  const skillTarget=(typeof promotionBadgeTotal==='function'?promotionBadgeTotal(o):10)+(typeof skillCostsForOfficer==='function'?skillCostsForOfficer(o).reduce((a,b)=>a+b,0):690);
+  const nextStarTarget=STAR_CUM[Math.min(5,cs+1)]||MAX_STAR;
+  const starsHeld=Number(String(document.getElementById('starsHeld')?.textContent||'0').replace(/[^0-9.-]/g,''))||0;
+  const starPower=(STAR_CUM[cs]||0)+starsHeld;
+  const cl=Math.max(1,Math.min(70,Number(document.getElementById('currentLevel')?.value)||1));
+  const xpHeld=Number(String(document.getElementById('xpHeld')?.textContent||'0').replace(/[^0-9.-]/g,''))||0;
+  const xpNeed=Math.max(0,MAX_XP-(cl>=70?MAX_XP:cumulativeXp(cl)));
+  const checks=[
+   ['🔓','Unlock',totalBadgePower>=10,Math.max(0,10-totalBadgePower),'Officer Badges'],
+   ['⭐','Next Star',cs>=5||starPower>=nextStarTarget,cs>=5?0:Math.max(0,nextStarTarget-starPower),'Officer Star value'],
+   ['🌟','Reach 5★',starPower>=MAX_STAR,Math.max(0,MAX_STAR-starPower),'Officer Star value'],
+   ['🏅','MAX Skills',totalBadgePower>=skillTarget,Math.max(0,skillTarget-totalBadgePower),'Officer Badges'],
+   ['🎖️','MAX Training',totalBadgePower>=maxBadges,Math.max(0,maxBadges-totalBadgePower),'Officer Badges'],
+   ['📘','Level 70 XP',xpHeld>=xpNeed,Math.max(0,xpNeed-xpHeld),'XP'],
+  ];
+  const canMax=checks.slice(2).every(x=>x[2]);checks.push(['🏆','MAX Officer',canMax,0,'']);
+  const title=document.getElementById('officerReadinessTitle');if(title)title.innerHTML='<b>'+officerDisplayName(o)+'</b> — what your current saved Inventory can achieve now.';
+  const grid=document.getElementById('officerReadinessGrid');if(grid)grid.innerHTML=checks.map(x=>'<div class="result-box"><b>'+x[0]+' '+x[1]+'</b><br><span style="font-weight:800">'+(x[2]?'✅ READY':'⚠️ SHORTFALL')+'</span>'+(x[2]?'':('<br>Need '+fmt(x[3])+' more '+x[4]))+'</div>').join('');
+  const misses=checks.filter(x=>!x[2]&&x[1]!=='MAX Officer');const sh=document.getElementById('officerReadinessShortfall');if(sh)sh.innerHTML=misses.length?'<b>Priority shortfalls:</b> '+misses.map(x=>x[1]+': '+fmt(x[3])+' '+x[4]).join(' · '):'<b>All requirements covered:</b> this Officer can be completed with the resources currently available.';
+ }catch(e){console.warn('Officer readiness',e)}
+}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{kowInventoryIntelligence();kowOfficerReadiness();},300));
+document.addEventListener('click',e=>{if(e.target?.id==='saveInventory'||e.target?.id==='resetInventory')setTimeout(()=>{kowInventoryIntelligence();kowOfficerReadiness();},100);});
 const KOW_INV_KEY='kow_central_inventory_v1',KOW_INV_IDS=['invOrv', 'invSrv', 'invUniversalLegendary', 'invUniversalEpic', 'invUniversalElite', 'invLegendaryBadgeChests', 'invLegendarySelectionChests', 'invLegStar1', 'invLegStar2', 'invLegStar3', 'invEpicStar1', 'invEpicStar2', 'invEpicStar3', 'invEliteStar1', 'invEliteStar2', 'invEliteStar3', 'invXp50', 'invXp100', 'invXp500', 'invXp1000', 'invXp5000', 'invXp10000', 'invXp20000', 'invXp50000'];
 function kowInvGet(){try{return JSON.parse(localStorage.getItem(KOW_INV_KEY)||'{}')}catch(e){return {}}}
 function kowInvField(id,v){const e=document.getElementById(id);if(e){e.value=Math.max(0,+v||0);e.dispatchEvent(new Event('input',{bubbles:true}));}}
@@ -3044,5 +3342,277 @@ document.addEventListener("click",function(e){
  });
 });
 </script>
+
+<script id="kow-v4358-advanced-planner">
+(function(){
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function num(v){v=Number(v);return Number.isFinite(v)?v:0;}
+  function allStorage(){var out={};for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);out[k]=localStorage.getItem(k);}return out;}
+  function inventorySnapshot(){
+    var bridge=window.KOW_PLANNER_BRIDGE||{};
+    var g=(typeof bridge.globalResources==='function'?bridge.globalResources():{})||{};
+    var denoms=(typeof bridge.xpDenoms==='function'?bridge.xpDenoms():[50,100,500,1000,5000,10000,20000,50000]);
+    var inv={orv:0,srv:0,universal:0,selection:0,xp:0,starValue:0};
+
+    function liveNum(id,fallback){
+      var el=document.getElementById(id);
+      return el ? num(el.value) : num(fallback);
+    }
+
+    inv.orv=liveNum('orvHeld',g.orvHeld);
+    inv.srv=liveNum('srvHeld',g.srvHeld);
+    inv.universal=liveNum('universalBadgeHeld',g.universalBadgeHeld);
+    inv.selection=liveNum('legendaryBadgeChestHeld',g.legendaryBadgeChestHeld);
+
+    // Use the same XP Book inputs visible on the XP screen.
+    denoms.forEach(function(v){
+      var el=document.getElementById('xp'+v);
+      var qty=el ? num(el.value) : num((g.xp||{})[v] ?? (g.xp||{})[String(v)]);
+      inv.xp += qty*v;
+    });
+
+    // Shared Legendary/Exclusive Star inventory.
+    inv.starValue =
+      liveNum('ls1',g.ls1)*110 + liveNum('ls2',g.ls2)*420 + liveNum('ls3',g.ls3)*960 +
+      liveNum('es1',g.es1)*110 + liveNum('es2',g.es2)*420 + liveNum('es3',g.es3)*960;
+
+    return inv;
+  }
+  function dbOfficer(name){return (typeof officers!=='undefined'?officers:[]).find(function(o){return String(o.name||'').trim().toLowerCase()===String(name||'').trim().toLowerCase()})||{};}
+  function plannerOfficers(includeNotStarted,includeOriginals){
+    var bridge=window.KOW_PLANNER_BRIDGE||{};
+    var rows=(typeof bridge.progressRows==='function'?bridge.progressRows():[])||[];
+    var db=(typeof bridge.officers==='function'?bridge.officers():[])||[];
+
+    return rows.filter(function(r){
+      if(r.maxed)return false;
+      if(!includeNotStarted && r.notStarted)return false;
+      if(!includeOriginals && String(r.season||'').trim().toLowerCase()==='original')return false;
+      return true;
+    }).map(function(r){
+      var o=db.find(function(x){
+        return String(x.name||'').trim().toLowerCase()===String(r.name||'').trim().toLowerCase();
+      })||{};
+      return {
+        name:r.name,
+        season:r.season,
+        pct:num(r.overall),
+        maxed:false,
+        notStarted:!!r.notStarted,
+        status:r.status||'IN PROGRESS',
+        need:num(r.badgeShort),
+        orvCost:num(o.orv),
+        srvCost:num(o.srv),
+        type:o.role||o.notes||'Current',
+        future:false
+      };
+    });
+  }
+  function score(r,inv){var remaining=Math.max(0,r.need),affordable=inv.universal+inv.selection+(r.orvCost?Math.floor(inv.orv/r.orvCost):0),gap=Math.max(0,remaining-affordable);return (r.pct*1000)-gap;}
+  function futureSession(mode){
+    var sessions={
+      october:{label:'October — Rally / Garrison',types:['Rally','Garrison']},
+      january:{label:'January — Infantry',types:['Infantry']},
+      april:{label:'April — Tanks',types:['Tank']},
+      july:{label:'July — Tank Destroyers',types:['Tank Destroyer']}
+    };
+    if(mode==='all'){
+      return {label:'All Officer sessions',types:['Rally','Garrison','Infantry','Tank','Tank Destroyer'],all:true};
+    }
+    if(mode==='next'){
+      var month=(new Date()).getMonth(),
+          seq=[{m:9,k:'october'},{m:0,k:'january'},{m:3,k:'april'},{m:6,k:'july'}],
+          later=seq.filter(function(x){return x.m>month}).sort(function(a,b){return a.m-b.m})[0];
+      mode=later?later.k:'january';
+    }
+    return sessions[mode]||null;
+  }
+  function projectedSeason(){
+    var max=0;
+    (typeof officers!=='undefined'?officers:[]).forEach(function(o){
+      var m=String(o.season||'').match(/^S(\d+)$/i);
+      if(m)max=Math.max(max,+m[1]);
+    });
+    return 'S'+Math.max(8,max+1);
+  }
+
+
+  function releaseForecastPercent(){
+    var el=document.getElementById('forecastGrowth');
+    if(el && isFinite(+el.value))return +el.value;
+    // fallback: find known forecast increase field by common ids
+    var ids=['forecastIncrease','releaseForecastIncrease','forecastPct'];
+    for(var i=0;i<ids.length;i++){var x=document.getElementById(ids[i]);if(x&&isFinite(+x.value))return +x.value;}
+    return 20;
+  }
+  function latestPublishedLegendaryCosts(){
+    var seasonal=(typeof officers!=='undefined'?officers:[]).filter(function(o){
+      return /^S\d+$/i.test(String(o.season||'')) && +o.orv>0 && +o.srv>0 &&
+        String(o.rarity||'Legendary').toLowerCase()==='legendary';
+    });
+    if(!seasonal.length)return {orv:600,srv:300,season:7};
+    var maxSeason=seasonal.reduce(function(m,o){
+      var n=+(String(o.season).match(/\d+/)||[0])[0];
+      return Math.max(m,n);
+    },0);
+    var recent=seasonal.filter(function(o){
+      return +(String(o.season).match(/\d+/)||[0])[0]===maxSeason;
+    });
+    // Use the highest published cost in the latest season as a conservative baseline,
+    // matching the release planner's "latest known" approach.
+    return {
+      orv:Math.max.apply(null,recent.map(function(o){return +o.orv||0;})),
+      srv:Math.max.apply(null,recent.map(function(o){return +o.srv||0;})),
+      season:maxSeason
+    };
+  }
+  function forecastS8Costs(){
+    var bridge=window.KOW_PLANNER_BRIDGE||{};
+    if(typeof bridge.releaseForecast==='function'){
+      var f=bridge.releaseForecast();
+      return {
+        orv:f.orvPerBadge,
+        srv:f.srvPerStar,
+        source:f.source,
+        pct:f.growth
+      };
+    }
+    return {orv:720,srv:360,source:'Latest published S7 cost increased by 20%',pct:20};
+  }
+  function projectedResourceHtml(projected,inv){
+    var box=document.getElementById('kowProjectedResourceForecast');
+    if(!box)return;
+    if(!projected.length){box.innerHTML='';return;}
+    var c=forecastS8Costs();
+    var starsPerOfficer=Math.ceil(98000/110); // 891 Exclusive Stars
+    function scenarioRow(count,label){
+      var badges=1600*count, stars=98000*count, xp=199646700*count;
+      var orv=badges*c.orv;
+      var srv=starsPerOfficer*count*c.srv;
+      return '<tr><td><b>'+esc(label)+'</b></td><td>'+badges.toLocaleString()+' badges</td><td>'+stars.toLocaleString()+' Star value</td><td>'+xp.toLocaleString()+' XP</td><td>'+orv.toLocaleString()+' ORV <b>FORECAST</b></td><td>'+srv.toLocaleString()+' SRV <b>FORECAST</b></td></tr>';
+    }
+
+    var baseName=projected[0].name.replace(' — PROJECTED','');
+    var badgeEquiv=(inv.universal||0)+(inv.selection||0)+Math.floor((inv.orv||0)/c.orv);
+    var oneBadgeShort=Math.max(0,1600-badgeEquiv), twoBadgeShort=Math.max(0,3200-badgeEquiv);
+    var oneXpShort=Math.max(0,199646700-(inv.xp||0)), twoXpShort=Math.max(0,399293400-(inv.xp||0));
+    var starUnitsFromSrv=c.srv?Math.floor((inv.srv||0)/c.srv):0;
+    var starValueAvailable=(inv.starValue||0)+(starUnitsFromSrv*110);
+    var oneStarShort=Math.max(0,98000-starValueAvailable), twoStarShort=Math.max(0,196000-starValueAvailable);
+
+    box.innerHTML='<div class="card" style="margin-top:12px"><h3>🔮 Projected S8 Resource Requirement</h3>'+
+      '<div class="notice">Badge, Star and XP totals are established per Legendary Officer. ORV/SRV are forecast from the Releases growth setting and are clearly marked <b>FORECAST</b>.</div>'+
+      '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Scenario</th><th>Development</th><th>Stars</th><th>XP</th><th>ORV forecast</th><th>SRV forecast</th></tr></thead><tbody>'+
+      scenarioRow(1,'1 × '+baseName)+scenarioRow(2,'2 × '+baseName)+
+      '</tbody></table></div>'+
+      '<div class="two" style="margin-top:10px">'+
+        '<div class="result-box"><b>1 Officer — badge position</b><br>'+(oneBadgeShort===0?'READY':'Short by '+oneBadgeShort.toLocaleString()+' badge equivalents')+'</div>'+
+        '<div class="result-box"><b>2 Officers — badge position</b><br>'+(twoBadgeShort===0?'READY':'Short by '+twoBadgeShort.toLocaleString()+' badge equivalents')+'</div>'+
+      '</div>'+
+      '<div class="two">'+
+        '<div class="result-box"><b>1 Officer — Star position</b><br>'+(oneStarShort===0?'READY':'Short by '+oneStarShort.toLocaleString()+' Star value')+'</div>'+
+        '<div class="result-box"><b>2 Officers — Star position</b><br>'+(twoStarShort===0?'READY':'Short by '+twoStarShort.toLocaleString()+' Star value')+'</div>'+
+      '</div>'+
+      '<div class="two">'+
+        '<div class="result-box"><b>1 Officer — XP position</b><br>'+(oneXpShort===0?'READY':'Short by '+oneXpShort.toLocaleString()+' XP')+'</div>'+
+        '<div class="result-box"><b>2 Officers — XP position</b><br>'+(twoXpShort===0?'READY':'Short by '+twoXpShort.toLocaleString()+' XP')+'</div>'+
+      '</div>'+
+      '<p class="muted" style="margin-top:8px">Forecast basis: '+esc(c.source)+'. Inventory is not changed by this calculation.</p></div>';
+  }
+
+  window.__kowPlannerShowAll=false;
+  window.kowPlannerToggleAll=function(showAll){
+    window.__kowPlannerShowAll=!!showAll;
+    if(typeof window.kowRunAdvancedPlanner==='function')window.kowRunAdvancedPlanner(true);
+  };
+  window.kowRunAdvancedPlanner=function(){
+    var inv=inventorySnapshot(), box=document.getElementById('kowAdvancedPlannerResults'),
+        sum=document.getElementById('kowAdvancedPlannerSummary'),
+        controls=document.getElementById('kowPlannerResultControls'),
+        showBtn=document.getElementById('kowPlannerShowAll'),
+        collapseBtn=document.getElementById('kowPlannerCollapse');
+    if(!box||!sum)return;
+
+    var mode=(document.getElementById('kowPlannerSession')||{}).value||'saved',
+        typeChoice=(document.getElementById('kowFutureOfficerType')||{}).value||'auto',
+        seasonChoice=(document.getElementById('kowPlannerSeasonFilter')||{}).value||'all',
+        includeNS=!!document.getElementById('kowPlannerIncludeNotStarted')?.checked,
+        includeOrig=!!document.getElementById('kowPlannerIncludeOriginals')?.checked;
+
+    var current=plannerOfficers(includeNS,includeOrig);
+
+    if(seasonChoice!=='all'){
+      current=current.filter(function(r){
+        var s=String(r.season||'').trim();
+        if(seasonChoice==='original')return s.toLowerCase()==='original';
+        return s.toUpperCase()===seasonChoice.toUpperCase();
+      });
+    }
+    if(typeChoice!=='auto'){
+      current=current.filter(function(r){
+        return String(r.type||'').toLowerCase().split(',').map(function(x){return x.trim()}).indexOf(String(typeChoice).toLowerCase())>=0;
+      });
+    }
+    current.sort(function(a,b){return score(b,inv)-score(a,inv)});
+
+    var session=futureSession(mode), projected=[];
+    if(mode!=='saved'){
+      var types=typeChoice!=='auto'?[typeChoice]:(session?session.types:[]);
+      var season=projectedSeason();
+      projected=types.map(function(t){
+        return {name:season+' '+t+' — PROJECTED',pct:0,status:'PROJECTED',future:true,type:t};
+      });
+    }
+
+    var isSpecificFuture=['october','january','april','july','next'].indexOf(mode)>=0;
+    var rows;
+    if(mode==='saved') rows=current;
+    else if(mode==='all') rows=projected.concat(current);
+    else if(isSpecificFuture) rows=projected;
+    else rows=projected.concat(current);
+
+    if(!rows.length){
+      sum.innerHTML='<b>No eligible Officers are available for the selected filters.</b>';
+      box.innerHTML=''; projectedResourceHtml([],inv);
+      if(controls)controls.style.display='none'; return;
+    }
+
+    var filterBits=[];
+    if(seasonChoice!=='all')filterBits.push(seasonChoice==='original'?'Original':seasonChoice);
+    if(typeChoice!=='auto')filterBits.push(typeChoice);
+    var baseLabel=mode==='saved'?'Saved Officers only':(session?session.label:'Future Officer session');
+    var label=baseLabel+(filterBits.length?' — '+filterBits.join(' / '):'');
+    var best=current[0], futureNames=projected.map(function(x){return x.name.replace(' — PROJECTED','')});
+    var decision;
+    if(isSpecificFuture) decision=futureNames.length?'Plan specifically for '+futureNames.join(' / ')+'.':'No projected Officer selected.';
+    else if(mode==='all') decision=projected.length?(best?'Compare finishing '+best.name+' with reserving resources for '+futureNames.join(' / ')+'.':'Reserve resources for '+futureNames.join(' / ')+'.'):(best?'Current priority: '+best.name+'.':'No current candidate.');
+    else decision=best?'Current priority: '+best.name+'.':'No current candidate.';
+
+    sum.innerHTML='<b>Planning session: '+esc(label)+'</b><br><b>Recommendation: '+esc(decision)+'</b><br><span class="muted">'+
+      (isSpecificFuture?'Specific future sessions show only the selected projected Officer. Use All Officer sessions to compare against saved Officers.':'MAXED Officers are excluded. Season and Officer Type filters can narrow saved/current candidates, for example S6 + Tank.')+'</span>';
+
+    var canCollapse=(mode==='saved'||mode==='all')&&rows.length>10;
+    var displayRows=(canCollapse&&!window.__kowPlannerShowAll)?rows.slice(0,10):rows;
+    var html='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Priority</th><th>Officer</th><th>Type</th><th>Status</th><th>Recommendation</th></tr></thead><tbody>';
+    displayRows.forEach(function(r,i){
+      var rec=r.future?'Reserve resources for this '+r.type+' scenario. Exact ORV/SRV cost will be used only when published.':
+        (r.orvCost&&Math.floor(inv.orv/r.orvCost)>0?'Use Officer-specific badges first, then ORV where eligible. Preserve Universal/Selection resources where practical.':'Use Officer-specific badges first. Use flexible Universal/Selection resources only where required.');
+      html+='<tr><td>'+(i+1)+'</td><td><b>'+esc(r.name)+'</b></td><td>'+esc(r.future?r.type:(r.type||'Current'))+'</td><td>'+esc(r.future?'PROJECTED':(r.notStarted?'NOT STARTED':(r.pct.toFixed(1)+'% — IN PROGRESS')))+'</td><td>'+esc(rec)+'</td></tr>';
+    });
+    html+='</tbody></table></div><p class="muted" style="margin-top:8px">'+
+      (canCollapse&&!window.__kowPlannerShowAll?'Showing top 10 of '+rows.length+' results.':'Showing '+rows.length+' result'+(rows.length===1?'':'s')+'.')+
+      '</p><p class="muted">Inventory detected: ORV '+inv.orv.toLocaleString()+', Universal Badges '+inv.universal.toLocaleString()+', Selection Chests '+inv.selection.toLocaleString()+', XP '+inv.xp.toLocaleString()+'. No Inventory values have been changed.</p>';
+    box.innerHTML=html;
+
+    if(controls){
+      controls.style.display=canCollapse?'flex':'none';
+      if(showBtn){showBtn.style.display=canCollapse&&!window.__kowPlannerShowAll?'inline-block':'none';showBtn.textContent='Show all '+rows.length;}
+      if(collapseBtn)collapseBtn.style.display=canCollapse&&window.__kowPlannerShowAll?'inline-block':'none';
+    }
+    projectedResourceHtml(projected,inv);
+  };
+})();
+</script>
+
 </body>
 </html>

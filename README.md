@@ -1,4 +1,18 @@
-# KoW Companion v4.3.55 — LIVE
+# KoW Companion v4.3.58 LIVE
+
+## What's New — v4.3.58 LIVE
+
+- Advanced Multi-Officer Planning with saved Progress and Inventory.
+- Future session planning for October, January, April and July.
+- Focused future reports, e.g. April — Tanks → S8 Tank — PROJECTED.
+- Season filter: All Sessions, Original, S2–S7.
+- Season + Officer Type reports, e.g. S6 + Tank.
+- Top 10 / Show all / Collapse for larger reports.
+- Projected resources for one or two future Legendary Officers.
+- ORV/SRV forecast linked to Releases percentage growth.
+- Releases includes an Open Advanced Planner shortcut.
+- MAXED Officers excluded from recommendations.
+
 
 Approved Live release of KoW Companion.
 

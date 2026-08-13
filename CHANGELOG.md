@@ -56,3 +56,6 @@
 - Elite shows 100 badges/training point and 18,450 total to MAX.
 - Epic and Elite both use the confirmed 440-badge promotion sequence.
 - Removed the stray Elite TEST/provisional suffix from the promotion description.
+
+## v4.3.58 LIVE
+- Added Officer Readiness Intelligence with Ready / Shortfall checks and exact missing resources.
