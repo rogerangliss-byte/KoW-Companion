@@ -1,4 +1,4 @@
-const CACHE='kow-english-v4.3.59-live-tablet-responsive-fix';
+const CACHE='kow-english-v4.3.59-live-final';
 const ASSETS=[
   './',
   './index.html',

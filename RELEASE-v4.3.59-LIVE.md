@@ -1,10 +1,12 @@
 # KoW Companion English v4.3.59 LIVE
 
-Maintenance update to the approved v4.3.59 LIVE build.
+Final English v4.3.59 live package.
 
-- Home Guided Workflow layout corrected for Android/tablet widths.
-- Tablet layout uses a clean 3-column workflow grid.
-- Small mobile layout uses a 2-column workflow grid.
-- Desktop layout remains unchanged.
-- Workflow icons, completion ticks, navigation and logic remain unchanged.
-- No Officer, Inventory, Planner, forecasting, saved-data or calculation logic changed.
+Includes the approved v4.3.59 interface refinements and responsive fixes:
+- Guided Workflow buttons aligned with the main navigation style and corresponding icons.
+- Export App Backup and Restore App Backup buttons matched in size and differentiated visually.
+- Android tablet Home layout fix.
+- Help / Instructions portrait responsiveness fix.
+- Projected-resource Help table contained correctly in tablet portrait with Scenario, Badges, Star value and XP visible.
+- Landscape layout preserved.
+- No application calculation logic changed.

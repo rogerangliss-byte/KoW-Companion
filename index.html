@@ -450,6 +450,76 @@ html.ios-safari{
   }
 }
 
+
+
+
+
+/* v4.3.59 TEST 9 — Help portrait tablet table containment fix */
+@media (orientation:portrait) and (max-width:1100px){
+  #help,
+  #help .card,
+  #help > article.card{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+    overflow-x:hidden !important;
+  }
+
+  #help p,
+  #help li,
+  #help h2,
+  #help h3,
+  #help h4,
+  #help .notice{
+    max-width:100% !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #help table{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    table-layout:fixed !important;
+    box-sizing:border-box !important;
+  }
+
+  #help table th,
+  #help table td{
+    min-width:0 !important;
+    box-sizing:border-box !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    padding:7px 4px !important;
+    vertical-align:top !important;
+  }
+
+  /* Keep all four projected-resource columns visible in portrait. */
+  #help table th:nth-child(1),
+  #help table td:nth-child(1){width:45% !important;text-align:left !important}
+  #help table th:nth-child(2),
+  #help table td:nth-child(2){width:17% !important;text-align:right !important}
+  #help table th:nth-child(3),
+  #help table td:nth-child(3){width:18% !important;text-align:right !important}
+  #help table th:nth-child(4),
+  #help table td:nth-child(4){width:20% !important;text-align:right !important}
+
+  #help table th:nth-child(4),
+  #help table td:nth-child(4){
+    font-variant-numeric:tabular-nums;
+  }
+}
+
+@media (orientation:portrait) and (max-width:700px){
+  #help > article.card{
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+  #help table{font-size:.78rem !important}
+  #help table th,
+  #help table td{padding:6px 2px !important}
+}
+
 </style>
 <script>
 (function(){
