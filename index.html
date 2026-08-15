@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.3.59</title>
+<title>KoW Companion v4.4.0</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -739,6 +739,28 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 /* Modal cancel/close controls should not look browser-default. */
 #quickProgressCancel,#quickProgressClose,#skillCostInfoClose{background:rgba(213,167,47,.08)!important;border:1px solid rgba(213,167,47,.50)!important;color:var(--gold2)!important;cursor:pointer}
 </style>
+
+<style id="v440-readiness-dashboard-style">
+#v440PlanningReadinessCard{margin-top:12px}
+.v440-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.v440-summary>div{padding:12px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(0,0,0,.28)}
+.v440-summary span{display:block;color:var(--muted);font-size:.76rem}
+.v440-summary b{display:block;color:var(--gold2);margin-top:5px;overflow-wrap:anywhere}
+.v440-scenario-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.v440-scenario-card{padding:14px;border:1px solid rgba(213,167,47,.28);border-radius:14px;background:rgba(0,0,0,.28)}
+.v440-scenario-title{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.v440-scenario-title small{display:block;color:var(--muted);margin-top:4px}
+.v440-scenario-title strong{font-size:1.6rem;color:var(--gold2)}
+.v440-readiness-row{margin:10px 0}
+.v440-readiness-head{display:flex;justify-content:space-between;gap:10px}
+.v440-readiness-head span{color:var(--gold2);font-weight:700}
+.v440-readiness-track{height:9px;margin:5px 0;background:rgba(255,255,255,.10);border-radius:999px;overflow:hidden}
+.v440-readiness-track span{display:block;height:100%;background:linear-gradient(90deg,#73500d,var(--gold2));border-radius:999px}
+.v440-readiness-row small{color:var(--muted)}
+.v440-open-scenario{width:100%;margin-top:10px;min-height:42px}
+@media(max-width:760px){.v440-summary,.v440-scenario-grid{grid-template-columns:1fr}}
+</style>
+
 </head>
 <body>
 <header class="topbar">
@@ -1042,6 +1064,14 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
   <div id="scenarioResult" class="notice" style="margin-top:10px">Choose a target session and calculate the scenario.</div>
   <h3 style="margin-top:14px">Saved Planning Scenarios</h3>
   <div id="savedScenarioList" class="muted">No planning scenarios saved yet.</div>
+</article>
+<article class="card" id="v440PlanningReadinessCard">
+  <div class="eyebrow">v4.4.0</div>
+  <h2>📈 Planning Readiness Dashboard</h2>
+  <p class="muted">Turns saved future-Officer scenarios into a release-readiness view and highlights the next resource to prioritise.</p>
+  <div id="v440PlanningReadiness">
+    <div class="notice">Save a Planning Scenario above to see readiness percentages and a suggested next action.</div>
+  </div>
 </article>
 <article class="card">
       <h2>🎯 Goals Planner</h2>
@@ -3912,6 +3942,65 @@ document.addEventListener('click',e=>{
  const di=e.target?.dataset?.deleteScenario;if(di!==undefined){const a=load();a.splice(Number(di),1);store(a);render();}
 });
 document.addEventListener('DOMContentLoaded',()=>{const y=document.getElementById('scenarioYear');if(y&&!y.value)y.value=new Date().getFullYear()+1;render()});
+})();
+</script>
+
+
+<script id="v440-readiness-dashboard-runtime">
+(function(){
+'use strict';
+const KEY='kow_v4359_planning_scenarios';
+const fmt=n=>Math.max(0,Math.round(Number(n)||0)).toLocaleString();
+const clamp=n=>Math.max(0,Math.min(100,Number(n)||0));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}
+function pct(s,key){
+ const req=Number(s?.req?.[key])||0, held=Number(s?.held?.[key])||0;
+ return req?clamp((held/req)*100):100;
+}
+function bar(label,p,held,req,short){
+ const detail=`${fmt(held)} / ${fmt(req)}${short?` · short ${fmt(short)}`:' · ready'}`;
+ return `<div class="v440-readiness-row"><div class="v440-readiness-head"><b>${label}</b><span>${p.toFixed(0)}%</span></div><div class="v440-readiness-track"><span style="width:${p}%"></span></div><small>${detail}</small></div>`;
+}
+function card(s,i){
+ const bp=pct(s,'badges'), sp=pct(s,'stars'), xp=pct(s,'xp'), overall=Math.min(bp,sp,xp);
+ const held=s.held||{}, req=s.req||{}, short=s.short||{};
+ const next=short.badges>0?`Save ${fmt(short.badges)} badge equivalents`
+   :short.stars>0?`Build ${fmt(short.stars)} more Star value`
+   :short.xp>0?`Save ${fmt(short.xp)} XP`
+   :'Resources ready — maintain your reserve.';
+ return `<article class="v440-scenario-card">
+   <div class="v440-scenario-title"><div><b>${esc(s.name||'Saved scenario')}</b><small>${esc(s.year||'')} · ${esc(s.count||1)} projected Officer${Number(s.count||1)>1?'s':''}</small></div><strong>${overall.toFixed(0)}%</strong></div>
+   ${bar('Badges',bp,held.badges,req.badges,short.badges)}
+   ${bar('Stars',sp,held.stars,req.stars,short.stars)}
+   ${bar('XP',xp,held.xp,req.xp,short.xp)}
+   <div class="notice"><b>Suggested next action:</b> ${esc(next)}</div>
+   <button type="button" class="app-action-secondary v440-open-scenario" data-v440-load="${i}">Open in Planner</button>
+ </article>`;
+}
+function render(){
+ const root=document.getElementById('v440PlanningReadiness'); if(!root)return;
+ const list=load();
+ if(!list.length){root.innerHTML='<div class="notice">Save a Planning Scenario above to see readiness percentages and a suggested next action.</div>';return}
+ const sorted=list.map((s,i)=>({s,i})).sort((a,b)=>(Number(a.s.overall)||0)-(Number(b.s.overall)||0));
+ const avg=sorted.reduce((t,x)=>t+clamp(x.s.overall),0)/sorted.length;
+ root.innerHTML=`<div class="v440-summary">
+   <div><span>Saved targets</span><b>${sorted.length}</b></div>
+   <div><span>Average readiness</span><b>${avg.toFixed(0)}%</b></div>
+   <div><span>Priority target</span><b>${esc(sorted[0].s.name||'Scenario')}</b></div>
+ </div><div class="v440-scenario-grid">${sorted.map(x=>card(x.s,x.i)).join('')}</div>`;
+}
+document.addEventListener('DOMContentLoaded',render);
+document.addEventListener('click',e=>{
+ if(e.target?.id==='saveScenario'||e.target?.dataset?.deleteScenario!==undefined)setTimeout(render,60);
+ const idx=e.target?.dataset?.v440Load;
+ if(idx!==undefined){
+   const target=document.querySelector(`[data-load-scenario="${idx}"]`);
+   if(target){target.click();document.getElementById('futurePlanningTargets')?.scrollIntoView({behavior:'smooth',block:'start'});}
+ }
+});
+window.addEventListener('storage',e=>{if(e.key===KEY)render()});
+window.kowRenderPlanningReadiness=render;
 })();
 </script>
 
