@@ -1,3 +1,9 @@
+# v4.4.0 LIVE
+- Added Planning Readiness Dashboard for saved future-Officer scenarios.
+- Added Badge, Star and XP readiness percentages and overall limiting-resource readiness.
+- Added Priority Target, Suggested Next Action and Open in Planner.
+- Updated runtime version metadata and What's New content to v4.4.0.
+
 ## v4.3.51 TEST
 - Planner: Central Inventory individual Officer Badges applied first and displayed separately.
 - Planner: Use current held resources reads Central Inventory directly.

@@ -61,7 +61,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 .bottom-nav{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);width:min(980px,calc(100% - 16px));display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;padding:8px;border:1px solid var(--line);border-radius:16px;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);z-index:20}
 .bottom-nav button{border:0;background:transparent;color:var(--muted);padding:7px 1px;border-radius:10px;min-width:0;white-space:nowrap;font-size:.9rem}.bottom-nav button.active{background:rgba(213,167,47,.17);color:var(--gold2)}.bottom-nav span{display:block;font-size:.62rem;margin-top:3px;white-space:nowrap}
 
-/* v4.3.59 — Unified Button Design System */
+/* v4.4.0 — Unified Button Design System */
 /* Consistent app action system: gold action, navy save, outlined secondary, red destructive. */
 .app-action-primary,.app-action-save,.app-action-secondary,.app-action-danger{padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700;letter-spacing:.01em;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
 .app-action-primary{background:linear-gradient(180deg,#795915,#5e4512)!important;border:1px solid rgba(244,197,78,.55)!important;color:#fff!important}
@@ -415,7 +415,7 @@ html.ios-safari{
 /* FIX9 planner bottom clearance */
 #view-planner{padding-bottom:140px}
 
-/* v4.3.59 tablet Guided Workflow responsive fix */
+/* v4.4.0 tablet Guided Workflow responsive fix */
 @media (min-width: 600px) and (max-width: 1100px){
   #guidedWorkflowCard #guidedWorkflowSteps{
     display:grid !important;
@@ -454,7 +454,7 @@ html.ios-safari{
 
 
 
-/* v4.3.59 TEST 9 — Help portrait tablet table containment fix */
+/* v4.4.0 — Help portrait tablet table containment fix */
 @media (orientation:portrait) and (max-width:1100px){
   #help,
   #help .card,
@@ -690,7 +690,7 @@ nav.bottom-nav::-webkit-scrollbar,
 
 
 <style id="v4359-test6-unified-button-system">
-/* v4.3.59 LIVE — one button language across the whole app.
+/* v4.4.0 LIVE — one button language across the whole app.
    Gold = primary action, Navy = save/commit, Gold outline = secondary/navigation, Red = destructive. */
 :root{--btn-radius:10px;--btn-gold-top:#806018;--btn-gold-bottom:#5e4512;--btn-navy-top:#202a49;--btn-navy-bottom:#10172c;--btn-red-bg:rgba(120,30,30,.18);--btn-red-line:rgba(211,95,95,.45)}
 button,.button-like,.filebtn{font-weight:700;letter-spacing:.01em}
@@ -1200,10 +1200,19 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <h2>❓ Help & Instructions</h2>
 
 <div class="card" id="whatsNewV4329" style="margin-bottom:16px">
-  <h3 style="margin-top:0">✨ What’s New — v4.3.58 LIVE</h3>
+  <h3 style="margin-top:0">✨ What’s New — v4.4.0 LIVE</h3>
   <div class="notice">
-    <b>v4.3.58 LIVE adds Advanced Multi-Officer Planning, Future Officer forecasting, focused Session/Season/Type filtering, saved Officer analysis, XP/Inventory integration and direct Releases-to-Planner navigation.</b>
+    <b>v4.4.0 LIVE adds the Planning Readiness Dashboard, turning saved future-Officer scenarios into clear Badge, Star and XP readiness percentages with a priority target and suggested next action.</b>
   </div>
+  <h4>Planning Readiness Dashboard</h4>
+  <ul>
+    <li><b>Badge, Star and XP readiness</b> shown separately for each saved planning scenario.</li>
+    <li><b>Overall readiness</b> is based on the limiting resource, so the weakest area is immediately visible.</li>
+    <li><b>Priority Target</b> highlights the saved scenario that needs the most attention.</li>
+    <li><b>Suggested Next Action</b> identifies whether to prioritise badge equivalents, Star value or XP.</li>
+    <li><b>Open in Planner</b> reloads the saved scenario directly into the existing Future Officer planning controls.</li>
+    <li>The dashboard uses the existing saved Planning Scenario format, so <b>no saved-data migration is required</b>.</li>
+  </ul>
 
   
 <h3>📘 v4.3.58 — Advanced Planning & Future Officer Forecasting Guide</h3>
@@ -2308,7 +2317,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.3.59';
+const APP_VERSION='4.4.0';
 function syncVersionUI(){
  const v='v'+APP_VERSION;
  if($('headerVersion'))$('headerVersion').textContent=v;

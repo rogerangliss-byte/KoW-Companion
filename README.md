@@ -1,8 +1,14 @@
-# KoW Companion v4.3.58 LIVE
+# KoW Companion v4.4.0 LIVEnced Multi-Officer Planning with saved Progress and Inventory.
 
-## What's New — v4.3.58 LIVE
+## What's New — v4.4.0 LIVE
 
-- Advanced Multi-Officer Planning with saved Progress and Inventory.
+- Planning Readiness Dashboard for saved future-Officer scenarios.
+- Separate Badge, Star and XP readiness percentages.
+- Overall readiness based on the limiting resource.
+- Priority Target highlighting the least-ready saved scenario.
+- Suggested Next Action based on the first resource shortfall.
+- Open in Planner shortcut for saved scenarios.
+- No saved-data migration required.
 - Future session planning for October, January, April and July.
 - Focused future reports, e.g. April — Tanks → S8 Tank — PROJECTED.
 - Season filter: All Sessions, Original, S2–S7.

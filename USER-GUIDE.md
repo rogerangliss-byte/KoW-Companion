@@ -91,3 +91,7 @@ The Releases **Future Officer Cost Forecast** includes an **Advanced Future Offi
 - It does not change saved Officer progress.
 - MAXED Officers are excluded.
 - Future ORV/SRV values are forecasts, not published costs.
+
+
+## v4.4.0 — Planning Readiness Dashboard
+Saved Planning Scenarios now feed a readiness dashboard showing Badge, Star and XP readiness, overall readiness, a Priority Target and a Suggested Next Action. Use Open in Planner to reload a saved scenario. Existing saved scenarios remain compatible.
