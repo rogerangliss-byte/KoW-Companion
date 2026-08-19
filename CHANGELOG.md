@@ -1,3 +1,14 @@
+# Changelog
+
+## v4.5.0 LIVE
+- Rebuilt from the stable v4.4.0 English Live baseline.
+- Added native working-state persistence for Officer, Progress, Compare and Planner UI state.
+- Corrected Legendary Officer Badge Chest and Selection Chest rules.
+- Updated Resource Optimiser and Multi-Officer Planner behaviour.
+- Reordered Central Inventory using the approved Order in List numbering.
+- Removed the non-game 50 XP Book entry.
+- Updated README, User Guide, release notes and in-app Help for v4.5.0 LIVE.
+
 # v4.4.0 LIVE
 - Added Planning Readiness Dashboard for saved future-Officer scenarios.
 - Added Badge, Star and XP readiness percentages and overall limiting-resource readiness.
