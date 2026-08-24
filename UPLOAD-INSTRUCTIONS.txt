@@ -1,8 +1,0 @@
-KoW Companion v4.5.0 LIVE — Full Retention Package
-
-Upload the root files to the KoW-Companion English Live repository.
-CNAME is set to english.firestorm-companion.uk.
-The TEST banner has been removed.
-The Officer data file officers-default.csv is included for retention.
-
-This package was produced from the approved v4.5.0 English Test build.
