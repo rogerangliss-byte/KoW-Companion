@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "2026.08.21-02",
+  "publishedAt": "2026-08-21T08:25:00+01:00",
+  "officerCount": 66,
+  "environment": "English Live",
+  "notes": "v4.6.0 LIVE dynamic Officer data baseline. Update this manifest whenever officers.json is published with new or corrected confirmed Officer data."
+}

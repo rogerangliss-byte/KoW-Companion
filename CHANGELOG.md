@@ -1,13 +1,21 @@
 # Changelog
 
-## v4.5.0 LIVE
+## v4.6.0 LIVE
+- Added Upgrade Targets & Recommendations.
+- Added Dynamic Officer Data and Global Officer Data status.
+- Added database-driven Future Officer Cost Forecasting.
+- Current confirmed forecast baseline at release: S7 Tank Destroyers, 600 ORV / 300 SRV.
+- Promoted the validated English Test build to a clean static Live package.
+
+
+## v4.5.0 TEST
 - Rebuilt from the stable v4.4.0 English Live baseline.
 - Added native working-state persistence for Officer, Progress, Compare and Planner UI state.
 - Corrected Legendary Officer Badge Chest and Selection Chest rules.
 - Updated Resource Optimiser and Multi-Officer Planner behaviour.
 - Reordered Central Inventory using the approved Order in List numbering.
 - Removed the non-game 50 XP Book entry.
-- Updated README, User Guide, release notes and in-app Help for v4.5.0 LIVE.
+- Updated README, User Guide, release notes and in-app Help for v4.5.0 TEST.
 
 # v4.4.0 LIVE
 - Added Planning Readiness Dashboard for saved future-Officer scenarios.

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.5.0</title>
+<title>KoW Companion v4.6.0</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -520,6 +520,9 @@ html.ios-safari{
   #help table td{padding:6px 2px !important}
 }
 
+
+/* v4.6.0 LIVE — Upgrade Targets & Recommendations */
+.v460-target-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.v460-target-result{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.28)}.v460-target-result strong{color:var(--gold2)}@media(max-width:760px){.v460-target-grid{grid-template-columns:1fr}}
 </style>
 <script>
 (function(){
@@ -763,7 +766,6 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 
 </head>
 <body>
-
 <header class="topbar">
   <div>
     <h1 id="appTitle">⚔ GODS OF WAR 371</h1>
@@ -1199,8 +1201,8 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <h2>❓ Help & Instructions</h2>
 
 <div class="card" id="whatsNewV450" style="margin-bottom:16px">
-  <h3 style="margin-top:0">✨ What’s New — v4.5.0 LIVE</h3>
-  <div class="notice"><b>v4.5.0 LIVE.</b> This release builds on the stable v4.4.0 English Live application with more accurate planning, corrected Legendary chest rules, persistent working state and a clearer Central Inventory.</div>
+  <h3 style="margin-top:0">✨ What’s New — v4.6.0 LIVE</h3>
+  <div class="notice"><b>LIVE RELEASE.</b> v4.6.0 adds Upgrade Targets & Recommendations, Dynamic Officer Data and database-driven Future Officer Cost Forecasting while retaining the stable planning, Inventory, Progress, backup and Officer development features.</div>
 
   <h4>💾 Native working-state persistence</h4>
   <p>A normal browser refresh should keep the working interface where you left it instead of returning key controls to defaults.</p>
@@ -1258,18 +1260,9 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
   <h4>🧭 v4.4.0 planning retained</h4>
   <p>Planning Readiness Dashboard, Badge/Star/XP readiness, Priority Target, Suggested Next Action, future October/January/April/July sessions, Season + Officer Type reports, projected future Legendary resources, ORV/SRV forecasting and MAXED-Officer exclusions remain available.</p>
 
-  <h4>✅ Pre-Live QA checklist</h4>
-  <ul>
-    <li>App loads without flicker, pulsing or freezes and all tabs navigate normally.</li>
-    <li>Selected Officer, Progress filters, Compare selections and Planner working state survive refresh.</li>
-    <li>Badge Chest mode uses Badge <b>or</b> ORV route, never both.</li>
-    <li>Selection Chests give one eligible specific Officer Badge only and never ORV.</li>
-    <li>Inventory appears in the approved Order in List and no 50 XP Book appears anywhere.</li>
-    <li>Inventory Save works and feeds the rest of the app.</li>
-    <li>Export App Backup and Restore App Backup work, and restored data survives reload.</li>
-    <li>Version header, Settings, About and Version Integrity all report <b>v4.5.0</b>.</li>
-    
-  </ul>
+  <h4>🔮 Dynamic Future Officer Cost Forecast</h4>
+  <p>The forecast now uses the latest confirmed Legendary seasonal Officer release in the Officer Database as its baseline. <b>Example:</b> at the v4.6.0 release, the latest confirmed baseline is <b>S7 Tank Destroyers — 600 ORV per Badge / 300 SRV per Exclusive Star</b>. When a newer confirmed release is published, the baseline automatically advances.</p>
+  <p>Future ORV/SRV figures are <b>planning estimates only</b> until actual release costs are confirmed.</p>
 </div>
 
       <div class="notice"><b>Recommended workflow:</b> start with <b>Inventory</b> and save the resources you currently hold, then work through <b>Officer → Stars → Development → XP → Planner → Save Progress</b>. Use <b>Backup & Restore</b> in Settings before major changes or when you want a portable copy of locally saved app data.</div>
@@ -1426,6 +1419,20 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <div id="backupStatus" class="notice" style="margin-top:10px">No backup created yet.</div>
 </article>
   </section>
+
+<div class="card wide" id="v460UpgradeTargetsCard">
+  <div class="eyebrow">v4.6.0 LIVE</div>
+  <h2>🎯 Upgrade Targets & Recommendations</h2>
+  <p class="notice">Choose a target for the currently selected Officer. This first v4.6.0 test build compares the saved current position with your target and gives a clear next-step recommendation. It does not spend or alter Inventory.</p>
+  <div class="v460-target-grid">
+    <div><label>Target Level</label><input id="v460TargetLevel" type="number" min="1" max="70" value="70"></div>
+    <div><label>Target Stars</label><select id="v460TargetStars"><option value="1">1★</option><option value="2">2★</option><option value="3">3★</option><option value="4">4★</option><option value="5" selected>5★</option></select></div>
+    <div><label>Target Training</label><input id="v460TargetTraining" type="number" min="0" max="180" value="180"></div>
+    <div><label>Target</label><select id="v460TargetMode"><option value="custom">Custom target</option><option value="max" selected>MAX Officer</option></select></div>
+  </div>
+  <button class="primary app-action-primary" id="v460CalculateTarget" type="button">Calculate Target Recommendation</button>
+  <div class="v460-target-result" id="v460TargetResult"><strong>Ready:</strong> select an Officer and calculate a target.</div>
+</div>
 </main>
 
 <nav class="bottom-nav">
@@ -1443,7 +1450,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
   <button data-view="help">📖<span>Help</span></button>
 </nav>
 
-<script type="module">
+<script>window.KOW_PORTRAIT_SESSION_VERSION=Date.now();
 const DEFAULT_OFFICERS=[{"name":"S7 Roisin","season":"S7","role":"Tank Destroyer","orv":600,"srv":300,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S7 Barbara","season":"S7","role":"Tank Destroyer","orv":600,"srv":300,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S7 Romana","season":"S7","role":"Tank","orv":500,"srv":250,"notes":"Tank","rarity":"Legendary"},{"name":"S7 Liora","season":"S7","role":"Tank","orv":500,"srv":250,"notes":"Tank","rarity":"Legendary"},{"name":"S7 Stella","season":"S7","role":"Infantry","orv":416,"srv":208,"notes":"Infantry","rarity":"Legendary"},{"name":"S7 Klara","season":"S7","role":"Infantry","orv":416,"srv":208,"notes":"Infantry","rarity":"Legendary"},{"name":"S7 Code","season":"S7","role":"Rally","orv":346,"srv":173,"notes":"Rally","rarity":"Legendary"},{"name":"S7 Kamila","season":"S7","role":"Garrison","orv":346,"srv":173,"notes":"Garrison","rarity":"Legendary"},{"name":"S6 Regina","season":"S6","role":"Tank Destroyer","orv":289,"srv":144,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S6 Veronica","season":"S6","role":"Tank Destroyer","orv":289,"srv":144,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S6 Silverhand","season":"S6","role":"Tank","orv":240,"srv":120,"notes":"Tank","rarity":"Legendary"},{"name":"S6 Red Queen","season":"S6","role":"Tank","orv":240,"srv":120,"notes":"Tank","rarity":"Legendary"},{"name":"S6 Samantha","season":"S6","role":"Infantry","orv":200,"srv":100,"notes":"Infantry","rarity":"Legendary"},{"name":"S6 Saoirse","season":"S6","role":"Infantry","orv":200,"srv":100,"notes":"Infantry","rarity":"Legendary"},{"name":"S6 Emily","season":"S6","role":"Rally","orv":167,"srv":84,"notes":"Rally","rarity":"Legendary"},{"name":"S6 Zoya","season":"S6","role":"Garrison","orv":167,"srv":84,"notes":"Garrison","rarity":"Legendary"},{"name":"S5 Feng","season":"S5","role":"Tank Destroyer","orv":139,"srv":69,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S5 Halina","season":"S5","role":"Tank Destroyer","orv":139,"srv":69,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S5 Eva","season":"S5","role":"Tank","orv":116,"srv":58,"notes":"Tank","rarity":"Legendary"},{"name":"S5 Elsa","season":"S5","role":"Tank","orv":116,"srv":58,"notes":"Tank","rarity":"Legendary"},{"name":"S5 Camile","season":"S5","role":"Infantry","orv":96,"srv":48,"notes":"Infantry","rarity":"Legendary"},{"name":"S5 Betty","season":"S5","role":"Infantry","orv":96,"srv":48,"notes":"Infantry","rarity":"Legendary"},{"name":"S5 Miyeon","season":"S5","role":"Rally","orv":80,"srv":40,"notes":"Rally","rarity":"Legendary"},{"name":"S5 Julia","season":"S5","role":"Garrison","orv":80,"srv":40,"notes":"Garrison","rarity":"Legendary"},{"name":"S4 Melina","season":"S4","role":"Tank Destroyer","orv":67,"srv":34,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S4 Jane","season":"S4","role":"Tank Destroyer","orv":67,"srv":34,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S4 Anna","season":"S4","role":"Tank","orv":56,"srv":28,"notes":"Tank","rarity":"Legendary"},{"name":"S4 Yuki","season":"S4","role":"Tank","orv":56,"srv":28,"notes":"Tank","rarity":"Legendary"},{"name":"S4 Eunice","season":"S4","role":"Infantry","orv":47,"srv":23,"notes":"Infantry","rarity":"Legendary"},{"name":"S4 Derya","season":"S4","role":"Infantry","orv":47,"srv":23,"notes":"Infantry","rarity":"Legendary"},{"name":"S4 Hardwin","season":"S4","role":"Rally","orv":39,"srv":20,"notes":"Rally","rarity":"Legendary"},{"name":"S4 Erin","season":"S4","role":"Garrison","orv":39,"srv":20,"notes":"Garrison","rarity":"Legendary"},{"name":"S3 Su","season":"S3","role":"Tank Destroyer","orv":33,"srv":16,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S3 Erica","season":"S3","role":"Tank Destroyer","orv":33,"srv":16,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S3 Aurora","season":"S3","role":"Tank","orv":28,"srv":14,"notes":"Tank","rarity":"Legendary"},{"name":"S3 Ada","season":"S3","role":"Tank","orv":28,"srv":14,"notes":"Tank","rarity":"Legendary"},{"name":"S3 Hannah","season":"S3","role":"Infantry","orv":23,"srv":11,"notes":"Infantry","rarity":"Legendary"},{"name":"S3 Christina","season":"S3","role":"Infantry","orv":23,"srv":11,"notes":"Infantry","rarity":"Legendary"},{"name":"S3 Sophia","season":"S3","role":"Rally","orv":23,"srv":11,"notes":"Rally","rarity":"Legendary"},{"name":"S3 Oliva","season":"S3","role":"Garrison","orv":23,"srv":11,"notes":"Garrison","rarity":"Legendary"},{"name":"S2 Lady Pandora","season":"S2","role":"Tank","orv":20,"srv":10,"notes":"Tank","rarity":"Legendary"},{"name":"S2 Amanda","season":"S2","role":"Infantry","orv":20,"srv":10,"notes":"Infantry","rarity":"Legendary"},{"name":"S2 Diana","season":"S2","role":"Tank Destroyer","orv":20,"srv":10,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S2 Natalia","season":"S2","role":"Tank","orv":20,"srv":10,"notes":"Tank","rarity":"Legendary"},{"name":"Katherine","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Legendary"},{"name":"Grace","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Legendary"},{"name":"Chloe","season":"Original","role":"Rally","orv":0,"srv":0,"notes":"Rally","rarity":"Legendary"},{"name":"Ling","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"Jessica","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"Lilith","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"Angel","season":"Original","role":"Gatherer","orv":0,"srv":0,"notes":"Gatherer","rarity":"Legendary"},{"name":"Sakura","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Legendary"},{"name":"Loubna","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Legendary"},{"name":"Angelica","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Legendary"},{"name":"Ophelia","season":"Original","role":"Rally","orv":0,"srv":0,"notes":"Rally","rarity":"Legendary"},{"name":"Doireann","season":"Original","role":"Garrison","orv":0,"srv":0,"notes":"Garrison","rarity":"Legendary"},{"name":"Dorothea","season":"Original","role":"General","orv":0,"srv":0,"notes":"General","rarity":"Epic"},{"name":"Abigail","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Epic"},{"name":"Monica","season":"Original","role":"Tank Destroyer, Gatherer","orv":0,"srv":0,"notes":"Tank Destroyer, Gatherer","rarity":"Epic"},{"name":"Linda","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Epic"},{"name":"Riven","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Epic"},{"name":"Maria","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Epic"},{"name":"Evelyn","season":"Original","role":"Infantry, Gatherer","orv":0,"srv":0,"notes":"Infantry, Gatherer","rarity":"Epic"},{"name":"Helena","season":"Original","role":"General","orv":0,"srv":0,"notes":"General","rarity":"Epic"},{"name":"Marjorie","season":"Original","role":"Tank, Gatherer","orv":0,"srv":0,"notes":"Tank, Gatherer","rarity":"Elite"},{"name":"Jeanne","season":"Original","role":"Tank Destroyer, Gatherer","orv":0,"srv":0,"notes":"Tank Destroyer, Gatherer","rarity":"Elite"}];
 const STAR_CUM=[0,500,1500,8000,33000,98000];
 const LEGENDARY_SKILL_COSTS=[10,10,15,15,30,30,40,40,45,45,50,50,75,75,80,80];
@@ -1456,7 +1463,7 @@ const MAX_STAR=98000,MAX_BADGES=1600,MAX_XP=199646700;
 let officers=[],skills=Array(16).fill(false);
 const $=id=>document.getElementById(id);
 
-// v4.5.0 LIVE — native working-state persistence.
+// v4.5.0 TEST — native working-state persistence.
 const UI_STATE_KEY='kow_ui_state_v450_native1';
 const PLANNER_WORKING_KEY='kow_planner_working_v450_native1';
 function getUiState(){try{return JSON.parse(localStorage.getItem(UI_STATE_KEY)||'{}')||{}}catch{return {}}}
@@ -1646,7 +1653,7 @@ function normalizeOfficer(o){
 async function loadOfficers(){
  let published=clone(DEFAULT_OFFICERS).map(normalizeOfficer).filter(o=>o.name);
  try{
-   const response=await fetch('./officers.json?v=435-live-comprehensive-docs',{cache:'no-store'});
+   const response=await fetch('./officers.json?v=460-live',{cache:'no-store'});
    if(response.ok){
      const data=await response.json();
      if(Array.isArray(data)&&data.length){
@@ -1772,7 +1779,7 @@ function setPortraitWithFallback(img,placeholder,candidates,index=0){
   if(placeholder)placeholder.style.display='none';
  };
  img.onerror=()=>setPortraitWithFallback(img,placeholder,candidates,index+1);
- img.src=candidates[index]+'?v=4213';
+ img.src=candidates[index]+'?pv='+window.KOW_PORTRAIT_SESSION_VERSION;
 }
 function updateOfficerExperience(){
  const o=currentOfficer();if(!o)return;
@@ -1795,13 +1802,13 @@ function updateOfficerExperience(){
    const next=Number(current)+1;
    if(next<candidates.length){
     dash.setAttribute('data-portrait-index',String(next));
-    dash.src=candidates[next]+'?v=4213';
+    dash.src=candidates[next]+'?pv='+window.KOW_PORTRAIT_SESSION_VERSION;
    }else{
     dash.style.display='none';
    }
   };
   dash.setAttribute('data-portrait-index','0');
-  dash.src=candidates[0]+'?v=4213';
+  dash.src=candidates[0]+'?pv='+window.KOW_PORTRAIT_SESSION_VERSION;
  }
 }
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -2236,7 +2243,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.5.0';
+const APP_VERSION='4.6.0';
 function syncVersionUI(){
  const v='v'+APP_VERSION;
  if($('headerVersion'))$('headerVersion').textContent=v;
@@ -2774,7 +2781,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{saveAc
  if($('saveOfficerProfile'))$('saveOfficerProfile').onclick=()=>{saveOfficerProfile(false);setTimeout(renderSavedOfficerProgress,0)};
  if($('maxOfficerProfile'))$('maxOfficerProfile').onclick=maxSelectedOfficerProfile;
  if($('resetOfficerProfile'))$('resetOfficerProfile').onclick=resetOfficerProfile;
- $('dbSearch').oninput=renderDb;$('dbSeason').onchange=renderDb;$('dbAdd').onclick=()=>{officers.push({name:'New Officer',season:'S8',orv:1,srv:1,notes:''});renderDb();renderOfficerOptions('New Officer');calculate()};
+ $('dbSearch').oninput=renderDb;$('dbSeason').onchange=renderDb;$('dbAdd').onclick=()=>{officers.unshift({name:'New Officer',season:'S8',orv:1,srv:1,notes:''});renderDb();renderOfficerOptions('New Officer');calculate()};
  $('dbSave').onclick=()=>{const e=validateDb();if(e.length){alert('Fix validation issues first.');return}saveOfficers();renderOfficerFilters();renderOfficerOptions();alert('Officer database saved.')};
  $('dbExport').onclick=exportCsv;
  $('dbImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const parsed=parseCsv(r.result);if(validateDb(parsed).length){alert('CSV validation failed.');return}officers=parsed;saveOfficers();renderDb();renderOfficerFilters();renderOfficerOptions();calculate();alert('CSV imported.')};r.readAsText(f);e.target.value=''};
@@ -2808,7 +2815,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{saveAc
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.3.55';
+  $('appName').value='GODS OF WAR 371';$('appTitle').textContent='GODS OF WAR 371';document.title='KoW Companion v4.6.0';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -3889,5 +3896,5 @@ window.kowRenderPlanningReadiness=render;
 })();
 </script>
 
-</body>
+\n<script>\n// v4.6.0 LIVE — Upgrade Targets & Recommendations (non-destructive milestone 1)\n(function(){\n function n(v,d){v=Number(v);return Number.isFinite(v)?v:d;}\n function selectedOfficerName(){\n   const candidates=['officerSelect','officer','officerName','selectedOfficer'];\n   for(const id of candidates){const e=document.getElementById(id);if(e&&e.value)return e.options&&e.selectedIndex>=0?e.options[e.selectedIndex].text:e.value;}\n   const h=document.querySelector('#officerView h2,#officerView h3');return h?h.textContent.trim():'Selected Officer';\n }\n function currentValue(ids,fallback){for(const id of ids){const e=document.getElementById(id);if(e&&e.value!==undefined&&e.value!=='')return n(e.value,fallback);}return fallback;}\n function calc(){\n   const mode=document.getElementById('v460TargetMode').value;\n   if(mode==='max'){document.getElementById('v460TargetLevel').value=70;document.getElementById('v460TargetStars').value=5;document.getElementById('v460TargetTraining').value=180;}\n   const tl=n(document.getElementById('v460TargetLevel').value,70), ts=n(document.getElementById('v460TargetStars').value,5), tt=n(document.getElementById('v460TargetTraining').value,180);\n   const cl=currentValue(['officerLevel','level','currentLevel'],0), cs=currentValue(['starLevel','stars','officerStars'],0), ct=currentValue(['training','trainingLevel','officerTraining'],0);\n   const dl=Math.max(0,tl-cl), ds=Math.max(0,ts-cs), dt=Math.max(0,tt-ct);\n   let rec=[]; if(dl)rec.push(dl+' Officer level'+(dl===1?'':'s')); if(ds)rec.push(ds+' Star level'+(ds===1?'':'s')); if(dt)rec.push(dt+' Training stage'+(dt===1?'':'s'));\n   const ready=!rec.length;\n   document.getElementById('v460TargetResult').innerHTML='<strong>'+selectedOfficerName()+'</strong><br>Current detected position: Level '+cl+' · '+cs+'★ · Training '+ct+'<br>Target: Level '+tl+' · '+ts+'★ · Training '+tt+'<br><strong>Recommendation:</strong> '+(ready?'Target already achieved.':'Develop '+rec.join(', ')+'. Inventory-aware resource recommendations will be added in the next v4.6.0 milestone.');\n }\n function init(){const b=document.getElementById('v460CalculateTarget');if(!b)return;b.addEventListener('click',calc);document.getElementById('v460TargetMode').addEventListener('change',function(){if(this.value==='max'){document.getElementById('v460TargetLevel').value=70;document.getElementById('v460TargetStars').value=5;document.getElementById('v460TargetTraining').value=180;}});}\n if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();\n})();\n</script>\n<script src="./v460-features.js?v=460-live"></script><script src="./planner-season-sync.js?v=460-live"></script><script src="./release-forecast-sync.js?v=460-live"></script></body>
 </html>
