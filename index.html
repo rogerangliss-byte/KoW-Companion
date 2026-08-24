@@ -3285,7 +3285,46 @@ window.KOW_PLANNER_BRIDGE = {
     <input id="quickTraining" type="range" min="0" max="180" value="0" style="width:100%">
     <input id="quickTrainingExact" type="number" min="0" max="180" step="1" inputmode="numeric" value="0" aria-label="Exact Training Level">
   </div>
-  <div class="toolbar" style="margin-top:16px"><button id="quickProgressSave" class="app-action-save" type="button">💾 Save Progress</button><button id="quickProgressMax" class="primary" type="button">⭐ MAX Officer</button><button id="quickProgressCancel" class="app-action-secondary" type="button" onclick="document.getElementById('quickProgressModal').style.display='none';return false;">Cancel</button></div>
+  <div class="toolbar" style="margin-top:16px"><button id="quickProgressSave" class="app-action-save" type="button"
+onclick="(function(){
+  var q=function(id){return document.getElementById(id);};
+  try{
+    if(q('currentStar'))q('currentStar').value=q('quickStarLevel').value;
+    if(q('targetStar'))q('targetStar').value=Math.max(Number(q('targetStar').value)||5,Number(q('quickStarLevel').value)||0);
+    if(q('currentLevel'))q('currentLevel').value=q('quickOfficerLevel').value;
+    if(q('targetLevel'))q('targetLevel').value=Math.max(Number(q('targetLevel').value)||70,Number(q('quickOfficerLevel').value)||1);
+    if(q('unlocked'))q('unlocked').checked=q('quickUnlocked').checked;
+
+    skills=Array(16).fill(false);
+    document.querySelectorAll('#quickSkills .quick-strand-row').forEach(function(row,strand){
+      var sel=row.querySelector('.quick-strand-select');
+      var level=Math.max(1,Math.min(5,Number(sel ? sel.value : row.dataset.selectedLevel)||1));
+      for(var step=0;step<4;step++)skills[strand*4+step]=step<(level-1);
+    });
+
+    if(typeof renderSkillStrands==='function')renderSkillStrands();
+
+    var training=q('quickTrainingExact') ? q('quickTrainingExact').value : q('quickTraining').value;
+    if(q('training'))q('training').value=training;
+    if(q('trainingExact'))q('trainingExact').value=training;
+    if(q('trainingLabel'))q('trainingLabel').textContent=training;
+
+    if(typeof calculate==='function')calculate();
+    if(typeof saveOfficerProfile==='function')saveOfficerProfile(true);
+    if(typeof renderSavedOfficerProgress==='function')renderSavedOfficerProgress();
+    if(typeof renderProgressCompareChoices==='function')renderProgressCompareChoices();
+    if(typeof renderProgressTable==='function')renderProgressTable();
+    if(typeof renderHomeDashboard==='function')renderHomeDashboard();
+    if(typeof buildUpgradeSummary==='function')buildUpgradeSummary();
+
+    q('quickProgressModal').style.display='none';
+    var o=(typeof currentOfficer==='function')?currentOfficer():null;
+    alert((o&&typeof officerDisplayName==='function'?officerDisplayName(o):'Officer')+' progress saved.');
+  }catch(err){
+    console.error('Quick Progress save failed',err);
+    alert('Progress could not be saved. Please refresh and try again.');
+  }
+})();return false;">💾 Save Progress</button><button id="quickProgressMax" class="primary" type="button">⭐ MAX Officer</button><button id="quickProgressCancel" class="app-action-secondary" type="button" onclick="document.getElementById('quickProgressModal').style.display='none';return false;">Cancel</button></div>
   <div class="notice">Officer-specific progress only. Shared resources remain on Stars, Develop and XP.</div>
  </article>
 </div>
@@ -3899,7 +3938,27 @@ window.kowRenderPlanningReadiness=render;
 
 <script>
 // v4.6.0 LIVE — Upgrade Targets & Recommendations (non-destructive milestone 1)
-(function(){\n function n(v,d){v=Number(v);return Number.isFinite(v)?v:d;}\n function selectedOfficerName(){\n   const candidates=['officerSelect','officer','officerName','selectedOfficer'];\n   for(const id of candidates){const e=document.getElementById(id);if(e&&e.value)return e.options&&e.selectedIndex>=0?e.options[e.selectedIndex].text:e.value;}\n   const h=document.querySelector('#officerView h2,#officerView h3');return h?h.textContent.trim():'Selected Officer';\n }\n function currentValue(ids,fallback){for(const id of ids){const e=document.getElementById(id);if(e&&e.value!==undefined&&e.value!=='')return n(e.value,fallback);}return fallback;}\n function calc(){\n   const mode=document.getElementById('v460TargetMode').value;\n   if(mode==='max'){document.getElementById('v460TargetLevel').value=70;document.getElementById('v460TargetStars').value=5;document.getElementById('v460TargetTraining').value=180;}\n   const tl=n(document.getElementById('v460TargetLevel').value,70), ts=n(document.getElementById('v460TargetStars').value,5), tt=n(document.getElementById('v460TargetTraining').value,180);\n   const cl=currentValue(['officerLevel','level','currentLevel'],0), cs=currentValue(['starLevel','stars','officerStars'],0), ct=currentValue(['training','trainingLevel','officerTraining'],0);\n   const dl=Math.max(0,tl-cl), ds=Math.max(0,ts-cs), dt=Math.max(0,tt-ct);\n   let rec=[]; if(dl)rec.push(dl+' Officer level'+(dl===1?'':'s')); if(ds)rec.push(ds+' Star level'+(ds===1?'':'s')); if(dt)rec.push(dt+' Training stage'+(dt===1?'':'s'));\n   const ready=!rec.length;\n   document.getElementById('v460TargetResult').innerHTML='<strong>'+selectedOfficerName()+'</strong><br>Current detected position: Level '+cl+' · '+cs+'★ · Training '+ct+'<br>Target: Level '+tl+' · '+ts+'★ · Training '+tt+'<br><strong>Recommendation:</strong> '+(ready?'Target already achieved.':'Develop '+rec.join(', ')+'. Inventory-aware resource recommendations will be added in the next v4.6.0 milestone.');\n }\n function init(){const b=document.getElementById('v460CalculateTarget');if(!b)return;b.addEventListener('click',calc);document.getElementById('v460TargetMode').addEventListener('change',function(){if(this.value==='max'){document.getElementById('v460TargetLevel').value=70;document.getElementById('v460TargetStars').value=5;document.getElementById('v460TargetTraining').value=180;}});}\n if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();\n})();
+(function(){
+ function n(v,d){v=Number(v);return Number.isFinite(v)?v:d;}
+ function selectedOfficerName(){
+   const candidates=['officerSelect','officer','officerName','selectedOfficer'];
+   for(const id of candidates){const e=document.getElementById(id);if(e&&e.value)return e.options&&e.selectedIndex>=0?e.options[e.selectedIndex].text:e.value;}
+   const h=document.querySelector('#officerView h2,#officerView h3');return h?h.textContent.trim():'Selected Officer';
+ }
+ function currentValue(ids,fallback){for(const id of ids){const e=document.getElementById(id);if(e&&e.value!==undefined&&e.value!=='')return n(e.value,fallback);}return fallback;}
+ function calc(){
+   const mode=document.getElementById('v460TargetMode').value;
+   if(mode==='max'){document.getElementById('v460TargetLevel').value=70;document.getElementById('v460TargetStars').value=5;document.getElementById('v460TargetTraining').value=180;}
+   const tl=n(document.getElementById('v460TargetLevel').value,70), ts=n(document.getElementById('v460TargetStars').value,5), tt=n(document.getElementById('v460TargetTraining').value,180);
+   const cl=currentValue(['officerLevel','level','currentLevel'],0), cs=currentValue(['starLevel','stars','officerStars'],0), ct=currentValue(['training','trainingLevel','officerTraining'],0);
+   const dl=Math.max(0,tl-cl), ds=Math.max(0,ts-cs), dt=Math.max(0,tt-ct);
+   let rec=[]; if(dl)rec.push(dl+' Officer level'+(dl===1?'':'s')); if(ds)rec.push(ds+' Star level'+(ds===1?'':'s')); if(dt)rec.push(dt+' Training stage'+(dt===1?'':'s'));
+   const ready=!rec.length;
+   document.getElementById('v460TargetResult').innerHTML='<strong>'+selectedOfficerName()+'</strong><br>Current detected position: Level '+cl+' · '+cs+'★ · Training '+ct+'<br>Target: Level '+tl+' · '+ts+'★ · Training '+tt+'<br><strong>Recommendation:</strong> '+(ready?'Target already achieved.':'Develop '+rec.join(', ')+'. Inventory-aware resource recommendations will be added in the next v4.6.0 milestone.');
+ }
+ function init(){const b=document.getElementById('v460CalculateTarget');if(!b)return;b.addEventListener('click',calc);document.getElementById('v460TargetMode').addEventListener('change',function(){if(this.value==='max'){document.getElementById('v460TargetLevel').value=70;document.getElementById('v460TargetStars').value=5;document.getElementById('v460TargetTraining').value=180;}});}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
 </script>
 <script src="./v460-features.js?v=460-live"></script><script src="./planner-season-sync.js?v=460-live"></script><script src="./release-forecast-sync.js?v=460-live"></script></body>
 </html>
