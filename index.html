@@ -3171,6 +3171,9 @@ document.addEventListener('DOMContentLoaded',()=>{
    q('quickStarLevel').value=q('currentStar')?.value??0;
    q('quickOfficerLevel').value=q('currentLevel')?.value??1;
    q('quickUnlocked').checked=!!q('unlocked')?.checked;
+   if((Number(q('quickStarLevel').value)||0)>0 || (Number(q('quickOfficerLevel').value)||0)>1){
+     q('quickUnlocked').checked=true;
+   }
    q('quickTraining').value=q('training')?.value??0;
    q('quickTrainingValue').textContent=q('quickTraining').value;
    if(q('quickTrainingExact'))q('quickTrainingExact').value=q('quickTraining').value;
@@ -3230,11 +3233,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    }
  });
  q('quickProgressSave')?.addEventListener('click',applyQuickProgress);
- q('quickProgressMax')?.addEventListener('click',()=>{
-   q('quickStarLevel').value='5';q('quickOfficerLevel').value='70';q('quickUnlocked').checked=true;
-   q('quickTraining').value='180';q('quickTrainingValue').textContent='180';if(q('quickTrainingExact'))q('quickTrainingExact').value='180';
-   document.querySelectorAll('#quickSkills .quick-strand-row').forEach(row=>{row.dataset.selectedLevel='5';const sel=row.querySelector('.quick-strand-select');if(sel)sel.value='5';});
- });
+ // HOTFIX 7: Edit Officer MAX uses direct onclick -> kowEditOfficerMax() -> main maxSelectedOfficerProfile().
  q('quickProgressModal')?.addEventListener('click',e=>{if(e.target===q('quickProgressModal'))closeQuickProgress();});
 })();;
 
@@ -3275,10 +3274,10 @@ window.KOW_PLANNER_BRIDGE = {
   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2>✏️ Edit Officer Progress</h2><button id="quickProgressClose" class="app-action-secondary app-icon-button" type="button" onclick="document.getElementById('quickProgressModal').style.display='none';return false;">✕</button></div>
   <div id="quickProgressOfficer" class="notice"></div>
   <div class="two">
-   <div><label>Current Star Level</label><select id="quickStarLevel"><option value="0">0★</option><option value="1">1★</option><option value="2">2★</option><option value="3">3★</option><option value="4">4★</option><option value="5">5★</option></select></div>
-   <div><label>Current Officer Level</label><input id="quickOfficerLevel" type="number" min="0" max="70"></div>
+   <div><label>Current Star Level</label><select id="quickStarLevel" oninput="kowEditOfficerSync()" onchange="kowEditOfficerSync()"><option value="0">0★</option><option value="1">1★</option><option value="2">2★</option><option value="3">3★</option><option value="4">4★</option><option value="5">5★</option></select></div>
+   <div><label>Current Officer Level</label><input id="quickOfficerLevel" type="number" min="0" max="70" oninput="kowEditOfficerSync()" onchange="kowEditOfficerSync()"></div>
   </div>
-  <label><input id="quickUnlocked" type="checkbox"> Officer unlocked (10 badges)</label>
+  <label><input id="quickUnlocked" type="checkbox" onchange="kowEditOfficerSync()"> Officer unlocked (10 badges)</label>
   <h3>Skill Strands — each starts at Level 1</h3><div id="quickSkills"></div>
   <label style="display:block;margin-top:14px">Training Level: <b id="quickTrainingValue">0</b> / 180</label>
   <div style="display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center">
@@ -3324,7 +3323,7 @@ onclick="(function(){
     console.error('Quick Progress save failed',err);
     alert('Progress could not be saved. Please refresh and try again.');
   }
-})();return false;">💾 Save Progress</button><button id="quickProgressMax" class="primary" type="button">⭐ MAX Officer</button><button id="quickProgressCancel" class="app-action-secondary" type="button" onclick="document.getElementById('quickProgressModal').style.display='none';return false;">Cancel</button></div>
+})();return false;">💾 Save Progress</button><button id="quickProgressMax" class="primary" type="button" onclick="return kowEditOfficerMax()">⭐ MAX Officer</button><button id="quickProgressCancel" class="app-action-secondary" type="button" onclick="document.getElementById('quickProgressModal').style.display='none';return false;">Cancel</button></div>
   <div class="notice">Officer-specific progress only. Shared resources remain on Stars, Develop and XP.</div>
  </article>
 </div>
@@ -3960,5 +3959,65 @@ window.kowRenderPlanningReadiness=render;
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
-<script src="./v460-features.js?v=460-live"></script><script src="./planner-season-sync.js?v=460-live"></script><script src="./release-forecast-sync.js?v=460-live"></script></body>
+<script src="./v460-features.js?v=460-live"></script><script src="./planner-season-sync.js?v=460-live"></script><script src="./release-forecast-sync.js?v=460-live"></script>
+<script id="hotfix7EditOfficerRuntime">
+(function(){
+'use strict';
+
+window.kowEditOfficerSync=function(){
+  const star=document.getElementById('quickStarLevel');
+  const level=document.getElementById('quickOfficerLevel');
+  const unlocked=document.getElementById('quickUnlocked');
+  if(!star||!level||!unlocked)return;
+
+  const stars=Math.max(0,Math.min(5,Number(star.value)||0));
+  const officerLevel=Math.max(0,Math.min(70,Number(level.value)||0));
+
+  // Canonical rule:
+  // 0★ + Level 1 may remain locked.
+  // Any star progress OR any level above 1 means the Officer is unlocked.
+  if(stars>0 || officerLevel>1) unlocked.checked=true;
+
+  document.querySelectorAll('#quickSkills .quick-strand-row').forEach((row,strand)=>{
+    const available=unlocked.checked && stars>=Math.max(0,Math.min(3,strand));
+    const select=row.querySelector('.quick-strand-select');
+    const label=row.querySelector('.skill-strand-label');
+
+    row.classList.toggle('locked',!available);
+    if(select)select.disabled=!available;
+
+    if(label){
+      let requirement='';
+      if(!available){
+        requirement=!unlocked.checked
+          ? 'Requires Officer unlock'
+          : (strand===0?'Available when Officer is unlocked':`Requires ${strand}★`);
+      }
+      label.innerHTML=`Strand ${strand+1}${requirement?`<span class="strand-requirement">${requirement}</span>`:''}`;
+    }
+  });
+};
+
+window.kowEditOfficerMax=function(){
+  // EXACT same MAX implementation as the working outside button.
+  if(typeof maxSelectedOfficerProfile!=='function')return false;
+  maxSelectedOfficerProfile();
+
+  const maxApplied=
+    Number(document.getElementById('currentStar')?.value)===5 &&
+    Number(document.getElementById('currentLevel')?.value)===70 &&
+    !!document.getElementById('unlocked')?.checked &&
+    Number(document.getElementById('training')?.value)===180 &&
+    (typeof getSkillStrandLevels==='function' && getSkillStrandLevels().every(v=>Number(v)===5));
+
+  if(maxApplied){
+    const modal=document.getElementById('quickProgressModal');
+    if(modal)modal.style.display='none';
+  }
+  return false;
+};
+})();
+</script>
+
+</body>
 </html>

@@ -1,5 +1,11 @@
 # Changelog
 
+## v4.6.0 STABLE
+- Promoted the corrected Edit Officer Progress build to Stable.
+- Immediate unlock/strand refresh restored.
+- Edit-modal MAX uses the proven main MAX Officer routine.
+
+
 ## v4.6.0 LIVE
 - Added Upgrade Targets & Recommendations.
 - Added Dynamic Officer Data and Global Officer Data status.
