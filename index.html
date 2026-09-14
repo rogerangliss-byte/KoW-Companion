@@ -1308,7 +1308,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <p>To publish new or edited Officers for everyone, update the published <b>officers.json</b> and <b>officers.csv</b> files in the GitHub repository.</p>
 
       <h3>10. Recurring Release Calendar</h3>
-      <p>The <b>Releases</b> tab shows the recurring August → July annual KoW release cycle. The current month and next scheduled release are highlighted automatically, so the calendar does not require a yearly reset.</p>
+      <p>The <b>Releases</b> tab shows the recurring annual KoW release cycle in calendar order (January → December). The current month and next scheduled release are highlighted automatically, so the calendar does not require a yearly reset.</p>
 
       <h3>11. Settings, Backup & Restore</h3>
       <p>Settings contains the app name, portrait and landscape backgrounds, update controls and <b>Backup & Restore</b>.</p>
@@ -1373,7 +1373,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 
  <article class="card">
   <h2>📅 Recurring Release Calendar</h2>
-  <p class="notice">KoW releases follow this recurring August → July annual cycle. The current month is highlighted automatically.</p>
+  <p class="notice">KoW releases follow this recurring annual cycle, displayed in calendar order from January → December. The current month is highlighted automatically.</p>
   <div id="nextRelease" class="notice" style="margin:12px 0"></div>
   <div id="releaseCalendar"></div>
  </article>
@@ -2618,18 +2618,18 @@ function updateSmartDashboard(){
 
  // Recurring annual release cycle.
  const releases=[
-  ['August','New Dogs'],
-  ['September','Guns: Field · Jets: Fighter'],
-  ['October','Officers: Rally / Garrison'],
-  ['November','New Ships'],
-  ['December','Guns: Rally / Garrison · Jets: Bomber'],
   ['January','Officers: Infantry'],
   ['February','No scheduled release'],
   ['March','Guns: Field · Jets: Fighter'],
   ['April','Officers: Tanks'],
   ['May','New Ships'],
   ['June','Guns: Rally / Garrison · Jets: Bomber'],
-  ['July','Officers: Tank Destroyers']
+  ['July','Officers: Tank Destroyers'],
+  ['August','New Dogs'],
+  ['September','Guns: Field · Jets: Fighter'],
+  ['October','Officers: Rally / Garrison'],
+  ['November','New Ships'],
+  ['December','Guns: Rally / Garrison · Jets: Bomber']
  ];
  const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
  const currentMonth=monthNames[new Date().getMonth()];
@@ -2729,18 +2729,18 @@ async function init(){
  });
  XP_DENOMS.forEach(v=>{const el=$('xp'+v);if(el)el.addEventListener('input',()=>{clearTimeout(officerAutoSaveTimer);officerAutoSaveTimer=setTimeout(saveGlobalResources,250)})});
  const RELEASES=[
- ['August','New Dogs'],
- ['September','Guns: Field · Jets: Fighter'],
- ['October','Officers: Rally / Garrison'],
- ['November','New Ships'],
- ['December','Guns: Rally / Garrison · Jets: Bomber'],
  ['January','Officers: Infantry'],
  ['February','—'],
  ['March','Guns: Field · Jets: Fighter'],
  ['April','Officers: Tanks'],
  ['May','New Ships'],
  ['June','Guns: Rally / Garrison · Jets: Bomber'],
- ['July','Officers: Tank Destroyers']
+ ['July','Officers: Tank Destroyers'],
+ ['August','New Dogs'],
+ ['September','Guns: Field · Jets: Fighter'],
+ ['October','Officers: Rally / Garrison'],
+ ['November','New Ships'],
+ ['December','Guns: Rally / Garrison · Jets: Bomber']
 ];
 function renderReleases(){
  const now=new Date();
