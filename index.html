@@ -3858,9 +3858,14 @@ function render(){
  const box=document.getElementById('savedScenarioList'); if(!box)return;
  const a=load(); if(!a.length){box.innerHTML='No planning scenarios saved yet.';return}
  box.innerHTML=a.map((s,i)=>{
-   const f=s.forecast||{};
+   const f=s.forecast||{}, h=s.held||{};
+   const savedAt=s.id?new Date(Number(s.id)):null;
+   const scenarioSaved=savedAt&&Number.isFinite(savedAt.getTime())?savedAt.toLocaleString():'Unknown';
+   const inventorySaved=h.savedAt?new Date(h.savedAt).toLocaleString():'Not saved';
    return `<div class="result-box"><b>${s.name}</b><br>${LABEL[s.session]||s.session} ${s.year} · ${s.count} Officer${s.count>1?'s':''} · Readiness ${Number(s.overall||0).toFixed(1)}%<br>`+
-   `<small>${s.short.badges?'<b>Badges: SHORT '+fmt(s.short.badges)+'</b>':'<b>Badges: READY</b>'}<br>${s.short.stars?'<b>Stars: SHORT '+fmt(s.short.stars)+'</b>':'<b>Stars: READY</b>'}<br>${s.short.xp?'<b>XP: SHORT '+fmt(s.short.xp)+'</b>':'<b>XP: READY</b>'}`+
+   `<small><b>Scenario saved:</b> ${scenarioSaved}<br><b>Inventory snapshot used:</b> ${inventorySaved}<br>`+
+   `Badges held: <b>${fmt(h.badges)}</b> · Stars held: <b>${fmt(h.stars)}</b> · XP held: <b>${fmt(h.xp)}</b><br>`+
+   `${s.short.badges?'<b>Badges: SHORT '+fmt(s.short.badges)+'</b>':'<b>Badges: READY</b>'}<br>${s.short.stars?'<b>Stars: SHORT '+fmt(s.short.stars)+'</b>':'<b>Stars: READY</b>'}<br>${s.short.xp?'<b>XP: SHORT '+fmt(s.short.xp)+'</b>':'<b>XP: READY</b>'}`+
    (f.orv!==undefined?`<br>ORV: ${fmt(f.orv)} FORECAST · SRV: ${fmt(f.srv)} FORECAST`:'')+`</small><br><button type="button" class="app-action-secondary" data-load-scenario="${i}">Load</button> <button type="button" class="app-action-danger" data-delete-scenario="${i}">Delete</button></div>`;
  }).join('');
 }
