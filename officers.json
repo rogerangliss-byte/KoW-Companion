@@ -1,5 +1,23 @@
 [
   {
+    "name": "S8 Po",
+    "season": "S8",
+    "role": "Rally",
+    "orv": 720,
+    "srv": 360,
+    "notes": "Rally",
+    "rarity": "Legendary"
+  },
+  {
+    "name": "S8 Sara",
+    "season": "S8",
+    "role": "Garrison",
+    "orv": 720,
+    "srv": 360,
+    "notes": "Garrison",
+    "rarity": "Legendary"
+  },
+  {
     "name": "S7 Roisin",
     "season": "S7",
     "role": "Tank Destroyer",
