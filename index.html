@@ -1000,12 +1000,12 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <input type="number" id="legendarySelectionChestHeld" min="0" step="1" value="0">
       <div class="notice">Each <b>Legendary Officer Badge Selection Chest</b> gives <b>1 specific Legendary Officer Badge</b> for an Officer currently available in the chest. It does not convert to a Universal Legendary Badge or ORV.</div>
       <div class="notice">
-        Each <b>Legendary Officer Badge Chest</b> can be used as either <b>1 Universal Legendary Badge</b> or <b>600 Officer Readiness Vouchers</b>. A chest cannot count as both.
+        Each <b>Legendary Officer Badge Chest</b> can be used as either <b>1 Universal Legendary Badge</b> or <b><span id="chestRateNotice">current latest-officer ORV value</span> Officer Readiness Vouchers</b>. A chest cannot count as both.
       </div>
       <label>Use Legendary Officer Badge Chests as</label>
       <select id="legendaryBadgeChestMode">
         <option value="badge">Universal Legendary Badges (1 each)</option>
-        <option value="orv">Officer Readiness Vouchers (600 each)</option>
+        <option id="legendaryBadgeChestOrvOption" value="orv">Officer Readiness Vouchers (current rate each)</option>
       </select>
       <label>Officer Readiness Vouchers (ORV) Held</label><input id="orvHeld" type="number" min="0" step="1" inputmode="numeric" value="0">
       <div class="stat"><span>Badges used</span><b id="badgesUsed">0</b></div>
@@ -1112,7 +1112,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       </div>
       <div class="two">
         <div><label>Legendary Officer Badge Chests</label><input id="multiChests" type="number" min="0" step="1" inputmode="numeric" value="0"></div><div><label>Legendary Officer Badge Selection Chests</label><input id="multiSelectionChests" type="number" min="0" step="1" value="0"></div>
-        <div><label>Chest strategy</label><select id="multiChestMode"><option value="optimise">Optimise automatically</option><option value="badge">Use as Universal Badges</option><option value="orv">Convert to ORV (600 each)</option></select></div>
+        <div><label>Chest strategy</label><select id="multiChestMode"><option value="optimise">Optimise automatically</option><option value="badge">Use as Universal Badges</option><option id="multiChestOrvOption" value="orv">Convert to ORV (current rate each)</option></select></div>
       </div>
 
       <div class="toolbar planner-actions" style="margin-top:10px">
@@ -1218,7 +1218,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 
   <h4>📦 Correct Legendary chest rules</h4>
   <ul>
-    <li><b>Legendary Officer Badge Chest:</b> each chest can be used as <b>either 1 Universal Legendary Badge or 600 Officer Readiness Vouchers (ORV)</b>. It cannot count as both.</li>
+    <li><b>Legendary Officer Badge Chest:</b> each chest can be used as <b>either 1 Universal Legendary Badge or <span id="chestRateHelpRule">current latest-officer ORV value</span> Officer Readiness Vouchers (ORV)</b>. It cannot count as both.</li>
     <li><b>Legendary Officer Badge Selection Chest:</b> each chest gives <b>1 specific Legendary Officer Badge</b> for an Officer currently available in the Selection Chest pool. It does <b>not</b> convert to ORV or a Universal Legendary Badge.</li>
     <li>Original Legendary Officers remain ineligible for ORV/SRV seasonal conversion routes.</li>
   </ul>
@@ -1284,7 +1284,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <h3>4. Development</h3>
       <p>Enter unlock status, the four independent Skill Strand levels and Training Level. Development uses the relevant saved Inventory resources when calculating what is available for the selected Officer.</p>
       <p>Each <b>Universal Legendary Badge</b> is worth <b>1 Officer Badge</b> for a Legendary Officer.</p>
-      <p>Each <b>Legendary Officer Badge Selection Chest</b> gives <b>1 specific Legendary Officer Badge</b> for an Officer currently available in that chest. It does not convert to ORV. Each <b>Legendary Officer Badge Chest</b> can instead be used as either <b>1 Universal Legendary Badge</b> or <b>600 ORV</b>.</p>
+      <p>Each <b>Legendary Officer Badge Selection Chest</b> gives <b>1 specific Legendary Officer Badge</b> for an Officer currently available in that chest. It does not convert to ORV. Each <b>Legendary Officer Badge Chest</b> can instead be used as either <b>1 Universal Legendary Badge</b> or <b><span id="chestRateHelpShort">current latest-officer ORV value</span> ORV</b>.</p>
 
       <h3>5. XP</h3>
       <p>Enter current and target Officer Level. Saved XP Book quantities from Inventory are used to calculate XP held, XP required and the remaining shortfall.</p>
@@ -1719,6 +1719,20 @@ function officerPortraitCandidates(name){
 function officerRole(o){ return String(o?.role||'').trim()||'Unspecified'; }
 function officerRoles(o){ return officerRole(o).split(',').map(v=>v.trim()).filter(Boolean); }
 function officerRarity(o){ return ['Legendary','Epic','Elite'].includes(o?.rarity)?o.rarity:'Legendary'; }
+function latestLegendaryOrvChestRate(){
+ const source=Array.isArray(window.KOW_PUBLISHED_OFFICERS)&&window.KOW_PUBLISHED_OFFICERS.length
+   ?window.KOW_PUBLISHED_OFFICERS:officers;
+ // Follow the current released seasonal Legendary Officer ORV values,
+ // not session/season numbers. Use the highest valid ORV value in the data.
+ const values=source.filter(o=>officerRarity(o)==='Legendary'&&Number(o.orv)>0&&String(o.season||'').toLowerCase()!=='original').map(o=>Number(o.orv)).filter(Number.isFinite);
+ return values.length?Math.max(...values):0;
+}
+function updateLegendaryChestRateLabels(){
+ const rate=latestLegendaryOrvChestRate();
+ ['chestRateNotice','chestRateHelpRule','chestRateHelpShort'].forEach(id=>{const el=$(id);if(el)el.textContent=rate?fmt(rate):'unavailable'});
+ const dev=$('legendaryBadgeChestOrvOption');if(dev)dev.textContent='Officer Readiness Vouchers ('+(rate?fmt(rate):'unavailable')+' each)';
+ const planner=$('multiChestOrvOption');if(planner)planner.textContent='Convert to ORV ('+(rate?fmt(rate):'unavailable')+' each)';
+}
 function trainingBadgeCost(o=currentOfficer()){ return officerRarity(o)==='Elite'?100:officerRarity(o)==='Epic'?25:5; }
 function promotionBadgeTotal(o=currentOfficer()){return officerRarity(o)==='Epic'?440:officerRarity(o)==='Elite'?440:690;}
 function maxBadgesForOfficer(o=currentOfficer()){ return 10+promotionBadgeTotal(o)+180*trainingBadgeCost(o); }
@@ -1907,7 +1921,7 @@ function calculate(){
  const badgeChests=officerRarity(o)==='Legendary'?+$('legendaryBadgeChestHeld').value:0;
  const badgeChestMode=$('legendaryBadgeChestMode').value;
  const badgeChestBadges=badgeChestMode==='badge'?badgeChests:0;
- const badgeChestOrv=badgeChestMode==='orv'?badgeChests*600:0;
+ const badgeChestOrv=badgeChestMode==='orv'?badgeChests*latestLegendaryOrvChestRate():0;
  const specificSelectionChests=officerRarity(o)==='Legendary'&&selectionChestEligibleOfficer(o)?+$('legendarySelectionChestHeld').value:0;
  const universalBadgesAvailable=universalBadgesHeld+badgeChestBadges+specificSelectionChests;
  const directOrv=+$('orvHeld').value;
@@ -2483,7 +2497,7 @@ function calculateMultiPlanner(){
  let orv=Math.max(0,+$('multiOrv').value||0), universal=Math.max(0,+$('multiUniversal').value||0), chests=Math.max(0,+$('multiChests').value||0);
  let selectionChests=Math.max(0,+($('multiSelectionChests')?.value||0));
  const mode=$('multiChestMode').value;
- if(mode==='badge') universal+=chests; else if(mode==='orv') orv+=chests*600; else universal+=chests;
+ if(mode==='badge') universal+=chests; else if(mode==='orv') orv+=chests*latestLegendaryOrvChestRate(); else universal+=chests;
  let fully=0, maxedCount=0, partial=0, unfunded=0, totalNeed=0, totalHeld=0, totalShared=0;
  multiPlanOfficers.forEach((row,pos)=>{
    const o=officers[row.officerIndex]||officers[0];
@@ -2688,7 +2702,7 @@ function updateFutureOfficerForecast(){
  $('forecastNote').innerHTML=`<b>${labels[steps]}</b><br>Planning estimate using ${($('forecastGrowth').value||20)}% growth per Officer release from the latest known 600 ORV / 300 SRV release. For ${fmt(badges)} badges and ${fmt(starValue)} Star value (${fmt(exclusiveStars)} Exclusive Stars), plan for approximately <b>${fmt(totalOrv)} ORV</b> and <b>${fmt(totalSrv)} SRV</b>. Forecast only — replace with confirmed costs when released.`;
 }
 async function init(){
- await loadOfficers();renderOfficerFilters();restoreOfficerFilterState();renderOfficerOptions(getUiState().officerName||undefined);
+ await loadOfficers();updateLegendaryChestRateLabels();renderOfficerFilters();restoreOfficerFilterState();renderOfficerOptions(getUiState().officerName||undefined);
  ['officerSearch','officerSeasonFilter','officerRarityFilter','officerRoleFilter'].forEach(id=>{
   const el=$(id);if(!el)return;
   const evt=id==='officerSearch'?'input':'change';
