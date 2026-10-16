@@ -1044,10 +1044,10 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
     <div><label>Target release session</label>
       <select id="scenarioSession">
         <option value="next">Next Officer session</option>
-        <option value="october">October — Rally / Garrison</option>
-        <option value="january">January — Infantry</option>
-        <option value="april">April — Tanks</option>
-        <option value="july">July — Tank Destroyers</option>
+        <option value="october">October — S9 Rally / Garrison</option>
+        <option value="january">January — S8 Infantry</option>
+        <option value="april">April — S8 Tanks</option>
+        <option value="july">July — S8 Tank Destroyers</option>
       </select>
     </div>
     <div><label>Projected Officers</label>
@@ -1333,10 +1333,10 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
     <div>
       <label>Future Officer release</label>
       <select id="forecastRelease">
-        <option value="1">October — S8 Rally / Garrison</option>
-        <option value="2">January — S8 Infantry</option>
-        <option value="3" selected>April — S8 Tanks</option>
-        <option value="4">July — S8 Tank Destroyers</option>
+        <option value="1" selected>January — S8 Infantry</option>
+        <option value="2">April — S8 Tanks</option>
+        <option value="3">July — S8 Tank Destroyers</option>
+        <option value="4">October — S9 Rally / Garrison</option>
       </select>
     </div>
     <div>
@@ -2673,9 +2673,9 @@ function updateFutureOfficerForecast(){
  const badges=Math.max(0,+$('forecastBadges').value||0);
  const starValue=Math.max(0,+$('forecastStarValue').value||0);
 
- // Latest confirmed published sequence point in the app database:
- // S7 Tank Destroyer = 600 ORV/badge and 300 SRV/Exclusive Star.
- const baseOrv=600, baseSrv=300;
+ // Confirmed S8 Rally / Garrison baseline: 720 ORV/badge and 360 SRV/Exclusive Star.
+ // Forecast steps begin with the next release after this confirmed baseline.
+ const baseOrv=720, baseSrv=360;
  const orvExact=baseOrv*Math.pow(1+growth,steps);
  const srvExact=baseSrv*Math.pow(1+growth,steps);
 
@@ -2694,12 +2694,12 @@ function updateFutureOfficerForecast(){
  $('forecastTotalSrv').textContent=fmt(totalSrv);
 
  const labels={
-   1:'October — S8 Rally / Garrison',
-   2:'January — S8 Infantry',
-   3:'April — S8 Tanks',
-   4:'July — S8 Tank Destroyers'
+   1:'January — S8 Infantry',
+   2:'April — S8 Tanks',
+   3:'July — S8 Tank Destroyers',
+   4:'October — S9 Rally / Garrison'
  };
- $('forecastNote').innerHTML=`<b>${labels[steps]}</b><br>Planning estimate using ${($('forecastGrowth').value||20)}% growth per Officer release from the latest known 600 ORV / 300 SRV release. For ${fmt(badges)} badges and ${fmt(starValue)} Star value (${fmt(exclusiveStars)} Exclusive Stars), plan for approximately <b>${fmt(totalOrv)} ORV</b> and <b>${fmt(totalSrv)} SRV</b>. Forecast only — replace with confirmed costs when released.`;
+ $('forecastNote').innerHTML=`<b>${labels[steps]}</b><br>Planning estimate using ${($('forecastGrowth').value||20)}% growth per Officer release from the confirmed S8 Rally / Garrison baseline (720 ORV / 360 SRV). For ${fmt(badges)} badges and ${fmt(starValue)} Star value (${fmt(exclusiveStars)} Exclusive Stars), plan for approximately <b>${fmt(totalOrv)} ORV</b> and <b>${fmt(totalSrv)} SRV</b>. Forecast only — replace with confirmed costs when released.`;
 }
 async function init(){
  await loadOfficers();updateLegendaryChestRateLabels();renderOfficerFilters();restoreOfficerFilterState();renderOfficerOptions(getUiState().officerName||undefined);
@@ -3261,7 +3261,7 @@ window.KOW_PLANNER_BRIDGE = {
   xpDenoms: () => (Array.isArray(XP_DENOMS) ? XP_DENOMS : [100,500,1000,5000,10000,20000,50000]),
   releaseForecast: () => {
     const growth = Number(document.getElementById('forecastGrowth')?.value || 20);
-    const latestOrv = 600, latestSrv = 300;
+    const latestOrv = 720, latestSrv = 360;
     const releaseStep = Math.max(1, Number(document.getElementById('forecastRelease')?.value || 1));
     const factor = Math.pow(1 + growth / 100, releaseStep);
     return {
@@ -3269,7 +3269,7 @@ window.KOW_PLANNER_BRIDGE = {
       releaseStep,
       orvPerBadge: Math.round(latestOrv * factor),
       srvPerStar: Math.round(latestSrv * factor),
-      source: `Latest published S7 cost (600 ORV / 300 SRV), ${growth}% compounded for ${releaseStep} future Officer release${releaseStep===1?'':'s'}`
+      source: `Confirmed S8 Rally / Garrison cost (720 ORV / 360 SRV), ${growth}% compounded for ${releaseStep} future Officer release${releaseStep===1?'':'s'}`
     };
   }
 };
@@ -3605,10 +3605,10 @@ document.addEventListener("click",function(e){
   function score(r,inv){var remaining=Math.max(0,r.need),affordable=inv.universal+inv.selection+(r.orvCost?Math.floor(inv.orv/r.orvCost):0),gap=Math.max(0,remaining-affordable);return (r.pct*1000)-gap;}
   function futureSession(mode){
     var sessions={
-      october:{label:'October — Rally / Garrison',types:['Rally','Garrison']},
-      january:{label:'January — Infantry',types:['Infantry']},
-      april:{label:'April — Tanks',types:['Tank']},
-      july:{label:'July — Tank Destroyers',types:['Tank Destroyer']}
+      october:{label:'October — S9 Rally / Garrison',types:['Rally','Garrison']},
+      january:{label:'January — S8 Infantry',types:['Infantry']},
+      april:{label:'April — S8 Tanks',types:['Tank']},
+      july:{label:'July — S8 Tank Destroyers',types:['Tank Destroyer']}
     };
     if(mode==='all'){
       return {label:'All Officer sessions',types:['Rally','Garrison','Infantry','Tank','Tank Destroyer'],all:true};
@@ -3644,7 +3644,7 @@ document.addEventListener("click",function(e){
       return /^S\d+$/i.test(String(o.season||'')) && +o.orv>0 && +o.srv>0 &&
         String(o.rarity||'Legendary').toLowerCase()==='legendary';
     });
-    if(!seasonal.length)return {orv:600,srv:300,season:7};
+    if(!seasonal.length)return {orv:720,srv:360,season:8};
     var maxSeason=seasonal.reduce(function(m,o){
       var n=+(String(o.season).match(/\d+/)||[0])[0];
       return Math.max(m,n);
@@ -3671,7 +3671,7 @@ document.addEventListener("click",function(e){
         pct:f.growth
       };
     }
-    return {orv:720,srv:360,source:'Latest published S7 cost increased by 20%',pct:20};
+    return {orv:720,srv:360,source:'Confirmed S8 Rally / Garrison cost (720 ORV / 360 SRV)',pct:20};
   }
   function projectedResourceHtml(projected,inv){
     var box=document.getElementById('kowProjectedResourceForecast');
@@ -3815,8 +3815,8 @@ document.addEventListener("click",function(e){
 const KEY='kow_v4359_planning_scenarios';
 const INV_KEY='kow_central_inventory_v1';
 const TOTAL={badges:1600,stars:98000,xp:199646700};
-const LABEL={next:'Next Officer session',october:'October — Rally / Garrison',january:'January — Infantry',april:'April — Tanks',july:'July — Tank Destroyers'};
-const STEP={next:1,october:1,january:2,april:3,july:4};
+const LABEL={next:'Next Officer session',october:'October — S9 Rally / Garrison',january:'January — S8 Infantry',april:'April — S8 Tanks',july:'July — S8 Tank Destroyers'};
+const STEP={next:1,october:4,january:1,april:2,july:3};
 let current=null;
 function n(id){return Number(document.getElementById(id)?.value||0);}
 function savedInventory(){try{return JSON.parse(localStorage.getItem(INV_KEY)||'{}')}catch(e){return {}}}
@@ -3835,8 +3835,8 @@ function getHeld(){
 function forecast(session,count){
  const growth=Math.max(0,Number(document.getElementById('forecastGrowth')?.value||20))/100;
  const steps=STEP[session]||1;
- const orvPerBadge=Math.round(600*Math.pow(1+growth,steps));
- const srvPerStar=Math.round(300*Math.pow(1+growth,steps));
+ const orvPerBadge=Math.round(720*Math.pow(1+growth,steps));
+ const srvPerStar=Math.round(360*Math.pow(1+growth,steps));
  const badges=TOTAL.badges*count;
  const exclusiveStars=Math.ceil((TOTAL.stars*count)/110);
  return {growth,steps,orvPerBadge,srvPerStar,orv:badges*orvPerBadge,srv:exclusiveStars*srvPerStar};
