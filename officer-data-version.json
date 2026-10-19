@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "dataVersion": "2026.08.21-02",
-  "publishedAt": "2026-08-21T08:25:00+01:00",
-  "officerCount": 66,
+  "dataVersion": "2026.10.19-01",
+  "publishedAt": "2026-10-19T14:35:00+01:00",
+  "officerCount": 68,
   "environment": "English Live",
-  "notes": "v4.6.0 LIVE dynamic Officer data baseline. Update this manifest whenever officers.json is published with new or corrected confirmed Officer data."
+  "notes": "Officer data synchronized with officers.json and officers.csv, including confirmed S8 Po and S8 Sara at 720 ORV / 360 SRV. Default Officer datasets are synchronized where used."
 }
