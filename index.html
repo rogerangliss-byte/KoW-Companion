@@ -3261,15 +3261,34 @@ window.KOW_PLANNER_BRIDGE = {
   xpDenoms: () => (Array.isArray(XP_DENOMS) ? XP_DENOMS : [100,500,1000,5000,10000,20000,50000]),
   releaseForecast: () => {
     const growth = Number(document.getElementById('forecastGrowth')?.value || 20);
-    const latestOrv = 720, latestSrv = 360;
+    const rows = Array.isArray(officers) ? officers : [];
+    const slotFor = o => {
+      const role = String(o?.role || o?.notes || '').toLowerCase();
+      if (role.includes('garrison') || role.includes('rally')) return 1;
+      if (role.includes('infantry')) return 2;
+      if (role.includes('tank destroyer')) return 4;
+      if (role.includes('tank')) return 3;
+      return 0;
+    };
+    const seasonFor = o => {
+      const raw = String(o?.season || String(o?.name || '').match(/^S\\d+/i)?.[0] || '');
+      const m = raw.match(/^S(\\d+)$/i);
+      return m ? Number(m[1]) : 0;
+    };
+    const latest = rows.map(o => ({
+      season: seasonFor(o), slot: slotFor(o), orv: Number(o?.orv), srv: Number(o?.srv)
+    })).filter(o => o.season > 0 && o.slot > 0 && o.orv > 0 && o.srv > 0)
+      .sort((a,b) => b.season-a.season || b.slot-a.slot)[0]
+      || {season:7,slot:1,orv:600,srv:300};
     const releaseStep = Math.max(1, Number(document.getElementById('forecastRelease')?.value || 1));
     const factor = Math.pow(1 + growth / 100, releaseStep);
+    const slotName = ({1:'Rally / Garrison',2:'Infantry',3:'Tanks',4:'Tank Destroyers'})[latest.slot];
     return {
       growth,
       releaseStep,
-      orvPerBadge: Math.round(latestOrv * factor),
-      srvPerStar: Math.round(latestSrv * factor),
-      source: `Confirmed S8 Rally / Garrison cost (720 ORV / 360 SRV), ${growth}% compounded for ${releaseStep} future Officer release${releaseStep===1?'':'s'}`
+      orvPerBadge: Math.round(latest.orv * factor),
+      srvPerStar: Math.round(latest.srv * factor),
+      source: `Confirmed S${latest.season} ${slotName} cost (${latest.orv} ORV / ${latest.srv} SRV), ${growth}% compounded for ${releaseStep} future Officer release${releaseStep===1?'':'s'}`
     };
   }
 };
