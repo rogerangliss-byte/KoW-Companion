@@ -3271,8 +3271,8 @@ window.KOW_PLANNER_BRIDGE = {
       return 0;
     };
     const seasonFor = o => {
-      const raw = String(o?.season || String(o?.name || '').match(/^S\\d+/i)?.[0] || '');
-      const m = raw.match(/^S(\\d+)$/i);
+      const raw = String(o?.season || String(o?.name || '').match(/^S\d+/i)?.[0] || '');
+      const m = raw.match(/^S(\d+)$/i);
       return m ? Number(m[1]) : 0;
     };
     const latest = rows.map(o => ({
