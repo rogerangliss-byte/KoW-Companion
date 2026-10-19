@@ -32,7 +32,7 @@
     // Read the confirmed seasonal release and cost from the live Officer data bridge.
     const rows = window.KOW_PLANNER_BRIDGE?.officers?.() || [];
     const known = rows.map(o => {
-      const season = seasonNumber(o?.season || String(o?.name || '').match(/^S\\d+/i)?.[0]);
+      const season = seasonNumber(o?.season || String(o?.name || '').match(/^S\d+/i)?.[0]);
       const slot = releaseSlot(o);
       return {season, slot, orv:Number(o?.orv), srv:Number(o?.srv)};
     }).filter(o => o.season > 0 && o.slot > 0 && o.orv > 0 && o.srv > 0)
