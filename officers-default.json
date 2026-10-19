@@ -1,5 +1,19 @@
 [
   {
+    "name": "S8 Po",
+    "season": "S8",
+    "orv": 720,
+    "srv": 360,
+    "notes": "Rally"
+  },
+  {
+    "name": "S8 Sara",
+    "season": "S8",
+    "orv": 720,
+    "srv": 360,
+    "notes": "Garrison"
+  },
+  {
     "name": "S7 Roisin",
     "season": "S7",
     "orv": 600,
