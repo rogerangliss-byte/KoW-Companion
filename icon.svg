@@ -1,1 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="90" fill="#111"/><circle cx="256" cy="256" r="185" fill="none" stroke="#d5a72f" stroke-width="24"/><text x="256" y="245" text-anchor="middle" font-family="Arial" font-size="88" fill="#f2cf6b">371</text><text x="256" y="330" text-anchor="middle" font-family="Arial" font-size="56" fill="#fff">KoW</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff0a0"/>
+      <stop offset=".28" stop-color="#f5cf52"/>
+      <stop offset=".62" stop-color="#bd8418"/>
+      <stop offset=".82" stop-color="#ffe277"/>
+      <stop offset="1" stop-color="#9c650c"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0" stop-color="#202020"/>
+      <stop offset="1" stop-color="#030303"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="92" fill="#050505"/>
+  <circle cx="256" cy="256" r="222" fill="url(#bg)" stroke="url(#gold)" stroke-width="14"/>
+  <circle cx="256" cy="256" r="204" fill="none" stroke="#8d671b" stroke-width="2"/>
+  <g fill="url(#gold)" stroke="#7d520d" stroke-width="2" stroke-linejoin="round">
+    <path d="M256 92 335 120 326 220 Q310 272 256 303 Q202 272 186 220 L177 120Z"/>
+    <path d="M256 126 267 163 306 163 275 186 287 224 256 201 225 224 237 186 206 163 245 163Z" fill="#101010" stroke="url(#gold)" stroke-width="5"/>
+    <path d="M170 155 125 127 151 180 184 202Z"/>
+    <path d="M159 207 112 188 143 235 180 248Z"/>
+    <path d="M175 255 133 251 165 285 199 283Z"/>
+    <path d="M342 155 387 127 361 180 328 202Z"/>
+    <path d="M353 207 400 188 369 235 332 248Z"/>
+    <path d="M337 255 379 251 347 285 313 283Z"/>
+  </g>
+  <text x="256" y="383" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="102" font-weight="900" letter-spacing="-5" fill="url(#gold)" stroke="#5b3c0a" stroke-width="2" paint-order="stroke">OCC</text>
+  <path d="M116 411 Q256 438 396 411" fill="none" stroke="url(#gold)" stroke-width="4" stroke-linecap="round"/>
+</svg>
