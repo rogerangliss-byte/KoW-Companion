@@ -523,9 +523,6 @@ html.ios-safari{
 
 /* v4.6.0 LIVE — Upgrade Targets & Recommendations */
 .v460-target-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.v460-target-result{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.28)}.v460-target-result strong{color:var(--gold2)}@media(max-width:760px){.v460-target-grid{grid-template-columns:1fr}}
-
-/* TEST BUILD BANNER — development/testing only; never present on English Live */
-.test-build-banner{background:#8b0000;color:#fff;text-align:center;font-weight:800;letter-spacing:.08em;padding:8px 12px;border-bottom:2px solid #d5a72f;font-size:.9rem;position:sticky;top:0;z-index:1000}
 </style>
 <script>
 (function(){
@@ -777,7 +774,6 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
   <div class="creator-credit">Created by FireStorm</div>
 </header>
 
-<div class="test-build-banner">⚠ TEST BUILD — DEVELOPMENT / TESTING ONLY — NOT LIVE</div>
 <main class="app">
   <section id="dashboard" class="view active">
 <article class="card" id="guidedWorkflowCard">
@@ -1206,8 +1202,8 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <h2>❓ Help & Instructions</h2>
 
 <div class="card" id="whatsNewV470" style="margin-bottom:16px">
-  <h3 style="margin-top:0">✨ What’s New — v4.7.0 TEST</h3>
-  <div class="notice"><b>TEST BUILD — NOT LIVE.</b> v4.7.0 introduces the revised Officer Skill Progression and Training prerequisite rules. This release is for English Test validation only; English Live remains on v4.6.0.</div>
+  <h3 style="margin-top:0">✨ What’s New — v4.7.0</h3>
+  <div class="notice"><b>LIVE RELEASE.</b> v4.7.0 introduces the revised Officer Skill Progression and Training prerequisite rules.</div>
   <h4>🏅 New Skill Progression System</h4>
   <ul>
     <li>Each Officer has four primary Skill Strands, each progressing through Levels 1–10 (36 paid upgrades in total).</li>
@@ -1450,7 +1446,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 <div class="card wide" id="v460UpgradeTargetsCard">
   <div class="eyebrow">v4.6.0 LIVE</div>
   <h2>🎯 Upgrade Targets & Recommendations</h2>
-  <p class="notice">Choose a target for the currently selected Officer. This first v4.6.0 test build compares the saved current position with your target and gives a clear next-step recommendation. It does not spend or alter Inventory.</p>
+  <p class="notice">Choose a target for the currently selected Officer. This v4.6.0 release compares the saved current position with your target and gives a clear next-step recommendation. It does not spend or alter Inventory.</p>
   <div class="v460-target-grid">
     <div><label>Target Level</label><input id="v460TargetLevel" type="number" min="1" max="70" value="70"></div>
     <div><label>Target Stars</label><select id="v460TargetStars"><option value="1">1★</option><option value="2">2★</option><option value="3">3★</option><option value="4">4★</option><option value="5" selected>5★</option></select></div>
