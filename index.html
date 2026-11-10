@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111111">
-<title>KoW Companion v4.6.0</title>
+<title>KoW Companion v4.7.0</title>
 <link rel="manifest" href="./manifest.json">
 <style>
 :root{
@@ -523,6 +523,9 @@ html.ios-safari{
 
 /* v4.6.0 LIVE — Upgrade Targets & Recommendations */
 .v460-target-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.v460-target-result{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.28)}.v460-target-result strong{color:var(--gold2)}@media(max-width:760px){.v460-target-grid{grid-template-columns:1fr}}
+
+/* TEST BUILD BANNER — development/testing only; never present on English Live */
+.test-build-banner{background:#8b0000;color:#fff;text-align:center;font-weight:800;letter-spacing:.08em;padding:8px 12px;border-bottom:2px solid #d5a72f;font-size:.9rem;position:sticky;top:0;z-index:1000}
 </style>
 <script>
 (function(){
@@ -773,6 +776,8 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
   </div>
   <div class="creator-credit">Created by FireStorm</div>
 </header>
+
+<div class="test-build-banner">⚠ TEST BUILD — DEVELOPMENT / TESTING ONLY — NOT LIVE</div>
 <main class="app">
   <section id="dashboard" class="view active">
 <article class="card" id="guidedWorkflowCard">
@@ -1200,6 +1205,25 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
     <article class="card">
       <h2>❓ Help & Instructions</h2>
 
+<div class="card" id="whatsNewV470" style="margin-bottom:16px">
+  <h3 style="margin-top:0">✨ What’s New — v4.7.0 TEST</h3>
+  <div class="notice"><b>TEST BUILD — NOT LIVE.</b> v4.7.0 introduces the revised Officer Skill Progression and Training prerequisite rules. This release is for English Test validation only; English Live remains on v4.6.0.</div>
+  <h4>🏅 New Skill Progression System</h4>
+  <ul>
+    <li>Each Officer has four primary Skill Strands, each progressing through Levels 1–10 (36 paid upgrades in total).</li>
+    <li>Skill Fragment requirements are rarity-based and separate from Officer Badges: <b>Elite (Blue): 340</b>, <b>Epic (Purple): 440</b>, and <b>Legendary (Gold): 690</b>.</li>
+    <li>The fifth Skill is available only for Epic and Legendary Officers, and unlocks after all four primary Skills reach Level 10. Elite Officers do not have a fifth Skill.</li>
+  </ul>
+  <h4>🔒 Training prerequisite</h4>
+  <p>All four primary Skills must reach Level 10 before Training can begin. Training remains a separate Officer Badge requirement and is not included in Skill Fragment totals.</p>
+  <ul>
+    <li>Legendary: 5 Officer Badges per Training level (900 for Levels 1–180).</li>
+    <li>Epic: 25 Officer Badges per Training level (4,500 for Levels 1–180).</li>
+    <li>Elite: 100 Officer Badges per Training level (18,000 for Levels 1–180).</li>
+    <li>Officer unlock requires 10 Officer Badges, separate from both Skills and Training.</li>
+  </ul>
+  <p><b>Progression order:</b> unlock the Officer, complete all four primary Skills, then begin Training. The fifth Skill unlocks for eligible rarities once the four primary Skills are complete.</p>
+</div>
 <div class="card" id="whatsNewV450" style="margin-bottom:16px">
   <h3 style="margin-top:0">✨ What’s New — v4.6.0 LIVE</h3>
   <div class="notice"><b>LIVE RELEASE.</b> v4.6.0 adds Upgrade Targets & Recommendations, Dynamic Officer Data and database-driven Future Officer Cost Forecasting while retaining the stable planning, Inventory, Progress, backup and Officer development features.</div>
@@ -1252,16 +1276,16 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 
   <h4>🏅 Confirmed Officer Badge totals</h4>
   <ul>
-    <li><b>Legendary:</b> 10 unlock + 690 Skills + 900 Training = <b>1,600 badges to MAX</b>.</li>
-    <li><b>Epic:</b> 10 unlock + 440 Skills + 4,500 Training = <b>4,950 badges to MAX</b>.</li>
-    <li><b>Elite:</b> 10 unlock + 440 Skills + 18,000 Training = <b>18,450 badges to MAX</b>.</li>
+    <li><b>Legendary:</b> 10 unlock + 690 for Skills, then 900 Training = <b>1,600 Officer Badges</b>.</li>
+    <li><b>Epic:</b> 10 unlock + 440 for Skills, then 4,500 Training = <b>4,950 Officer Badges</b>.</li>
+    <li><b>Elite:</b> 10 unlock + 340 for Skills, then 18,000 Training = <b>18,350 Officer Badges</b>.</li>
   </ul>
 
   <h4>🧭 v4.4.0 planning retained</h4>
   <p>Planning Readiness Dashboard, Badge/Star/XP readiness, Priority Target, Suggested Next Action, future October/January/April/July sessions, Season + Officer Type reports, projected future Legendary resources, ORV/SRV forecasting and MAXED-Officer exclusions remain available.</p>
 
   <h4>🔮 Dynamic Future Officer Cost Forecast</h4>
-  <p>The forecast now uses the latest confirmed Legendary seasonal Officer release in the Officer Database as its baseline. <b>Example:</b> at the v4.6.0 release, the latest confirmed baseline is <b>S7 Tank Destroyers — 600 ORV per Badge / 300 SRV per Exclusive Star</b>. When a newer confirmed release is published, the baseline automatically advances.</p>
+  <p>For the English Test forecast, the starting estimate is <b>720 ORV per Badge / 360 SRV per Exclusive Star</b> (a 20% increase over the S7 published costs). This is a Test planning assumption, not a claim that S8 costs have been published. Growth is compounded for each future Officer release.</p>
   <p>Future ORV/SRV figures are <b>planning estimates only</b> until actual release costs are confirmed.</p>
 </div>
 
@@ -1282,7 +1306,9 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <p>Set the Officer's current and target Star level. The Stars tab automatically follows the selected Officer rarity: Legendary, Epic or Elite Star I / II / III. <b>Star Readiness Vouchers (SRV)</b> are shown only for Legendary Officers and cannot be used by Epic or Elite Officers.</p>
 
       <h3>4. Development</h3>
-      <p>Enter unlock status, the four independent Skill Strand levels and Training Level. Development uses the relevant saved Inventory resources when calculating what is available for the selected Officer.</p>
+      <p>Enter the Officer's unlock status and progress each of the four primary Skill Strands independently from Level 1 to Level 10. Skill costs are tracked as rarity-specific Skill Fragments, not Officer Badges: Elite (Blue) 340, Epic (Purple) 440 and Legendary (Gold) 690 in total.</p>
+      <p><b>Fifth Skill:</b> Epic and Legendary Officers unlock their fifth Skill only after all four primary Skills reach Level 10. Elite Officers do not have a fifth Skill.</p>
+      <p><b>Training prerequisite:</b> Training Levels 0–180 remain unavailable until all four primary Skills are Level 10. Training then uses separate Officer Badges: 5 per level for Legendary, 25 for Epic and 100 for Elite. Unlocking an Officer costs a separate 10 Officer Badges.</p>
       <p>Each <b>Universal Legendary Badge</b> is worth <b>1 Officer Badge</b> for a Legendary Officer.</p>
       <p>Each <b>Legendary Officer Badge Selection Chest</b> gives <b>1 specific Legendary Officer Badge</b> for an Officer currently available in that chest. It does not convert to ORV. Each <b>Legendary Officer Badge Chest</b> can instead be used as either <b>1 Universal Legendary Badge</b> or <b><span id="chestRateHelpShort">current latest-officer ORV value</span> ORV</b>.</p>
 
@@ -1300,7 +1326,8 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <p>Plans are preview-only and do not spend or alter the saved Inventory. Named plans can be saved locally in the browser and loaded again later.</p>
 
       <h3>8. Save Progress</h3>
-      <p><b>MAX Officer:</b> use the ⭐ MAX Officer button to set the selected Officer to 5 Stars, Level 70, Unlocked, all 4 Skill Strands at Level 5 and Training Level 180. The Officer profile is saved immediately. Shared inventory is not spent or changed.</p>
+      <p><b>MAX Officer:</b> use the ⭐ MAX Officer button to set the selected Officer to 5 Stars, Level 70, Unlocked, all 4 primary Skills at Level 10 and Training Level 180. The Officer profile is saved immediately. Shared inventory is not spent or changed.</p>
+      <p><b>Development sequence:</b> unlock → complete the four primary Skills (36 paid upgrades) → Training to Level 180. For Epic and Legendary Officers, the fifth Skill becomes available when the four primary Skills are complete. Skill Fragments and Officer Badges are separate resource types.</p>
       <p>Use <b>Save Progress</b> after entering or changing Officer progress information. Progress is stored locally in the browser on the current device. Save Progress does not publish your personal data to other users.</p>
 
       <h3>9. Database</h3>
@@ -1327,7 +1354,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 <section id="releases" class="view">
 <article class="card" id="futureOfficerForecastCard">
   <h2>🔮 Future Officer Cost Forecast</h2>
-  <p class="muted">Forecast future Officer costs from the confirmed S8 Rally / Garrison baseline (720 ORV / 360 SRV), compounding the selected growth rate for each subsequent Officer release.</p>
+  <p class="muted">English Test forecast: starting cost is 720 ORV per Badge and 360 SRV per Exclusive Star, with 20% compounded per future Officer release. These are estimates, not confirmed release costs.</p>
 
   <div class="two">
     <div>
@@ -1451,16 +1478,16 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 </nav>
 
 <script>window.KOW_PORTRAIT_SESSION_VERSION=Date.now();
-const DEFAULT_OFFICERS=[{"name":"S7 Roisin","season":"S7","role":"Tank Destroyer","orv":600,"srv":300,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S7 Barbara","season":"S7","role":"Tank Destroyer","orv":600,"srv":300,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S7 Romana","season":"S7","role":"Tank","orv":500,"srv":250,"notes":"Tank","rarity":"Legendary"},{"name":"S7 Liora","season":"S7","role":"Tank","orv":500,"srv":250,"notes":"Tank","rarity":"Legendary"},{"name":"S7 Stella","season":"S7","role":"Infantry","orv":416,"srv":208,"notes":"Infantry","rarity":"Legendary"},{"name":"S7 Klara","season":"S7","role":"Infantry","orv":416,"srv":208,"notes":"Infantry","rarity":"Legendary"},{"name":"S7 Code","season":"S7","role":"Rally","orv":346,"srv":173,"notes":"Rally","rarity":"Legendary"},{"name":"S7 Kamila","season":"S7","role":"Garrison","orv":346,"srv":173,"notes":"Garrison","rarity":"Legendary"},{"name":"S6 Regina","season":"S6","role":"Tank Destroyer","orv":289,"srv":144,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S6 Veronica","season":"S6","role":"Tank Destroyer","orv":289,"srv":144,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S6 Silverhand","season":"S6","role":"Tank","orv":240,"srv":120,"notes":"Tank","rarity":"Legendary"},{"name":"S6 Red Queen","season":"S6","role":"Tank","orv":240,"srv":120,"notes":"Tank","rarity":"Legendary"},{"name":"S6 Samantha","season":"S6","role":"Infantry","orv":200,"srv":100,"notes":"Infantry","rarity":"Legendary"},{"name":"S6 Saoirse","season":"S6","role":"Infantry","orv":200,"srv":100,"notes":"Infantry","rarity":"Legendary"},{"name":"S6 Emily","season":"S6","role":"Rally","orv":167,"srv":84,"notes":"Rally","rarity":"Legendary"},{"name":"S6 Zoya","season":"S6","role":"Garrison","orv":167,"srv":84,"notes":"Garrison","rarity":"Legendary"},{"name":"S5 Feng","season":"S5","role":"Tank Destroyer","orv":139,"srv":69,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S5 Halina","season":"S5","role":"Tank Destroyer","orv":139,"srv":69,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S5 Eva","season":"S5","role":"Tank","orv":116,"srv":58,"notes":"Tank","rarity":"Legendary"},{"name":"S5 Elsa","season":"S5","role":"Tank","orv":116,"srv":58,"notes":"Tank","rarity":"Legendary"},{"name":"S5 Camile","season":"S5","role":"Infantry","orv":96,"srv":48,"notes":"Infantry","rarity":"Legendary"},{"name":"S5 Betty","season":"S5","role":"Infantry","orv":96,"srv":48,"notes":"Infantry","rarity":"Legendary"},{"name":"S5 Miyeon","season":"S5","role":"Rally","orv":80,"srv":40,"notes":"Rally","rarity":"Legendary"},{"name":"S5 Julia","season":"S5","role":"Garrison","orv":80,"srv":40,"notes":"Garrison","rarity":"Legendary"},{"name":"S4 Melina","season":"S4","role":"Tank Destroyer","orv":67,"srv":34,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S4 Jane","season":"S4","role":"Tank Destroyer","orv":67,"srv":34,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S4 Anna","season":"S4","role":"Tank","orv":56,"srv":28,"notes":"Tank","rarity":"Legendary"},{"name":"S4 Yuki","season":"S4","role":"Tank","orv":56,"srv":28,"notes":"Tank","rarity":"Legendary"},{"name":"S4 Eunice","season":"S4","role":"Infantry","orv":47,"srv":23,"notes":"Infantry","rarity":"Legendary"},{"name":"S4 Derya","season":"S4","role":"Infantry","orv":47,"srv":23,"notes":"Infantry","rarity":"Legendary"},{"name":"S4 Hardwin","season":"S4","role":"Rally","orv":39,"srv":20,"notes":"Rally","rarity":"Legendary"},{"name":"S4 Erin","season":"S4","role":"Garrison","orv":39,"srv":20,"notes":"Garrison","rarity":"Legendary"},{"name":"S3 Su","season":"S3","role":"Tank Destroyer","orv":33,"srv":16,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S3 Erica","season":"S3","role":"Tank Destroyer","orv":33,"srv":16,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S3 Aurora","season":"S3","role":"Tank","orv":28,"srv":14,"notes":"Tank","rarity":"Legendary"},{"name":"S3 Ada","season":"S3","role":"Tank","orv":28,"srv":14,"notes":"Tank","rarity":"Legendary"},{"name":"S3 Hannah","season":"S3","role":"Infantry","orv":23,"srv":11,"notes":"Infantry","rarity":"Legendary"},{"name":"S3 Christina","season":"S3","role":"Infantry","orv":23,"srv":11,"notes":"Infantry","rarity":"Legendary"},{"name":"S3 Sophia","season":"S3","role":"Rally","orv":23,"srv":11,"notes":"Rally","rarity":"Legendary"},{"name":"S3 Oliva","season":"S3","role":"Garrison","orv":23,"srv":11,"notes":"Garrison","rarity":"Legendary"},{"name":"S2 Lady Pandora","season":"S2","role":"Tank","orv":20,"srv":10,"notes":"Tank","rarity":"Legendary"},{"name":"S2 Amanda","season":"S2","role":"Infantry","orv":20,"srv":10,"notes":"Infantry","rarity":"Legendary"},{"name":"S2 Diana","season":"S2","role":"Tank Destroyer","orv":20,"srv":10,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S2 Natalia","season":"S2","role":"Tank","orv":20,"srv":10,"notes":"Tank","rarity":"Legendary"},{"name":"Katherine","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Legendary"},{"name":"Grace","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Legendary"},{"name":"Chloe","season":"Original","role":"Rally","orv":0,"srv":0,"notes":"Rally","rarity":"Legendary"},{"name":"Ling","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"Jessica","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"Lilith","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"Angel","season":"Original","role":"Gatherer","orv":0,"srv":0,"notes":"Gatherer","rarity":"Legendary"},{"name":"Sakura","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Legendary"},{"name":"Loubna","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Legendary"},{"name":"Angelica","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Legendary"},{"name":"Ophelia","season":"Original","role":"Rally","orv":0,"srv":0,"notes":"Rally","rarity":"Legendary"},{"name":"Doireann","season":"Original","role":"Garrison","orv":0,"srv":0,"notes":"Garrison","rarity":"Legendary"},{"name":"Dorothea","season":"Original","role":"General","orv":0,"srv":0,"notes":"General","rarity":"Epic"},{"name":"Abigail","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Epic"},{"name":"Monica","season":"Original","role":"Tank Destroyer, Gatherer","orv":0,"srv":0,"notes":"Tank Destroyer, Gatherer","rarity":"Epic"},{"name":"Linda","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Epic"},{"name":"Riven","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Epic"},{"name":"Maria","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Epic"},{"name":"Evelyn","season":"Original","role":"Infantry, Gatherer","orv":0,"srv":0,"notes":"Infantry, Gatherer","rarity":"Epic"},{"name":"Helena","season":"Original","role":"General","orv":0,"srv":0,"notes":"General","rarity":"Epic"},{"name":"Marjorie","season":"Original","role":"Tank, Gatherer","orv":0,"srv":0,"notes":"Tank, Gatherer","rarity":"Elite"},{"name":"Jeanne","season":"Original","role":"Tank Destroyer, Gatherer","orv":0,"srv":0,"notes":"Tank Destroyer, Gatherer","rarity":"Elite"}];
+const DEFAULT_OFFICERS=[{"name":"S8 Po","season":"S8","role":"Rally","orv":720,"srv":360,"notes":"Rally","rarity":"Legendary"},{"name":"S8 Sara","season":"S8","role":"Garrison","orv":720,"srv":360,"notes":"Garrison","rarity":"Legendary"},{"name":"S7 Roisin","season":"S7","role":"Tank Destroyer","orv":600,"srv":300,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S7 Barbara","season":"S7","role":"Tank Destroyer","orv":600,"srv":300,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S7 Romana","season":"S7","role":"Tank","orv":500,"srv":250,"notes":"Tank","rarity":"Legendary"},{"name":"S7 Liora","season":"S7","role":"Tank","orv":500,"srv":250,"notes":"Tank","rarity":"Legendary"},{"name":"S7 Stella","season":"S7","role":"Infantry","orv":416,"srv":208,"notes":"Infantry","rarity":"Legendary"},{"name":"S7 Klara","season":"S7","role":"Infantry","orv":416,"srv":208,"notes":"Infantry","rarity":"Legendary"},{"name":"S7 Code","season":"S7","role":"Rally","orv":346,"srv":173,"notes":"Rally","rarity":"Legendary"},{"name":"S7 Kamila","season":"S7","role":"Garrison","orv":346,"srv":173,"notes":"Garrison","rarity":"Legendary"},{"name":"S6 Regina","season":"S6","role":"Tank Destroyer","orv":289,"srv":144,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S6 Veronica","season":"S6","role":"Tank Destroyer","orv":289,"srv":144,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S6 Silverhand","season":"S6","role":"Tank","orv":240,"srv":120,"notes":"Tank","rarity":"Legendary"},{"name":"S6 Red Queen","season":"S6","role":"Tank","orv":240,"srv":120,"notes":"Tank","rarity":"Legendary"},{"name":"S6 Samantha","season":"S6","role":"Infantry","orv":200,"srv":100,"notes":"Infantry","rarity":"Legendary"},{"name":"S6 Saoirse","season":"S6","role":"Infantry","orv":200,"srv":100,"notes":"Infantry","rarity":"Legendary"},{"name":"S6 Emily","season":"S6","role":"Rally","orv":167,"srv":84,"notes":"Rally","rarity":"Legendary"},{"name":"S6 Zoya","season":"S6","role":"Garrison","orv":167,"srv":84,"notes":"Garrison","rarity":"Legendary"},{"name":"S5 Feng","season":"S5","role":"Tank Destroyer","orv":139,"srv":69,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S5 Halina","season":"S5","role":"Tank Destroyer","orv":139,"srv":69,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S5 Eva","season":"S5","role":"Tank","orv":116,"srv":58,"notes":"Tank","rarity":"Legendary"},{"name":"S5 Elsa","season":"S5","role":"Tank","orv":116,"srv":58,"notes":"Tank","rarity":"Legendary"},{"name":"S5 Camile","season":"S5","role":"Infantry","orv":96,"srv":48,"notes":"Infantry","rarity":"Legendary"},{"name":"S5 Betty","season":"S5","role":"Infantry","orv":96,"srv":48,"notes":"Infantry","rarity":"Legendary"},{"name":"S5 Miyeon","season":"S5","role":"Rally","orv":80,"srv":40,"notes":"Rally","rarity":"Legendary"},{"name":"S5 Julia","season":"S5","role":"Garrison","orv":80,"srv":40,"notes":"Garrison","rarity":"Legendary"},{"name":"S4 Melina","season":"S4","role":"Tank Destroyer","orv":67,"srv":34,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S4 Jane","season":"S4","role":"Tank Destroyer","orv":67,"srv":34,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S4 Anna","season":"S4","role":"Tank","orv":56,"srv":28,"notes":"Tank","rarity":"Legendary"},{"name":"S4 Yuki","season":"S4","role":"Tank","orv":56,"srv":28,"notes":"Tank","rarity":"Legendary"},{"name":"S4 Eunice","season":"S4","role":"Infantry","orv":47,"srv":23,"notes":"Infantry","rarity":"Legendary"},{"name":"S4 Derya","season":"S4","role":"Infantry","orv":47,"srv":23,"notes":"Infantry","rarity":"Legendary"},{"name":"S4 Hardwin","season":"S4","role":"Rally","orv":39,"srv":20,"notes":"Rally","rarity":"Legendary"},{"name":"S4 Erin","season":"S4","role":"Garrison","orv":39,"srv":20,"notes":"Garrison","rarity":"Legendary"},{"name":"S3 Su","season":"S3","role":"Tank Destroyer","orv":33,"srv":16,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S3 Erica","season":"S3","role":"Tank Destroyer","orv":33,"srv":16,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S3 Aurora","season":"S3","role":"Tank","orv":28,"srv":14,"notes":"Tank","rarity":"Legendary"},{"name":"S3 Ada","season":"S3","role":"Tank","orv":28,"srv":14,"notes":"Tank","rarity":"Legendary"},{"name":"S3 Hannah","season":"S3","role":"Infantry","orv":23,"srv":11,"notes":"Infantry","rarity":"Legendary"},{"name":"S3 Christina","season":"S3","role":"Infantry","orv":23,"srv":11,"notes":"Infantry","rarity":"Legendary"},{"name":"S3 Sophia","season":"S3","role":"Rally","orv":23,"srv":11,"notes":"Rally","rarity":"Legendary"},{"name":"S3 Oliva","season":"S3","role":"Garrison","orv":23,"srv":11,"notes":"Garrison","rarity":"Legendary"},{"name":"S2 Lady Pandora","season":"S2","role":"Tank","orv":20,"srv":10,"notes":"Tank","rarity":"Legendary"},{"name":"S2 Amanda","season":"S2","role":"Infantry","orv":20,"srv":10,"notes":"Infantry","rarity":"Legendary"},{"name":"S2 Diana","season":"S2","role":"Tank Destroyer","orv":20,"srv":10,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"S2 Natalia","season":"S2","role":"Tank","orv":20,"srv":10,"notes":"Tank","rarity":"Legendary"},{"name":"Katherine","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Legendary"},{"name":"Grace","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Legendary"},{"name":"Chloe","season":"Original","role":"Rally","orv":0,"srv":0,"notes":"Rally","rarity":"Legendary"},{"name":"Ling","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"Jessica","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"Lilith","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Legendary"},{"name":"Angel","season":"Original","role":"Gatherer","orv":0,"srv":0,"notes":"Gatherer","rarity":"Legendary"},{"name":"Sakura","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Legendary"},{"name":"Loubna","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Legendary"},{"name":"Angelica","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Legendary"},{"name":"Ophelia","season":"Original","role":"Rally","orv":0,"srv":0,"notes":"Rally","rarity":"Legendary"},{"name":"Doireann","season":"Original","role":"Garrison","orv":0,"srv":0,"notes":"Garrison","rarity":"Legendary"},{"name":"Dorothea","season":"Original","role":"General","orv":0,"srv":0,"notes":"General","rarity":"Epic"},{"name":"Abigail","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Epic"},{"name":"Monica","season":"Original","role":"Tank Destroyer, Gatherer","orv":0,"srv":0,"notes":"Tank Destroyer, Gatherer","rarity":"Epic"},{"name":"Linda","season":"Original","role":"Tank","orv":0,"srv":0,"notes":"Tank","rarity":"Epic"},{"name":"Riven","season":"Original","role":"Infantry","orv":0,"srv":0,"notes":"Infantry","rarity":"Epic"},{"name":"Maria","season":"Original","role":"Tank Destroyer","orv":0,"srv":0,"notes":"Tank Destroyer","rarity":"Epic"},{"name":"Evelyn","season":"Original","role":"Infantry, Gatherer","orv":0,"srv":0,"notes":"Infantry, Gatherer","rarity":"Epic"},{"name":"Helena","season":"Original","role":"General","orv":0,"srv":0,"notes":"General","rarity":"Epic"},{"name":"Marjorie","season":"Original","role":"Tank, Gatherer","orv":0,"srv":0,"notes":"Tank, Gatherer","rarity":"Elite"},{"name":"Jeanne","season":"Original","role":"Tank Destroyer, Gatherer","orv":0,"srv":0,"notes":"Tank Destroyer, Gatherer","rarity":"Elite"}];
 const STAR_CUM=[0,500,1500,8000,33000,98000];
-const LEGENDARY_SKILL_COSTS=[10,10,15,15,30,30,40,40,45,45,50,50,75,75,80,80];
-const EPIC_SKILL_COSTS=[10,10,15,15,20,20,25,25,30,30,35,35,40,40,45,45]; // confirmed total 440
-const ELITE_SKILL_COSTS=[10,10,15,15,20,20,25,25,30,30,35,35,40,40,45,45]; // confirmed total 440
+const ELITE_SKILL_COSTS=[1,1,1,1,2,2,2,2,3,3,3,3,6,6,6,6,8,8,8,8,10,10,10,10,12,12,12,12,18,18,18,18,25,25,25,25];
+const EPIC_SKILL_COSTS=[1,1,1,1,2,2,2,2,5,5,5,5,8,8,8,8,10,10,10,10,13,13,13,13,16,16,16,16,25,25,25,25,30,30,30,30];
+const LEGENDARY_SKILL_COSTS=[1,1,2,2,3,3,3,3,6,6,6,6,10,10,10,10,15,15,15,15,20,20,20,20,25,25,25,25,35,35,35,35,55,55,58,60];
 function skillCostsForOfficer(o=currentOfficer()){const r=officerRarity(o);return r==='Epic'?EPIC_SKILL_COSTS:r==='Elite'?ELITE_SKILL_COSTS:LEGENDARY_SKILL_COSTS;}
 const SKILL_COSTS=LEGENDARY_SKILL_COSTS;
 const XP_DENOMS=[100,500,1000,5000,10000,20000,50000];
 const MAX_STAR=98000,MAX_BADGES=1600,MAX_XP=199646700;
-let officers=[],skills=Array(16).fill(false);
+let officers=[],skills=Array(36).fill(false);
 const $=id=>document.getElementById(id);
 
 // v4.5.0 TEST — native working-state persistence.
@@ -1523,14 +1550,16 @@ function getSkillStrandLevels(){
  const levels=[];
  for(let strand=0;strand<4;strand++){
    let paid=0;
-   for(let step=0;step<4;step++){
-     if(skills[strand*4+step]) paid++;
+   for(let step=0;step<9;step++){
+     if(skills[strand*9+step]) paid++;
      else break;
    }
    levels.push(1+paid);
  }
  return levels;
 }
+function hasFifthSkill(o=currentOfficer()){return !!o&&officerRarity(o)!=='Elite';}
+function isFifthSkillUnlocked(o=currentOfficer()){return hasFifthSkill(o)&&getSkillStrandLevels().every(level=>level===10);}
 function strandRequiredStars(strand){ return Math.max(0,Math.min(3,Number(strand)||0)); }
 function strandIsAvailable(strand,starValue=null,unlockedValue=null){
  const stars=starValue===null ? Number($('currentStar')?.value||0) : Number(starValue||0);
@@ -1546,14 +1575,15 @@ function strandRequirementText(strand,starValue=null,unlockedValue=null){
 
 function setSkillStrandLevel(strand,level){
  if(!strandIsAvailable(strand))return;
- level=Math.max(1,Math.min(5,Number(level)||1));
- for(let step=0;step<4;step++){
-   skills[strand*4+step]=step < (level-1);
+ level=Math.max(1,Math.min(10,Number(level)||1));
+ for(let step=0;step<9;step++){
+   skills[strand*9+step]=step < (level-1);
  }
  renderSkillStrands();
  calculate();
  scheduleOfficerAutoSave();
 }
+function primarySkillsComplete(){return totalPaidSkillUpgrades()>=36;}
 function totalPaidSkillUpgrades(){
  return getSkillStrandLevels().reduce((sum,lvl)=>sum+(lvl-1),0);
 }
@@ -1571,10 +1601,10 @@ function skillCostStatusText(o=currentOfficer()){
  const total=c.reduce((a,b)=>a+b,0);
  const spent=c.slice(0,n).reduce((a,b)=>a+b,0);
  const remaining=Math.max(0,total-spent);
- const state=levels.map((lvl,i)=>`Strand ${i+1}: Lv${lvl}`).join(' · ');
- return n>=16
-   ? `${state} · Skills complete · ${spent}/${total} badges used · 0 remaining.`
-   : `${state} · Next cost: ${next} badges · ${spent}/${total} used · ${remaining} remaining.`;
+ const state=levels.map((lvl,i)=>`Skill ${i+1}: Lv${lvl}`).join(' · ');
+ return n>=36
+   ? `${state} · Primary skills complete · ${spent}/${total} fragments used · 0 remaining.`
+   : `${state} · Next cost: ${next} fragments · ${spent}/${total} used · ${remaining} remaining.`;
 }
 function updateSkillCostSummaries(){
  const o=currentOfficer();
@@ -1584,7 +1614,7 @@ function updateSkillCostSummaries(){
 function updateSkillRarityNotice(o=currentOfficer()){
  const el=$('skillSequenceNotice');if(!el||!o)return;
  const rarity=officerRarity(o),costs=skillCostsForOfficer(o),total=costs.reduce((a,b)=>a+b,0);
- el.innerHTML=`Strands unlock with the Officer’s Current Star Level: unlocked at 0★ = Strand 1, 1★ = Strands 1–2, 2★ = Strands 1–3, and 3★+ = all four strands. Level 1 is free when a strand becomes available. <b>${rarity} Promotion sequence:</b> ${costs.join(', ')} badges · <b>${total} total</b>.`;
+ el.innerHTML=`Four primary skills unlock with the Officer’s Current Star Level: 0★ = Skill 1, 1★ = Skills 1–2, 2★ = Skills 1–3, and 3★+ = all four. Each starts at Level 1. <b>${rarity} fragment progression:</b> ${total} fragments total. ${hasFifthSkill(o)?'The fifth skill unlocks when all four primary skills reach Level 10.':'Elite Officers do not have a fifth skill.'}`;
 }
 function openSkillCostInfo(){
  const used=totalPaidSkillUpgrades(),rows=document.getElementById('skillCostSequenceRows');
@@ -1592,7 +1622,7 @@ function openSkillCostInfo(){
  const o=currentOfficer();
  const cur=document.getElementById('skillCostCurrent');if(cur)cur.innerHTML=`<b>${officerRarity(o)} Officer · ${skillCostStatusText(o)}</b>`;
  const levels=getSkillStrandLevels(),next=nextSkillUpgradeCost(o),per=document.getElementById('skillCostPerStrand');
- if(per)per.innerHTML=levels.map((lvl,i)=>lvl>=5?`<b>Strand ${i+1}:</b> Level 5 — MAX`:`<b>Strand ${i+1}:</b> Level ${lvl} → Level ${lvl+1} would currently cost ${next} badges`).join('<br>');
+ if(per)per.innerHTML=levels.map((lvl,i)=>lvl>=10?`<b>Skill ${i+1}:</b> Level 10 — MAX`:`<b>Skill ${i+1}:</b> Level ${lvl} → Level ${lvl+1} costs ${next} fragments`).join('<br>');
  document.getElementById('skillCostInfoModal').style.display='block';
 }
 function closeSkillCostInfo(){document.getElementById('skillCostInfoModal').style.display='none';}
@@ -1607,20 +1637,20 @@ function renderSkillStrands(){
 
    const label=document.createElement('div');
    label.className='skill-strand-label';
-   label.innerHTML=`Strand ${strand+1}${available?'':`<span class="strand-requirement">${strandRequirementText(strand)}</span>`}`;
+   label.innerHTML=`Skill ${strand+1}${available?'':`<span class="strand-requirement">${strandRequirementText(strand)}</span>`}`;
    row.appendChild(label);
 
    const controls=document.createElement('div');
    controls.className='skill-strand-controls';
 
-   for(let level=1;level<=5;level++){
+   for(let level=1;level<=10;level++){
      const b=document.createElement('button');
      b.type='button';
      b.disabled=!available;
      b.className='skill-lvl'+(level===1?' free':'')+(level<=levels[strand]?' reached':'')+(levels[strand]===level?' active':'')+(available?'':' locked');
      b.textContent=level===1?'Lv1 ✓':`Lv${level}`;
      b.title=available
-       ? (level===1?'Level 1 is free on this unlocked strand':`Set Strand ${strand+1} to Level ${level}`)
+       ? (level===1?'Level 1 is free on this unlocked strand':`Set Skill ${strand+1} to Level ${level}`)
        : strandRequirementText(strand);
      b.onclick=()=>setSkillStrandLevel(strand,level);
      controls.appendChild(b);
@@ -1628,6 +1658,10 @@ function renderSkillStrands(){
    row.appendChild(controls);
    g.appendChild(row);
  }
+ const fifth=document.createElement('div');
+ fifth.className='skill-strand-row fifth-skill-status'+(isFifthSkillUnlocked()?' unlocked':' locked');
+ fifth.textContent=hasFifthSkill()?`Fifth Skill: ${isFifthSkillUnlocked()?'UNLOCKED':'LOCKED — requires all four primary skills at Level 10'}`:'Fifth Skill: Not available for Elite Officers';
+ g.appendChild(fifth);
  updateSkillCostSummaries();
  updateSkillRarityNotice();
 }
@@ -1734,8 +1768,8 @@ function updateLegendaryChestRateLabels(){
  const planner=$('multiChestOrvOption');if(planner)planner.textContent='Convert to ORV ('+(rate?fmt(rate):'unavailable')+' each)';
 }
 function trainingBadgeCost(o=currentOfficer()){ return officerRarity(o)==='Elite'?100:officerRarity(o)==='Epic'?25:5; }
-function promotionBadgeTotal(o=currentOfficer()){return officerRarity(o)==='Epic'?440:officerRarity(o)==='Elite'?440:690;}
-function maxBadgesForOfficer(o=currentOfficer()){ return 10+promotionBadgeTotal(o)+180*trainingBadgeCost(o); }
+function promotionBadgeTotal(o=currentOfficer()){return officerRarity(o)==='Epic'?440:officerRarity(o)==='Elite'?340:690;}
+function maxBadgesForOfficer(o=currentOfficer()){ return 10+180*trainingBadgeCost(o); }
 function seasonSort(a,b){
  if(a==='Original')return -1;if(b==='Original')return 1;
  const an=Number(String(a).match(/\d+/)?.[0]||999),bn=Number(String(b).match(/\d+/)?.[0]||999);
@@ -1802,6 +1836,9 @@ function updateOfficerExperience(){
  if($('officerRarityValue'))$('officerRarityValue').textContent=officerRarity(o);
  if($('officerRoleValue'))$('officerRoleValue').textContent=role;
  updateStarRarityUI(o);
+ const trainingReady=primarySkillsComplete();
+ ['training','trainingExact'].forEach(id=>{const el=$(id);if(el)el.disabled=!trainingReady;});
+ if($('trainingRarityNote'))$('trainingRarityNote').textContent=trainingReady?`${officerRarity(o)}: ${trainingBadgeCost(o)} Officer Badges per Training level · ${fmt(180*trainingBadgeCost(o))} Training Badges to MAX.`:'Complete all four primary Skills to Level 10 before starting Officer Training (0–180).';
  if($('dashOfficerRole'))$('dashOfficerRole').textContent=[o.season,role].filter(Boolean).join(' · ');
  if($('expectedPortraitFile'))$('expectedPortraitFile').textContent=candidates[0];
 
@@ -1860,12 +1897,14 @@ function clampTrainingValue(v){
  return Math.max(0,Math.min(180,v));
 }
 function syncMainTrainingFromSlider(){
+ if(!primarySkillsComplete()){$('training').value=0;if($('trainingExact'))$('trainingExact').value=0;if($('trainingLabel'))$('trainingLabel').textContent='0';return;}
  const v=clampTrainingValue($('training').value);
  $('training').value=v;
  if($('trainingExact'))$('trainingExact').value=v;
  if($('trainingLabel'))$('trainingLabel').textContent=v;
 }
 function syncMainTrainingFromExact(){
+ if(!primarySkillsComplete()){$('trainingExact').value=0;$('training').value=0;if($('trainingLabel'))$('trainingLabel').textContent='0';calculate();return;}
  const v=clampTrainingValue($('trainingExact').value);
  $('trainingExact').value=v;
  $('training').value=v;
@@ -1896,7 +1935,7 @@ function calculate(){
  const readinessEligible=o.readinessEligible!==false&&String(o.season||'').toLowerCase()!=='original';
  $('orvCost').value=readinessEligible?o.orv:'N/A';$('srvCost').value=readinessEligible?o.srv:'N/A';$('dashOfficer').textContent=o.name;updateOfficerExperience();
  $('orvHeld').disabled=!readinessEligible||officerRarity(o)!=='Legendary';$('srvHeld').disabled=!readinessEligible||officerRarity(o)!=='Legendary';
- const trc=trainingBadgeCost(o); if($('trainingRarityNote'))$('trainingRarityNote').textContent=`${officerRarity(o)}: ${trc} badges per Training point · ${promotionBadgeTotal(o)} Promotion badges · ${fmt(maxBadgesForOfficer(o))} total to MAX.`;
+ const trc=trainingBadgeCost(o); if($('trainingRarityNote'))$('trainingRarityNote').textContent=`${officerRarity(o)}: ${trc} Officer Badges per Training level · ${fmt(180*trc)} Training Badges to MAX. Skill progression uses ${promotionBadgeTotal(o)} separate fragments.`;
  updateSkillRarityNotice(o);
  updateSkillCostSummaries();
  $('orvHeld').title=readinessEligible?'':'Officer Readiness Vouchers are not available for Original Officers';
@@ -1930,7 +1969,7 @@ function calculate(){
  $('universalBadgesAvailable').textContent=fmt(universalBadgesAvailable);
 
  const officerMaxBadges=maxBadgesForOfficer(o);
- const badgesUsed=($('unlocked').checked?10:0)+skillBadgesSpent()+ +$('training').value*trainingBadgeCost(o);
+ const badgesUsed=($('unlocked').checked?10:0)+ +$('training').value*trainingBadgeCost(o);
  const badgesFromOrv=readinessEligible&&o.orv>0?Math.floor(orvHeld/o.orv):0;
  const orvRemainder=o.orv>0?orvHeld-badgesFromOrv*o.orv:orvHeld;
  const badgeTotal=badgesUsed+badgesHeld+universalBadgesAvailable+badgesFromOrv;
@@ -1960,7 +1999,7 @@ function renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHel
  const readinessEligible=o.readinessEligible!==false&&String(o.season||'').toLowerCase()!=='original';
  const g=$('goalSelect').value;let starTarget=0,badgeTarget=0,xpTarget=0;
  if(g==='nextStar')starTarget=STAR_CUM[Math.min(5,cs+1)];else if(g==='fiveStar'||g==='max')starTarget=MAX_STAR;
- if(g==='maxSkills')badgeTarget=10+promotionBadgeTotal(o);else if(g==='maxTraining'||g==='max')badgeTarget=maxBadgesForOfficer(o);
+ if(g==='maxSkills')badgeTarget=10;else if(g==='maxTraining'||g==='max')badgeTarget=maxBadgesForOfficer(o);
  if(g==='max')xpTarget=xpRequiredSelected;
  const rarity=officerRarity(o);
  const srvAllowed=rarity==='Legendary'&&readinessEligible;
@@ -2055,10 +2094,12 @@ function applyOfficerProgress(d){
  $('currentStar').value=d.currentStar??0;
  $('targetStar').value=d.targetStar??5;
  $('unlocked').checked=!!d.unlocked;
- skills=Array.isArray(d.skills)?d.skills.slice(0,16):Array(16).fill(false);
- while(skills.length<16)skills.push(false);
- $('training').value=d.training??0;
- if($('trainingExact'))$('trainingExact').value=d.training??0;
+ const savedSkills=Array.isArray(d.skills)?d.skills:[];
+ skills=Array(36).fill(false);
+ if(savedSkills.length<=16){for(let strand=0;strand<4;strand++)for(let step=0;step<4;step++)skills[strand*9+step]=!!savedSkills[strand*4+step];}
+ else{for(let i=0;i<36;i++)skills[i]=!!savedSkills[i];}
+ $('training').value=primarySkillsComplete()?(d.training??0):0;
+ if($('trainingExact'))$('trainingExact').value=primarySkillsComplete()?(d.training??0):0;
  if($('trainingLabel'))$('trainingLabel').textContent=d.training??0;
  $('badgeHeld').value=d.badgeHeld??0;
  $('currentLevel').value=d.currentLevel??1;
@@ -2138,13 +2179,13 @@ function maxSelectedOfficerProfile(){
  if(!o)return;
 
  const label=officerDisplayName(o);
- if(!confirm(`Set ${label} to fully MAXED?\n\nThis will set:\n• 5 Stars\n• Level 70\n• Unlocked\n• All 4 Skill Strands at Level 5\n• Training Level 180\n\nShared ORV, SRV, badges, stars and XP inventory will not be spent or changed.`))return;
+ if(!confirm(`Set ${label} to fully MAXED?\n\nThis will set:\n• 5 Stars\n• Level 70\n• Unlocked\n• All 4 primary Skills at Level 10\n• Training Level 180\n\nShared ORV, SRV, badges, stars and XP inventory will not be spent or changed.`))return;
 
  $('currentStar').value=5;
  $('targetStar').value=5;
  $('unlocked').checked=true;
 
- skills=Array(16).fill(true);
+ skills=Array(36).fill(true);
  renderSkillStrands();
 
  $('training').value=180;
@@ -2257,7 +2298,7 @@ function loadProgress(){
 }
 
 
-const APP_VERSION='4.6.0';
+const APP_VERSION='4.7.0';
 function syncVersionUI(){
  const v='v'+APP_VERSION;
  if($('headerVersion'))$('headerVersion').textContent=v;
@@ -2699,7 +2740,7 @@ function updateFutureOfficerForecast(){
    3:'July — S8 Tank Destroyers',
    4:'October — S9 Rally / Garrison'
  };
- $('forecastNote').innerHTML=`<b>${labels[steps]}</b><br>Planning estimate using ${($('forecastGrowth').value||20)}% growth per Officer release from the confirmed S8 Rally / Garrison baseline (720 ORV / 360 SRV). For ${fmt(badges)} badges and ${fmt(starValue)} Star value (${fmt(exclusiveStars)} Exclusive Stars), plan for approximately <b>${fmt(totalOrv)} ORV</b> and <b>${fmt(totalSrv)} SRV</b>. Forecast only — replace with confirmed costs when released.`;
+ $('forecastNote').innerHTML=`<b>${labels[steps]}</b><br>Test planning estimate using ${($('forecastGrowth').value||20)}% growth per future Officer release from the 720 ORV / 360 SRV forecast starting cost. For ${fmt(badges)} badges and ${fmt(starValue)} Star value (${fmt(exclusiveStars)} Exclusive Stars), plan for approximately <b>${fmt(totalOrv)} ORV</b> and <b>${fmt(totalSrv)} SRV</b>. Forecast only — replace with confirmed costs when released.`;
 }
 async function init(){
  await loadOfficers();updateLegendaryChestRateLabels();renderOfficerFilters();restoreOfficerFilterState();renderOfficerOptions(getUiState().officerName||undefined);
@@ -2829,7 +2870,7 @@ document.querySelectorAll('.bottom-nav button').forEach(b=>b.onclick=()=>{saveAc
  setBackground('landscapeBackgroundPicker','kow_bg_landscape_v401','landscapeBgStatus','Custom landscape');
  $('resetAppearance').onclick=()=>{
   ['kow_app_name_v4','kow_bg_v4','kow_bg_portrait_v401','kow_bg_landscape_v401'].forEach(k=>localStorage.removeItem(k));
-  $('appName').value='OFFICER COMMAND CENTRE';$('appTitle').textContent='OFFICER COMMAND CENTRE';document.title='KoW Companion v4.6.0';
+  $('appName').value='OFFICER COMMAND CENTRE';$('appTitle').textContent='OFFICER COMMAND CENTRE';document.title='KoW Companion v4.7.0';
   $('portraitBgStatus').textContent='Built-in default portrait';$('landscapeBgStatus').textContent='Built-in default landscape';
   $('portraitBackgroundPicker').value='';$('landscapeBackgroundPicker').value='';
    applyResponsivePageBackground();
@@ -2927,24 +2968,24 @@ function savedOfficerProgressData(){
    const displayName=o?.name || '';
    const season=o?.season || '';
 
-   const skillFlags=Array.isArray(p.skills)?p.skills.slice(0,16):[];
+   const skillFlags=Array.isArray(p.skills)?p.skills.slice(0,36):[];
    // Each true flag is one paid skill increase (Lv1 is free). Count all saved paid
    // increases rather than stopping at the first false, so older profiles cannot
    // be under-counted by strand ordering.
-   const paidSkillUpgrades=Math.min(16,skillFlags.filter(Boolean).length);
+   const paidSkillUpgrades=Math.min(36,skillFlags.filter(Boolean).length);
    const skillCosts=skillCostsForOfficer(o);
    const promotionTotal=promotionBadgeTotal(o);
-   const skillSpent=paidSkillUpgrades>=16
+   const skillSpent=paidSkillUpgrades>=36
      ? promotionTotal
      : skillCosts.slice(0,paidSkillUpgrades).reduce((a,b)=>a+b,0);
 
    const training=Math.max(0,Math.min(180,Number(p.training)||0));
    const officerMaxBadges=maxBadgesForOfficer(o);
-   const developmentComplete=!!p.unlocked && paidSkillUpgrades>=16 && training>=180;
+   const developmentComplete=!!p.unlocked && paidSkillUpgrades>=36 && training>=180;
 
    // A semantically MAXED development profile is always 100%, regardless of the
    // rarity cost table used to reach it. Partial profiles remain rarity-aware.
-   const rawBadgesUsed=(p.unlocked?10:0)+skillSpent+training*trainingBadgeCost(o);
+   const rawBadgesUsed=(p.unlocked?10:0)+training*trainingBadgeCost(o);
    const badgesUsed=developmentComplete?officerMaxBadges:Math.min(officerMaxBadges,rawBadgesUsed);
    const badgeShort=developmentComplete?0:Math.max(0,officerMaxBadges-badgesUsed);
    const dev=developmentComplete?100:savedPct(badgesUsed,officerMaxBadges);
@@ -3133,14 +3174,14 @@ document.addEventListener('DOMContentLoaded',()=>{
 
    const label=document.createElement('label');
    label.className='skill-strand-label';
-   label.innerHTML=`Strand ${strand+1}${available?'':`<span class="strand-requirement">${strandRequirementText(strand,quickStars,quickUnlocked)}</span>`}`;
+   label.innerHTML=`Skill ${strand+1}${available?'':`<span class="strand-requirement">${strandRequirementText(strand,quickStars,quickUnlocked)}</span>`}`;
    row.appendChild(label);
 
    const select=document.createElement('select');
    select.className='quick-strand-select';
    select.dataset.quickStrandSelect=strand;
    select.disabled=!available;
-   for(let level=1;level<=5;level++){
+   for(let level=1;level<=10;level++){
      const opt=document.createElement('option');
      opt.value=level;
      opt.textContent=level===1?'Level 1 — Free':`Level ${level}`;
@@ -3152,30 +3193,30 @@ document.addEventListener('DOMContentLoaded',()=>{
    select.onchange=()=>{
  row.dataset.selectedLevel=select.value;
  const paid=[...document.querySelectorAll('#quickSkills .quick-strand-select')].reduce((sum,x)=>sum+Math.max(0,(Number(x.value)||1)-1),0);
- const cc=skillCostsForOfficer(); const next=paid>=16?0:cc[paid];
+ const cc=skillCostsForOfficer(); const next=paid>=36?0:cc[paid];
  const summaryBox=document.getElementById('quickNextSkillCostSummary');
  if(summaryBox){
  const total=cc.reduce((a,b)=>a+b,0);
  const spent=cc.slice(0,paid).reduce((a,b)=>a+b,0);
  const remaining=Math.max(0,total-spent);
- summaryBox.innerHTML=paid>=16
-  ? `<b>Skills complete · ${spent}/${total} badges used · 0 remaining.</b>`
-  : `<b>Next cost: ${next} badges · ${spent}/${total} used · ${remaining} remaining.</b>`;
+ summaryBox.innerHTML=paid>=36
+  ? `<b>Primary skills complete · ${spent}/${total} fragments used · 0 remaining.</b>`
+  : `<b>Next cost: ${next} fragments · ${spent}/${total} used · ${remaining} remaining.</b>`;
 }
 };
    row.appendChild(select);
    box.appendChild(row);
  }
  const paid=levels.reduce((sum,lvl)=>sum+Math.max(0,lvl-1),0);
- const cc=skillCostsForOfficer(); const next=paid>=16?0:cc[paid];
+ const cc=skillCostsForOfficer(); const next=paid>=36?0:cc[paid];
  const summary=document.getElementById('quickNextSkillCostSummary');
  if(summary){
  const total=cc.reduce((a,b)=>a+b,0);
  const spent=cc.slice(0,paid).reduce((a,b)=>a+b,0);
  const remaining=Math.max(0,total-spent);
- summary.innerHTML=paid>=16
-  ? `<b>Skills complete · ${spent}/${total} badges used · 0 remaining.</b>`
-  : `<b>Next cost: ${next} badges · ${spent}/${total} used · ${remaining} remaining.</b>`;
+ summary.innerHTML=paid>=36
+  ? `<b>Primary skills complete · ${spent}/${total} fragments used · 0 remaining.</b>`
+  : `<b>Next cost: ${next} fragments · ${spent}/${total} used · ${remaining} remaining.</b>`;
 }
 }
  function openQuickProgress(){
@@ -3188,7 +3229,11 @@ document.addEventListener('DOMContentLoaded',()=>{
    if((Number(q('quickStarLevel').value)||0)>0 || (Number(q('quickOfficerLevel').value)||0)>1){
      q('quickUnlocked').checked=true;
    }
-   q('quickTraining').value=q('training')?.value??0;
+   const quickReady=primarySkillsComplete();
+   q('quickTraining').disabled=!quickReady;
+   if(q('quickTrainingExact'))q('quickTrainingExact').disabled=!quickReady;
+   if(q('quickTrainingNote'))q('quickTrainingNote').textContent=quickReady?'Training is available.':'Complete all four primary Skills to Level 10 before starting Training.';
+   q('quickTraining').value=quickReady?(q('training')?.value??0):0;
    q('quickTrainingValue').textContent=q('quickTraining').value;
    if(q('quickTrainingExact'))q('quickTrainingExact').value=q('quickTraining').value;
    buildQuickSkills();
@@ -3201,13 +3246,13 @@ document.addEventListener('DOMContentLoaded',()=>{
    q('currentLevel').value=q('quickOfficerLevel').value;
    q('targetLevel').value=Math.max(Number(q('targetLevel').value)||70,Number(q('quickOfficerLevel').value)||1);
    q('unlocked').checked=q('quickUnlocked').checked;
-   skills=Array(16).fill(false);
+   skills=Array(36).fill(false);
    document.querySelectorAll('#quickSkills .quick-strand-row').forEach((row,strand)=>{
-     const level=Math.max(1,Math.min(5,Number(row.dataset.selectedLevel)||1));
-     for(let step=0;step<4;step++)skills[strand*4+step]=step<(level-1);
+     const level=Math.max(1,Math.min(10,Number(row.dataset.selectedLevel)||1));
+     for(let step=0;step<9;step++)skills[strand*9+step]=step<(level-1);
    });
    renderSkillStrands();
-   q('training').value=q('quickTrainingExact')?q('quickTrainingExact').value:q('quickTraining').value;
+   q('training').value=primarySkillsComplete()?(q('quickTrainingExact')?q('quickTrainingExact').value:q('quickTraining').value):0;
    if(q('trainingExact'))q('trainingExact').value=q('training').value;
    if(q('trainingLabel'))q('trainingLabel').textContent=q('quickTraining').value;
    calculate();
@@ -3228,13 +3273,15 @@ document.addEventListener('DOMContentLoaded',()=>{
  q('quickProgressClose')?.addEventListener('click',closeQuickProgress);
  q('quickProgressCancel')?.addEventListener('click',closeQuickProgress);
  q('quickTraining')?.addEventListener('input',()=>{
-   const v=Math.max(0,Math.min(180,Math.round(Number(q('quickTraining').value)||0)));
+   if(!primarySkillsComplete()){q('quickTraining').value=0;if(q('quickTrainingExact'))q('quickTrainingExact').value=0;q('quickTrainingValue').textContent='0';return;}
+    const v=Math.max(0,Math.min(180,Math.round(Number(q('quickTraining').value)||0)));
    q('quickTraining').value=v;
    q('quickTrainingValue').textContent=v;
    if(q('quickTrainingExact'))q('quickTrainingExact').value=v;
  });
  q('quickTrainingExact')?.addEventListener('input',()=>{
-   const v=Math.max(0,Math.min(180,Math.round(Number(q('quickTrainingExact').value)||0)));
+   if(!primarySkillsComplete()){q('quickTrainingExact').value=0;q('quickTraining').value=0;q('quickTrainingValue').textContent='0';return;}
+    const v=Math.max(0,Math.min(180,Math.round(Number(q('quickTrainingExact').value)||0)));
    q('quickTrainingExact').value=v;
    q('quickTraining').value=v;
    q('quickTrainingValue').textContent=v;
@@ -3259,36 +3306,41 @@ window.KOW_PLANNER_BRIDGE = {
   globalResources: () => (typeof getGlobalResources === 'function' ? getGlobalResources() : {}),
   officers: () => (Array.isArray(officers) ? officers : []),
   xpDenoms: () => (Array.isArray(XP_DENOMS) ? XP_DENOMS : [100,500,1000,5000,10000,20000,50000]),
-  releaseForecast: () => {
-    const growth = Number(document.getElementById('forecastGrowth')?.value || 20);
+  latestKnownRelease: () => {
     const rows = Array.isArray(officers) ? officers : [];
-    const slotFor = o => {
+    const seasonNumber = o => Number(String(o?.season || '').match(/^S(\d+)$/i)?.[1] || 0);
+    const releaseSlot = o => {
       const role = String(o?.role || o?.notes || '').toLowerCase();
-      if (role.includes('garrison') || role.includes('rally')) return 1;
+      if (role.includes('rally') || role.includes('garrison')) return 1;
       if (role.includes('infantry')) return 2;
       if (role.includes('tank destroyer')) return 4;
       if (role.includes('tank')) return 3;
       return 0;
     };
-    const seasonFor = o => {
-      const raw = String(o?.season || String(o?.name || '').match(/^S\d+/i)?.[0] || '');
-      const m = raw.match(/^S(\d+)$/i);
-      return m ? Number(m[1]) : 0;
+    let latestSeason = Math.max(0, ...rows.map(seasonNumber));
+    let latestRows = rows.filter(o => seasonNumber(o) === latestSeason && releaseSlot(o) > 0);
+    let latestSlot = Math.max(0, ...latestRows.map(releaseSlot));
+    let latest = latestRows.find(o => releaseSlot(o) === latestSlot && Number(o.orv) > 0 && Number(o.srv) > 0);
+    if (!latest) return {season: 7, slot: 1, orv: 600, srv: 300, source: 'Fallback: S7 Rally / Garrison cost (600 ORV / 300 SRV)'};
+    return {
+      season: latestSeason,
+      slot: latestSlot,
+      orv: Number(latest.orv),
+      srv: Number(latest.srv),
+      source: `Confirmed ${latest.season} ${latest.role || latest.notes || 'Officer'} database cost`
     };
-    const latest = rows.map(o => ({
-      season: seasonFor(o), slot: slotFor(o), orv: Number(o?.orv), srv: Number(o?.srv)
-    })).filter(o => o.season > 0 && o.slot > 0 && o.orv > 0 && o.srv > 0)
-      .sort((a,b) => b.season-a.season || b.slot-a.slot)[0]
-      || {season:7,slot:1,orv:600,srv:300};
+  },
+  releaseForecast: () => {
+    const growth = Number(document.getElementById('forecastGrowth')?.value || 20);
+    const base = window.KOW_PLANNER_BRIDGE.latestKnownRelease();
     const releaseStep = Math.max(1, Number(document.getElementById('forecastRelease')?.value || 1));
     const factor = Math.pow(1 + growth / 100, releaseStep);
-    const slotName = ({1:'Rally / Garrison',2:'Infantry',3:'Tanks',4:'Tank Destroyers'})[latest.slot];
     return {
       growth,
       releaseStep,
-      orvPerBadge: Math.round(latest.orv * factor),
-      srvPerStar: Math.round(latest.srv * factor),
-      source: `Confirmed S${latest.season} ${slotName} cost (${latest.orv} ORV / ${latest.srv} SRV), ${growth}% compounded for ${releaseStep} future Officer release${releaseStep===1?'':'s'}`
+      orvPerBadge: Math.round(base.orv * factor),
+      srvPerStar: Math.round(base.srv * factor),
+      source: `${base.source} (${base.orv} ORV / ${base.srv} SRV)`
     };
   }
 };
@@ -3313,6 +3365,7 @@ window.KOW_PLANNER_BRIDGE = {
   <label><input id="quickUnlocked" type="checkbox" onchange="kowEditOfficerSync()"> Officer unlocked (10 badges)</label>
   <h3>Skill Strands — each starts at Level 1</h3><div id="quickSkills"></div>
   <label style="display:block;margin-top:14px">Training Level: <b id="quickTrainingValue">0</b> / 180</label>
+  <div id="quickTrainingNote" class="muted">Complete all four primary Skills to Level 10 before starting Training.</div>
   <div style="display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center">
     <input id="quickTraining" type="range" min="0" max="180" value="0" style="width:100%">
     <input id="quickTrainingExact" type="number" min="0" max="180" step="1" inputmode="numeric" value="0" aria-label="Exact Training Level">
@@ -3327,16 +3380,16 @@ onclick="(function(){
     if(q('targetLevel'))q('targetLevel').value=Math.max(Number(q('targetLevel').value)||70,Number(q('quickOfficerLevel').value)||1);
     if(q('unlocked'))q('unlocked').checked=q('quickUnlocked').checked;
 
-    skills=Array(16).fill(false);
+    skills=Array(36).fill(false);
     document.querySelectorAll('#quickSkills .quick-strand-row').forEach(function(row,strand){
       var sel=row.querySelector('.quick-strand-select');
-      var level=Math.max(1,Math.min(5,Number(sel ? sel.value : row.dataset.selectedLevel)||1));
-      for(var step=0;step<4;step++)skills[strand*4+step]=step<(level-1);
+      var level=Math.max(1,Math.min(10,Number(sel ? sel.value : row.dataset.selectedLevel)||1));
+      for(var step=0;step<9;step++)skills[strand*9+step]=step<(level-1);
     });
 
     if(typeof renderSkillStrands==='function')renderSkillStrands();
 
-    var training=q('quickTrainingExact') ? q('quickTrainingExact').value : q('quickTraining').value;
+    var training=primarySkillsComplete()?(q('quickTrainingExact') ? q('quickTrainingExact').value : q('quickTraining').value):0;
     if(q('training'))q('training').value=training;
     if(q('trainingExact'))q('trainingExact').value=training;
     if(q('trainingLabel'))q('trainingLabel').textContent=training;
@@ -3391,7 +3444,7 @@ function kowOfficerReadiness(){
   const maxBadges=typeof maxBadgesForOfficer==='function'?maxBadgesForOfficer(o):1600;
   const badgeAvailable=Math.max(0,maxBadges-usedBadges-badgeShort);
   const totalBadgePower=usedBadges+badgeAvailable;
-  const skillTarget=(typeof promotionBadgeTotal==='function'?promotionBadgeTotal(o):10)+(typeof skillCostsForOfficer==='function'?skillCostsForOfficer(o).reduce((a,b)=>a+b,0):690);
+  const skillTarget=(typeof promotionBadgeTotal==='function'?promotionBadgeTotal(o):690);
   const nextStarTarget=STAR_CUM[Math.min(5,cs+1)]||MAX_STAR;
   const starsHeld=Number(String(document.getElementById('starsHeld')?.textContent||'0').replace(/[^0-9.-]/g,''))||0;
   const starPower=(STAR_CUM[cs]||0)+starsHeld;
@@ -3402,7 +3455,7 @@ function kowOfficerReadiness(){
    ['🔓','Unlock',totalBadgePower>=10,Math.max(0,10-totalBadgePower),'Officer Badges'],
    ['⭐','Next Star',cs>=5||starPower>=nextStarTarget,cs>=5?0:Math.max(0,nextStarTarget-starPower),'Officer Star value'],
    ['🌟','Reach 5★',starPower>=MAX_STAR,Math.max(0,MAX_STAR-starPower),'Officer Star value'],
-   ['🏅','MAX Skills',totalBadgePower>=skillTarget,Math.max(0,skillTarget-totalBadgePower),'Officer Badges'],
+   ['🏅','MAX Skills',typeof totalPaidSkillUpgrades==='function'&&totalPaidSkillUpgrades()>=36,typeof skillCostsForOfficer==='function'?skillCostsForOfficer(o).slice(totalPaidSkillUpgrades()).reduce((a,b)=>a+b,0):skillTarget,'Skill fragments'],
    ['🎖️','MAX Training',totalBadgePower>=maxBadges,Math.max(0,maxBadges-totalBadgePower),'Officer Badges'],
    ['📘','Level 70 XP',xpHeld>=xpNeed,Math.max(0,xpNeed-xpHeld),'XP'],
   ];
@@ -3698,7 +3751,7 @@ document.addEventListener("click",function(e){
         pct:f.growth
       };
     }
-    return {orv:720,srv:360,source:'Confirmed S8 Rally / Garrison cost (720 ORV / 360 SRV)',pct:20};
+    return {orv:720,srv:360,source:'Test forecast starting cost (720 ORV / 360 SRV)',pct:20};
   }
   function projectedResourceHtml(projected,inv){
     var box=document.getElementById('kowProjectedResourceForecast');
@@ -3721,7 +3774,7 @@ document.addEventListener("click",function(e){
     var starValueAvailable=(inv.starValue||0)+(starUnitsFromSrv*110);
     var oneStarShort=Math.max(0,98000-starValueAvailable), twoStarShort=Math.max(0,196000-starValueAvailable);
 
-    box.innerHTML='<div class="card" style="margin-top:12px"><h3>🔮 Projected S8 Resource Requirement</h3>'+
+    box.innerHTML='<div class="card" style="margin-top:12px"><h3>🔮 Projected Future Officer Resource Requirement</h3>'+
       '<div class="notice">Badge, Star and XP totals are established per Legendary Officer. ORV/SRV are forecast from the Releases growth setting and are clearly marked <b>FORECAST</b>.</div>'+
       '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Scenario</th><th>Development</th><th>Stars</th><th>XP</th><th>ORV forecast</th><th>SRV forecast</th></tr></thead><tbody>'+
       scenarioRow(1,'1 × '+baseName)+scenarioRow(2,'2 × '+baseName)+
@@ -3779,8 +3832,8 @@ document.addEventListener("click",function(e){
     var session=futureSession(mode), projected=[];
     if(mode!=='saved'){
       var types=typeChoice!=='auto'?[typeChoice]:(session?session.types:[]);
-      var season=projectedSeason();
       projected=types.map(function(t){
+        var season=projectedSeason(mode,t);
         return {name:season+' '+t+' — PROJECTED',pct:0,status:'PROJECTED',future:true,type:t};
       });
     }
@@ -4005,7 +4058,7 @@ window.kowRenderPlanningReadiness=render;
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
-<script src="./v460-features.js?v=460-live"></script><script src="./planner-season-sync.js?v=460-live"></script><script src="./release-forecast-sync.js?v=460-live"></script>
+<script src="./v460-features.js?v=460-test-clean-20261016"></script><script src="./planner-season-sync.js?v=460-test-clean-20261016"></script><script src="./release-forecast-sync.js?v=460-test-clean-20261016"></script>
 <script id="hotfix7EditOfficerRuntime">
 (function(){
 'use strict';
@@ -4054,7 +4107,7 @@ window.kowEditOfficerMax=function(){
     Number(document.getElementById('currentLevel')?.value)===70 &&
     !!document.getElementById('unlocked')?.checked &&
     Number(document.getElementById('training')?.value)===180 &&
-    (typeof getSkillStrandLevels==='function' && getSkillStrandLevels().every(v=>Number(v)===5));
+    (typeof getSkillStrandLevels==='function' && getSkillStrandLevels().every(v=>Number(v)===10));
 
   if(maxApplied){
     const modal=document.getElementById('quickProgressModal');
