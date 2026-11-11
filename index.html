@@ -3188,6 +3188,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    select.title=available?`Set Strand ${strand+1} level`:strandRequirementText(strand,quickStars,quickUnlocked);
    select.onchange=()=>{
  row.dataset.selectedLevel=select.value;
+ syncQuickTrainingControls();
  const paid=[...document.querySelectorAll('#quickSkills .quick-strand-select')].reduce((sum,x)=>sum+Math.max(0,(Number(x.value)||1)-1),0);
  const cc=skillCostsForOfficer(); const next=paid>=36?0:cc[paid];
  const summaryBox=document.getElementById('quickNextSkillCostSummary');
@@ -3215,6 +3216,22 @@ document.addEventListener('DOMContentLoaded',()=>{
   : `<b>Next cost: ${next} fragments · ${spent}/${total} used · ${remaining} remaining.</b>`;
 }
 }
+ function quickPrimarySkillsComplete(){
+   const selects=[...document.querySelectorAll('#quickSkills .quick-strand-select')];
+   return selects.length===4 && selects.every(select=>Number(select.value)>=10);
+ }
+ function syncQuickTrainingControls(){
+   const ready=quickPrimarySkillsComplete();
+   const slider=q('quickTraining'),exact=q('quickTrainingExact');
+   if(slider)slider.disabled=!ready;
+   if(exact)exact.disabled=!ready;
+   if(q('quickTrainingNote'))q('quickTrainingNote').textContent=ready?'Training is available.':'Complete all four primary Skills to Level 10 before starting Training.';
+   if(!ready){
+     if(slider)slider.value=0;
+     if(exact)exact.value=0;
+     if(q('quickTrainingValue'))q('quickTrainingValue').textContent='0';
+   }
+ }
  function openQuickProgress(){
    buildQuickSkills();
    const o=typeof currentOfficer==='function'?currentOfficer():null;
@@ -3225,10 +3242,8 @@ document.addEventListener('DOMContentLoaded',()=>{
    if((Number(q('quickStarLevel').value)||0)>0 || (Number(q('quickOfficerLevel').value)||0)>1){
      q('quickUnlocked').checked=true;
    }
-   const quickReady=primarySkillsComplete();
-   q('quickTraining').disabled=!quickReady;
-   if(q('quickTrainingExact'))q('quickTrainingExact').disabled=!quickReady;
-   if(q('quickTrainingNote'))q('quickTrainingNote').textContent=quickReady?'Training is available.':'Complete all four primary Skills to Level 10 before starting Training.';
+   syncQuickTrainingControls();
+   const quickReady=quickPrimarySkillsComplete();
    q('quickTraining').value=quickReady?(q('training')?.value??0):0;
    q('quickTrainingValue').textContent=q('quickTraining').value;
    if(q('quickTrainingExact'))q('quickTrainingExact').value=q('quickTraining').value;
@@ -3268,19 +3283,21 @@ document.addEventListener('DOMContentLoaded',()=>{
  q('skillCostInfoModal')?.addEventListener('click',e=>{if(e.target===q('skillCostInfoModal'))closeSkillCostInfo();});
  q('quickProgressClose')?.addEventListener('click',closeQuickProgress);
  q('quickProgressCancel')?.addEventListener('click',closeQuickProgress);
- q('quickTraining')?.addEventListener('input',()=>{
-   if(!primarySkillsComplete()){q('quickTraining').value=0;if(q('quickTrainingExact'))q('quickTrainingExact').value=0;q('quickTrainingValue').textContent='0';return;}
-    const v=Math.max(0,Math.min(180,Math.round(Number(q('quickTraining').value)||0)));
-   q('quickTraining').value=v;
-   q('quickTrainingValue').textContent=v;
-   if(q('quickTrainingExact'))q('quickTrainingExact').value=v;
- });
- q('quickTrainingExact')?.addEventListener('input',()=>{
-   if(!primarySkillsComplete()){q('quickTrainingExact').value=0;q('quickTraining').value=0;q('quickTrainingValue').textContent='0';return;}
-    const v=Math.max(0,Math.min(180,Math.round(Number(q('quickTrainingExact').value)||0)));
-   q('quickTrainingExact').value=v;
-   q('quickTraining').value=v;
-   q('quickTrainingValue').textContent=v;
+ // Delegate because the Edit Officer modal markup is declared after this script.
+ document.addEventListener('input',event=>{
+   if(event.target?.id==='quickTraining'){
+     if(!quickPrimarySkillsComplete()){syncQuickTrainingControls();return;}
+     const v=Math.max(0,Math.min(180,Math.round(Number(event.target.value)||0)));
+     event.target.value=v;
+     if(q('quickTrainingValue'))q('quickTrainingValue').textContent=v;
+     if(q('quickTrainingExact'))q('quickTrainingExact').value=v;
+   }else if(event.target?.id==='quickTrainingExact'){
+     if(!quickPrimarySkillsComplete()){syncQuickTrainingControls();return;}
+     const v=Math.max(0,Math.min(180,Math.round(Number(event.target.value)||0)));
+     event.target.value=v;
+     if(q('quickTraining'))q('quickTraining').value=v;
+     if(q('quickTrainingValue'))q('quickTrainingValue').textContent=v;
+   }
  });
  q('quickOfficerLevel')?.addEventListener('input',()=>{
    const level=Number(q('quickOfficerLevel').value);
