@@ -1,4 +1,7 @@
-# KoW Companion v4.6.0 LIVE — Release Notes
+# ARCHIVED — KoW Companion v4.6.0 English Live Release Notes
+
+These notes describe the historical v4.6.0 release. They are retained for release history and do not describe the current v4.7.0 application. For the current application version and deployment identity, use the repository's current README and application files.
+
 
 ## Additions
 - Upgrade Targets & Recommendations.
