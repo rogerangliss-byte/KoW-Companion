@@ -1,5 +1,5 @@
 # KoW Companion — User Guide
-## Version 4.6.0 LIVE
+## Version 4.7.0 — Current application guide
 
 KoW Companion helps plan, track and forecast Officer development in *Kiss of War*. It combines Officer progress, shared Inventory, upgrade calculations, multi-Officer planning, future release forecasting and backup tools.
 
@@ -27,7 +27,7 @@ KoW Companion helps plan, track and forecast Officer development in *Kiss of War
 # Upgrade Targets & Recommendations
 The Upgrade Targets system provides a non-destructive way to calculate what remains between an Officer's current saved position and a chosen target. Targets can include Officer Level, Star Level, Training Level or MAX Officer.
 
-**MAX Officer** represents 5 Stars, Level 70, Officer Unlocked, all four Skill Strands at Level 5 and Training Level 180. Calculating a target does not spend resources or deduct anything from Central Inventory.
+**MAX Officer** represents 5 Stars, Level 70, Officer Unlocked, all four Skill Strands at Level 10 and Training Level 180. The fifth Skill Strand unlocks only after the first four reach Level 10, and only for Officer types that have a fifth Skill Strand. Calculating a target does not spend resources or deduct anything from Central Inventory.
 
 # Dynamic Officer Data
 Version 4.6.0 separates published Officer release data from the main application logic. Published Officer data includes Officer name, Season, rarity, role/type, ORV cost, SRV cost, readiness eligibility and associated application data. The current published dataset can be checked from **Settings → Global Officer Data**.
@@ -38,9 +38,9 @@ New Officer releases should first be added and validated in the Test environment
 The Future Officer Cost Forecast estimates possible ORV and SRV costs of future Legendary seasonal Officers.
 
 ## Dynamic Forecast Baseline
-Version 4.6.0 uses the latest confirmed Legendary seasonal Officer release contained in the Officer Database as the forecasting baseline.
+The forecast uses the latest confirmed Legendary seasonal Officer release contained in the Officer Database as its baseline.
 
-**Example:** At the time of the v4.6.0 release, the latest confirmed Legendary seasonal release is **S7 Tank Destroyers**, costing **600 ORV per Badge and 300 SRV per Exclusive Star**. The Future Officer Cost Forecast therefore uses these values as its current baseline. When a newer confirmed release is added to the published Officer Database, the forecast automatically moves its baseline forward.
+**Current baseline:** The October 2026 **S8 Rally / Garrison** release is the latest confirmed release, with a published value of **720 ORV per Badge and 360 SRV per Exclusive Star**. The Future Officer Cost Forecast uses the latest confirmed published Officer data and advances automatically when a newer confirmed release is added.
 
 The forecast applies the selected growth rate to subsequent projected releases. Forecast values are planning estimates only and must not be treated as confirmed game costs.
 
@@ -76,10 +76,10 @@ There is **no 50 XP Book**.
 
 # Legendary Chest Rules
 ## Legendary Officer Badge Chest
-Each chest can be used as **either 1 Universal Legendary Badge or 600 ORV**. A chest cannot be counted through both routes simultaneously.
+Each chest can be counted as **either 1 Universal Legendary Badge or 720 ORV** at the current October 2026 S8 baseline. The ORV equivalent must follow the latest published Officer data when the eligible release changes. Do not count both routes for the same chest.
 
 ## Legendary Officer Badge Selection Chest
-Each chest provides **1 specific Legendary Officer Badge** for an Officer in the currently eligible Selection Chest pool. It does **not** convert into ORV and does **not** become a Universal Legendary Badge.
+Each chest can be counted as **either 1 Universal Legendary Badge or the current eligible seasonal Officer's published ORV equivalent**. The current October 2026 S8 value is **720 ORV**. Use the latest published Officer data and never count both routes for the same chest.
 
 # Original Legendary Officers
 Original Legendary Officers do not use seasonal ORV/SRV conversion. Their progression uses applicable resources such as Individual Officer Badges and Universal Legendary Officer Badges. The Planner must not allocate ORV or SRV to an Original Legendary Officer.
@@ -93,12 +93,12 @@ The Officer section stores Officer-specific Stars, Level, Unlock status, Skill S
 - **2★** — Strands 1–3
 - **3★ or higher** — all four Skill Strands
 
-Level 1 is free when a Skill Strand becomes available.
+Skill Strands use the current 1–10 level system. Level 1 is free when a Skill Strand becomes available.
 
 # Confirmed Badge Requirements
 - **Legendary:** 10 Unlock + 690 Skills + 900 Training = **1,600 Badges**
 - **Epic:** 10 Unlock + 440 Skills + 4,500 Training = **4,950 Badges**
-- **Elite:** 10 Unlock + 440 Skills + 18,000 Training = **18,450 Badges**
+- **Elite:** 10 Unlock + 340 Skills + 18,000 Training = **18,350 Badges**
 
 # Officer Progress & Compare
 Progress classifies Officers as **MAXED**, **IN PROGRESS** or **NOT STARTED**. Resources merely held in Central Inventory do not increase saved development percentage. Progress and Compare filters operate independently and normal working selections are retained across a standard browser refresh.
@@ -133,4 +133,4 @@ Use **Settings → Export App Backup** to create a portable backup of locally st
 KoW Companion separates **confirmed data** from **forecast data**. Confirmed Officer costs in the published Officer Database are treated as known information. Future costs generated by forecasting tools are estimates. When an Officer is officially released and actual costs become known, the confirmed values should replace forecast assumptions.
 
 ---
-**Created by FireStorm (371)**
+**Officer Command Centre**
