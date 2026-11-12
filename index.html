@@ -3361,7 +3361,7 @@ window.KOW_PLANNER_BRIDGE = {
 
 <div id="skillCostInfoModal" style="display:none;position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.82);padding:18px;overflow:auto">
 <article class="card" style="max-width:720px;margin:5vh auto">
-<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="margin:0">ℹ️ Skill Strand Costs</h2><button id="skillCostInfoClose" class="app-action-secondary app-icon-button" type="button">✕</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="margin:0">ℹ️ Skill Strand Costs</h2><button id="skillCostInfoClose" class="app-action-secondary app-icon-button" type="button" onclick="closeSkillCostInfo();return false;">✕</button></div>
 <div id="skillCostCurrent" class="notice" style="margin:14px 0"></div>
 <p>Each strand starts at <b>Level 1 for free</b>. Every extra level on any strand uses the next cost in the shared sequence.</p>
 <div class="table-wrap"><table><thead><tr><th>Paid upgrade #</th><th>Badge cost</th></tr></thead><tbody id="skillCostSequenceRows"></tbody></table></div>
