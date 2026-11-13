@@ -4011,7 +4011,33 @@ document.addEventListener('click',e=>{
  const li=e.target?.dataset?.loadScenario;if(li!==undefined){const s=load()[Number(li)];if(!s)return;document.getElementById('scenarioSession').value=s.session;document.getElementById('scenarioOfficerCount').value=s.count;document.getElementById('scenarioName').value=s.name;document.getElementById('scenarioYear').value=s.year;calculate();}
  const di=e.target?.dataset?.deleteScenario;if(di!==undefined){const a=load();a.splice(Number(di),1);store(a);render();}
 });
-document.addEventListener('DOMContentLoaded',()=>{const y=document.getElementById('scenarioYear');if(y&&!y.value)y.value=new Date().getFullYear()+1;render()});
+function defaultScenarioName(session,year){
+ if(session==='next')return 'Next Officer';
+ const y=Number(year)||2027;
+ // S8 starts with the October 2026 Rally / Garrison release.
+ const offset={october:0,january:-3,april:-2,july:-1}[session]??0;
+ const season=8+Math.floor(((y-2026)*4+offset)/4);
+ const type={october:'Rally / Garrison',january:'Infantry',april:'Tank',july:'Tank Destroyer'}[session];
+ return 'S'+season+' '+(type||'Officer');
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ const y=document.getElementById('scenarioYear');
+ const session=document.getElementById('scenarioSession');
+ const name=document.getElementById('scenarioName');
+ if(y&&!y.value)y.value=new Date().getFullYear()+1;
+ if(session&&name&&!name.value.trim())name.value=defaultScenarioName(session.value,y?.value);
+ if(session&&name)session.addEventListener('change',()=>{
+  name.value=defaultScenarioName(session.value,y?.value);
+  savePlannerWorkingState();
+ });
+ if(y&&session&&name)y.addEventListener('change',()=>{
+  // Update generated names for the selected year, but retain names the user customised.
+  const generated=/^S\d+ (Rally \/ Garrison|Infantry|Tank|Tank Destroyer)$|^Next Officer$/.test(name.value.trim());
+  if(generated)name.value=defaultScenarioName(session.value,y.value);
+  savePlannerWorkingState();
+ });
+ render();
+});
 })();
 </script>
 
