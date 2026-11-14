@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "dataVersion": "2026.10.19-01",
-  "publishedAt": "2026-10-19T14:35:00+01:00",
+  "dataVersion": "2026.11.14-01",
+  "publishedAt": "2026-11-14",
   "officerCount": 68,
   "environment": "English Live",
-  "notes": "Officer data synchronized with officers.json and officers.csv, including confirmed S8 Po and S8 Sara at 720 ORV / 360 SRV. Default Officer datasets are synchronized where used."
+  "notes": "Officer data synchronized with officers.json and officers.csv, including confirmed S8 Po and S8 Sara at 720 ORV / 360 SRV. Legendary development is 1,600 Officer Badges in total, including 690 Skill Badges, 10 unlock badges and 900 training badges."
 }
