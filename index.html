@@ -3906,6 +3906,12 @@ function forecast(session,count,year){
 }
 function fmt(x){return Math.max(0,Math.round(x)).toLocaleString();}
 function pct(h,r){return r?Math.min(100,(h/r)*100):100}
+function resourceReadiness(held,req){
+ const values={badges:pct(held.badges,req.badges),stars:pct(held.stars,req.stars),xp:pct(held.xp,req.xp)};
+ const labels={badges:'Officer Badges',stars:'Stars',xp:'XP'};
+ const limitingKey=Object.keys(values).sort((a,b)=>values[a]-values[b])[0];
+ return {values,average:(values.badges+values.stars+values.xp)/3,limitingResource:labels[limitingKey],limitingReadiness:values[limitingKey]};
+}
 function statusLine(label,held,req,short,unit=''){
  return `<b>${label}:</b> ${fmt(held)} / ${fmt(req)}${unit} — ${short?'<b>SHORT '+fmt(short)+'</b>':'<b>READY</b>'}`;
 }
@@ -3914,12 +3920,12 @@ function calculate(){
  const fc=forecast(session,count,year),held=getHeld(fc.orvPerBadge);
  const req={badges:TOTAL.badges*count,stars:TOTAL.stars*count,xp:TOTAL.xp*count};
  const short={badges:Math.max(0,req.badges-held.badges),stars:Math.max(0,req.stars-held.stars),xp:Math.max(0,req.xp-held.xp)};
- const overall=Math.min(pct(held.badges,req.badges),pct(held.stars,req.stars),pct(held.xp,req.xp));
+ const readiness=resourceReadiness(held,req),overall=readiness.average;
  const additionalOrvForBadgeShortfall=short.badges*fc.orvPerBadge,targetLabel=session==='next'?'Next Officer session':sessionLabel(session,year);
- current={id:Date.now(),name:document.getElementById('scenarioName').value.trim()||defaultScenarioName(session,year),session,count,year,targetLabel,held,req,short,overall,forecast:fc};
+ current={id:Date.now(),name:document.getElementById('scenarioName').value.trim()||defaultScenarioName(session,year),session,count,year,targetLabel,held,req,short,overall,limitingResource:readiness.limitingResource,limitingReadiness:readiness.limitingReadiness,forecast:fc};
  const invNote=held.savedAt?'Saved Central Inventory: '+new Date(held.savedAt).toLocaleString():'WARNING: Central Inventory has not been saved yet.';
  document.getElementById('scenarioResult').innerHTML='<b>'+current.name+'</b><br>Target: '+targetLabel+' · '+year+' · '+count+' projected Officer'+(count>1?'s':'')+'<br>'+
- '<b>Badge / Star / XP readiness: '+overall.toFixed(1)+'%</b><br>'+statusLine('Officer Badges available',held.badges,req.badges,short.badges)+'<br>'+
+ '<b>Overall readiness (average): '+overall.toFixed(1)+'%</b><br><b>Limiting resource:</b> '+readiness.limitingResource+' — '+readiness.limitingReadiness.toFixed(1)+'%<br>'+ statusLine('Officer Badges available',held.badges,req.badges,short.badges)+'<br>'+
  statusLine('Stars',held.stars,req.stars,short.stars,' Star value')+'<br>'+statusLine('XP',held.xp,req.xp,short.xp)+'<br>'+
  ''+
  '<small>Badge breakdown: '+fmt(held.badgeParts.universal)+' Universal Badges + '+fmt(held.badgeParts.badgeChests)+' ordinary Badge Chests + '+fmt(held.badgeParts.orvBadgeEquiv)+' badge equivalents from '+fmt(held.orv)+' ORV at '+fmt(held.badgeParts.orvRate)+' ORV per badge. ORV remainder: '+fmt(held.badgeParts.orvRemainder)+'. Selection Chests held: '+fmt(held.selectionChests)+' and excluded from shared badge totals.</small><br><br>'+
@@ -3928,7 +3934,7 @@ function calculate(){
  '<small>'+invNote+'<br>Preview only. Inventory has not been changed. Skill Badge costs are included in the Officer Badge total and ORV calculation. Future ORV/SRV figures remain FORECAST until published.</small>';
  return current;
 }
-function load(){try{const a=JSON.parse(localStorage.getItem(KEY)||'[]');let changed=false;a.forEach(s=>{if(s&&s.req){const count=Number(s.count)||1,target=1600*count;if(Number(s.req.badges)!==target||s.req.skillFragments!==undefined){s.req.badges=target;delete s.req.skillFragments;s.short=s.short||{};s.short.badges=Math.max(0,target-savedScenarioSharedBadges(s.held||{},s.forecast||{}));s.overall=Math.min(pct(savedScenarioSharedBadges(s.held||{},s.forecast||{}),target),pct(s.held?.stars,s.req.stars),pct(s.held?.xp,s.req.xp));changed=true;}}});if(changed)store(a);return a;}catch{return[]}}
+function load(){try{const a=JSON.parse(localStorage.getItem(KEY)||'[]');let changed=false;a.forEach(s=>{if(s&&s.req){const count=Number(s.count)||1,target=1600*count;if(Number(s.req.badges)!==target||s.req.skillFragments!==undefined){s.req.badges=target;delete s.req.skillFragments;s.short=s.short||{};s.short.badges=Math.max(0,target-savedScenarioSharedBadges(s.held||{},s.forecast||{}));s.overall=(pct(savedScenarioSharedBadges(s.held||{},s.forecast||{}),target)+pct(s.held?.stars,s.req.stars)+pct(s.held?.xp,s.req.xp))/3;changed=true;}}});if(changed)store(a);return a;}catch{return[]}}
 function store(a){localStorage.setItem(KEY,JSON.stringify(a))}
 function savedScenarioSharedBadges(h,f){
  const selectionChests=Number(h?.selectionChests??h?.badgeParts?.selectionChests)||0;
@@ -3949,11 +3955,11 @@ function render(){
  box.innerHTML=a.map((s,i)=>{
   const f=s.forecast||{},h=s.held||{},req=s.req||{},count=Number(s.count)||1,badgeReq=Number(req.badges)||1600*count;
   const selectionChests=Number(h.selectionChests??h.badgeParts?.selectionChests)||0,sharedBadges=savedScenarioSharedBadges(h,f),badgeShort=Math.max(0,badgeReq-sharedBadges);
-  const readiness=Math.min(pct(sharedBadges,badgeReq),pct(h.stars,req.stars),pct(h.xp,req.xp));
+  const savedReadiness=resourceReadiness({badges:sharedBadges,stars:h.stars,xp:h.xp},{badges:badgeReq,stars:req.stars,xp:req.xp}),readiness=savedReadiness.average;
   const savedAt=s.id?new Date(Number(s.id)):null,scenarioSaved=savedAt&&Number.isFinite(savedAt.getTime())?savedAt.toLocaleString():'Unknown',inventorySaved=h.savedAt?new Date(h.savedAt).toLocaleString():'Not saved';
   const target=s.targetLabel||(s.session==='next'?'Next Officer session':sessionLabel(s.session,s.year));
   const orvEq=h.badgeParts?.orvBadgeEquiv??Math.floor(Math.max(0,Number(h.orv)||0)/Math.max(1,Number(h.badgeParts?.orvRate)||Number(f.orvPerBadge)||Number(latestLegendaryOrvChestRate?.())||720));
-  return '<div class="result-box"><b>'+s.name+'</b><br>'+target+' · '+count+' Officer'+(count>1?'s':'')+' · Badge / Star / XP readiness '+readiness.toFixed(1)+'%<br>'+
+  return '<div class="result-box"><b>'+s.name+'</b><br>'+target+' · '+count+' Officer'+(count>1?'s':'')+' · Overall readiness (average) '+readiness.toFixed(1)+'%<br>Limiting resource: '+savedReadiness.limitingResource+' — '+savedReadiness.limitingReadiness.toFixed(1)+'%<br>'+
    '<small><b>Scenario saved:</b> '+scenarioSaved+'<br><b>Inventory snapshot used:</b> '+inventorySaved+'<br>'+
    'Shared Officer Badges held: <b>'+fmt(sharedBadges)+'</b> · ORV badge equivalents: <b>'+fmt(orvEq)+'</b> · ORV remainder: <b>'+fmt(savedScenarioOrvRemainder(h,f))+'</b> · Selection Chests held: <b>'+fmt(selectionChests)+'</b> · Stars held: <b>'+fmt(h.stars)+'</b> · XP held: <b>'+fmt(h.xp)+'</b><br>'+
    ''+
