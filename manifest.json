@@ -1,6 +1,6 @@
 {
-  "name": "KoW Officer Companion",
-  "short_name": "KoW Companion",
+  "name": "Officer Command Centre",
+  "short_name": "Officer CC",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
