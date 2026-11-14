@@ -1,6 +1,6 @@
 /* KoW Companion v4.6.0 LIVE — data-driven future release forecast.
-   Uses the latest confirmed Legendary seasonal Officer costs in the Officer
-   database as the forecasting baseline, then projects the next release slots. */
+   Uses the latest confirmed English Live Officer database release, then compounds growth by
+   future Officer release. All projected costs remain estimates until confirmed. */
 (()=>{
   'use strict';
 
@@ -30,7 +30,7 @@
 
   function latestKnownRelease(){
     // Read the confirmed seasonal release and cost from the live Officer data bridge.
-    const rows = window.KOW_PLANNER_BRIDGE?.officers?.() || [];
+    const rows = window.KOW_PLANNER_BRIDGE?.officers?.() || window.KOW_PUBLISHED_OFFICERS || [];
     const known = rows.map(o => {
       const season = seasonNumber(o?.season || String(o?.name || '').match(/^S\d+/i)?.[0]);
       const slot = releaseSlot(o);
@@ -39,11 +39,18 @@
       .sort((a,b) => b.season-a.season || b.slot-a.slot);
     if (known.length) {
       const latest = known[0];
+      const sameRelease = known.filter(o => o.season === latest.season && o.slot === latest.slot);
       const meta = SLOT[latest.slot];
-      return {...latest, source:`Confirmed S${latest.season} ${meta.type} cost`};
+      return {
+        season:latest.season,
+        slot:latest.slot,
+        orv:Math.max(...sameRelease.map(o=>o.orv)),
+        srv:Math.max(...sameRelease.map(o=>o.srv)),
+        source:`Confirmed S${latest.season} ${meta.type} cost`
+      };
     }
     // Safe fallback for older cached pages that do not expose the data bridge.
-    return {season:7,slot:1,orv:600,srv:300,source:'Fallback S7 Rally / Garrison cost'};
+    return {season:8,slot:1,orv:720,srv:360,source:'Fallback S8 Rally / Garrison cost'};
   }
 
   function advance(season,slot,steps){
@@ -99,11 +106,11 @@
     if($('forecastTotalSrv'))$('forecastTotalSrv').textContent=fmt(totalSrv);
 
     const label=select.options[select.selectedIndex]?.textContent||'Future Officer';
-    if($('forecastNote'))$('forecastNote').innerHTML=`<b>${label}</b><br>Planning estimate using ${String($('forecastGrowth')?.value||20)}% growth per Officer release from the latest confirmed database release: <b>${base.source}</b> (${fmt(base.orv)} ORV / ${fmt(base.srv)} SRV). For ${fmt(badges)} badges and ${fmt(starValue)} Star value (${fmt(exclusiveStars)} Exclusive Stars), plan for approximately <b>${fmt(totalOrv)} ORV</b> and <b>${fmt(totalSrv)} SRV</b>. Forecast only — replace with confirmed costs when released.`;
+    if($('forecastNote'))$('forecastNote').innerHTML=`<b>${label}</b><br>Planning estimate using ${String($('forecastGrowth')?.value||20)}% growth per future Officer release from <b>${base.source}</b> (${fmt(base.orv)} ORV / ${fmt(base.srv)} SRV). For ${fmt(badges)} Officer Badges (including the 690 Officer Badges for Skills within the 1,600 total) and ${fmt(starValue)} Star value (${fmt(exclusiveStars)} Exclusive Stars), plan for approximately <b>${fmt(totalOrv)} ORV</b> and <b>${fmt(totalSrv)} SRV</b>. Forecast only — replace with confirmed costs when released.`;
 
     const card=$('futureOfficerForecastCard');
     const intro=card?.querySelector('p.muted');
-    if(intro)intro.innerHTML=`Forecast future Officer costs from the established Officer-release sequence. The model now uses the latest confirmed Officer Database release — <b>${base.source}</b> (${fmt(base.orv)} ORV / ${fmt(base.srv)} SRV) — and compounds the selected growth rate for each subsequent release.`;
+    if(intro)intro.innerHTML=`Forecast baseline follows the latest confirmed release in the Officer database. The selected growth rate is compounded for each future Officer release; all future values remain estimates until actual costs are published.`;
   }
 
   function install(){
