@@ -72,6 +72,7 @@
 
       officers=ordered;
       window.KOW_PUBLISHED_OFFICERS=data.map(o=>typeof normalizeOfficer==='function'?normalizeOfficer(o):o);
+      if(typeof updateLegendaryChestRateLabels==='function')updateLegendaryChestRateLabels();
       if(typeof saveOfficers==='function')saveOfficers();
       if(typeof renderDb==='function')renderDb();
       if(typeof renderOfficerFilters==='function')renderOfficerFilters();
@@ -140,6 +141,8 @@
 
     const trainingCost=trainingBadgeCost(o);
     const currentBadgeUsed=(byId('unlocked')?.checked?10:0)+skillBadgesSpent(o)+ct*trainingCost;
+    // MAX uses the unified Officer Badge total: unlock + skill badges + training.
+    // currentBadgeUsed already includes every badge spent to date.
     let badgeNeed=isMax
       ? Math.max(0,maxBadgesForOfficer(o)-currentBadgeUsed)
       : Math.max(0,tt-ct)*trainingCost;
@@ -157,7 +160,7 @@
         badgeAvailable+=val('legendarySelectionChestHeld');
       }
       let orvHeld=val('orvHeld');
-      if(chestMode==='orv')orvHeld+=badgeChests*600;
+      if(chestMode==='orv')orvHeld+=badgeChests*(typeof latestLegendaryOrvChestRate==='function'?latestLegendaryOrvChestRate():720);
       if(readiness&&Number(o.orv)>0)badgeAvailable+=Math.floor(orvHeld/Number(o.orv));
     }
 
