@@ -4020,7 +4020,8 @@ function bar(label,p,held,req,short){
  return `<div class="v440-readiness-row"><div class="v440-readiness-head"><b>${label}</b><span>${p.toFixed(0)}%</span></div><div class="v440-readiness-track"><span style="width:${p}%"></span></div><small>${detail}</small></div>`;
 }
 function card(s,i){
- const bp=pct(s,'badges'), sp=pct(s,'stars'), xp=pct(s,'xp'), overall=Math.min(bp,sp,xp);
+ const bp=pct(s,'badges'), sp=pct(s,'stars'), xp=pct(s,'xp'), overall=(bp+sp+xp)/3;
+ const limiting=[{label:'Badges',value:bp},{label:'Stars',value:sp},{label:'XP',value:xp}].sort((a,b)=>a.value-b.value)[0];
  const held=s.held||{}, req=s.req||{}, short=s.short||{};
  const badgeHeld=sharedBadges(s), badgeShort=Math.max(0,(Number(req.badges)||0)-badgeHeld);
  const next=badgeShort>0?`Save ${fmt(badgeShort)} badge equivalents`
@@ -4028,7 +4029,7 @@ function card(s,i){
    :short.xp>0?`Save ${fmt(short.xp)} XP`
    :'Resources ready — maintain your reserve.';
  return `<article class="v440-scenario-card">
-   <div class="v440-scenario-title"><div><b>${esc(s.name||'Saved scenario')}</b><small>${esc(s.year||'')} · ${esc(s.count||1)} projected Officer${Number(s.count||1)>1?'s':''}</small></div><strong>${overall.toFixed(0)}%</strong></div>
+   <div class="v440-scenario-title"><div><b>${esc(s.name||'Saved scenario')}</b><small>${esc(s.year||'')} · ${esc(s.count||1)} projected Officer${Number(s.count||1)>1?'s':''}<br>Limiting resource: ${limiting.label} — ${limiting.value.toFixed(1)}%</small></div><strong>${overall.toFixed(1)}%</strong></div>
    ${bar('Badges',bp,badgeHeld,req.badges,badgeShort)}
    ${bar('Stars',sp,held.stars,req.stars,short.stars)}
    ${bar('XP',xp,held.xp,req.xp,short.xp)}
@@ -4040,8 +4041,9 @@ function render(){
  const root=document.getElementById('v440PlanningReadiness'); if(!root)return;
  const list=load();
  if(!list.length){root.innerHTML='<div class="notice">Save a Planning Scenario above to see readiness percentages and a suggested next action.</div>';return}
- const sorted=list.map((s,i)=>({s,i})).sort((a,b)=>(Number(a.s.overall)||0)-(Number(b.s.overall)||0));
- const avg=sorted.reduce((t,x)=>t+clamp(x.s.overall),0)/sorted.length;
+ const readinessScore=s=>(pct(s,'badges')+pct(s,'stars')+pct(s,'xp'))/3;
+ const sorted=list.map((s,i)=>({s,i})).sort((a,b)=>readinessScore(a.s)-readinessScore(b.s));
+ const avg=sorted.reduce((t,x)=>t+readinessScore(x.s),0)/sorted.length;
  root.innerHTML=`<div class="v440-summary">
    <div><span>Saved targets</span><b>${sorted.length}</b></div>
    <div><span>Average readiness</span><b>${avg.toFixed(0)}%</b></div>
