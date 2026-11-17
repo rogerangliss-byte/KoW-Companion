@@ -174,6 +174,36 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 @media(max-width:760px){#savedOfficerProgressTable{min-width:1250px}}
 @media(max-width:760px){#savedOfficerProgressTable{min-width:980px}}
 
+/* Expandable Officer Progress detail rows */
+.progress-officer-toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.progress-officer-toggle:focus-visible{outline:2px solid var(--gold2);outline-offset:4px;border-radius:5px}
+.progress-expand-indicator{color:var(--gold2);font-size:1.15rem;font-weight:800;flex:0 0 auto}
+.progress-detail-row>td{padding:0!important;background:rgba(0,0,0,.22)}
+.progress-detail-panel{padding:16px 18px;border-top:1px solid rgba(213,167,47,.35);border-bottom:1px solid rgba(213,167,47,.25);text-align:left;white-space:normal}
+.progress-detail-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.progress-detail-heading>div{display:grid;gap:3px}.progress-detail-heading>div>strong{font-size:1.02rem;color:var(--gold2)}.progress-detail-heading>div>span,.progress-detail-footnote{font-size:.82rem;color:var(--muted)}
+.progress-detail-status{font-weight:800;font-size:.82rem}
+.progress-detail-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.progress-detail-stat{padding:10px;border:1px solid rgba(213,167,47,.22);border-radius:9px;background:rgba(0,0,0,.22);min-width:0}
+.progress-detail-stat>span,.progress-detail-stat>small{display:block;color:var(--muted);font-size:.76rem}.progress-detail-stat>b{display:block;font-size:1.1rem;margin:4px 0}.progress-detail-stat>small{font-size:.72rem}
+.progress-detail-section{margin-top:14px}.progress-detail-section> b{display:block;margin-bottom:9px;color:var(--gold2)}
+.progress-detail-skills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.progress-detail-skill{padding:9px;border:1px solid rgba(255,255,255,.09);border-radius:8px;min-width:0}.progress-detail-skill-shared{grid-column:1/-1;margin-top:2px;padding:10px;border:1px solid rgba(213,167,47,.22);border-radius:8px}.progress-detail-skill-shared>div{display:flex;justify-content:space-between;gap:8px;font-size:.82rem;margin-bottom:7px}.progress-detail-skill-shared span{color:var(--muted)}
+.progress-detail-skill>div:first-child{display:flex;justify-content:space-between;gap:6px;font-size:.82rem}.progress-detail-skill>div:first-child span{color:var(--muted)}
+.progress-detail-skill .progress-meter{min-width:0}.progress-detail-footnote{margin:10px 0 0}
+.progress-detail-shortfalls{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.09);font-size:.82rem;color:var(--muted)}
+.progress-detail-shortfalls b{color:var(--gold2)}
+@media(max-width:760px){.progress-detail-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.progress-detail-skills{grid-template-columns:repeat(2,minmax(0,1fr))}.progress-detail-panel{padding:12px}}
+@media(max-width:420px){.progress-detail-heading{align-items:flex-start;flex-direction:column}.progress-detail-shortfalls{display:grid;grid-template-columns:1fr 1fr}}
+ 
+/* Officer Progress live status summary */
+.progress-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:10px 0 12px}
+.progress-summary-card{padding:12px;border:1px solid rgba(213,167,47,.30);border-radius:12px;background:rgba(0,0,0,.28);min-width:0}
+.progress-summary-card span{display:block;color:var(--muted);font-size:.78rem}
+.progress-summary-card b{display:block;color:var(--gold2);font-size:1.55rem;margin-top:4px}
+.progress-summary-detail{grid-column:1/-1;margin:0;padding:9px 11px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:rgba(0,0,0,.20);color:var(--muted);font-size:.84rem}
+@media(max-width:600px){.progress-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.progress-summary-detail{grid-column:1/-1}}
+
  .skill-lvl{font-size:12px;padding:8px 5px}
 }
 
@@ -767,6 +797,46 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 @media(max-width:760px){.v440-summary,.v440-scenario-grid{grid-template-columns:1fr}}
 </style>
 
+<style id="portrait-progress-show-filter-fix">
+/* Portrait Officer Progress: retain the Landscape table/list presentation.
+   The detail panel is an inline expansion beneath its selected Officer row. */
+@media (orientation:portrait) and (max-width:760px){
+  /* Match the compact Show filter bar used by Live on narrow Portrait screens. */
+  #progress #progressStatusFilters{
+    flex-wrap:nowrap !important;
+  }
+  #progress .table-wrap{
+    overflow-x:auto;
+    overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-x pan-y;
+  }
+  #progress #savedOfficerProgressTable{
+    min-width:1250px;
+    table-layout:auto;
+  }
+  #progress #savedOfficerProgressTable .progress-officer-toggle{
+    min-height:44px;
+  }
+  #progress #savedOfficerProgressTable .progress-detail-row>td{
+    padding:0!important;
+  }
+  #progress #savedOfficerProgressTable .progress-detail-panel{
+    /* Keep the expanded card anchored to the visible phone viewport,
+       rather than stretching it to the wide table's full scroll width. */
+    position:sticky;
+    left:0;
+    z-index:2;
+    box-sizing:border-box;
+    width:calc(100vw - 48px);
+    max-width:720px;
+    white-space:normal;
+    background:var(--card, #171717);
+  }
+}
+
+</style>
+
 </head>
 <body>
 <header class="topbar">
@@ -846,7 +916,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
   <article class="card">
     <h2>📊 Officer Progress</h2>
     <p class="notice">All Officers are shown automatically. Officers with no saved development are classified as NOT STARTED. Held shared resources do not increase an Officer's progress percentage.</p>
-    <div id="savedOfficerProgressSummary" class="result-box">Save Officer progress to build this dashboard.</div>
+    <div id="savedOfficerProgressSummary" class="progress-summary-grid" aria-live="polite"><div class="progress-summary-card"><span>Total Officers</span><b id="progressSummaryTotal">0</b></div><div class="progress-summary-card"><span>MAXED</span><b id="progressSummaryMaxed">0</b></div><div class="progress-summary-card"><span>IN PROGRESS</span><b id="progressSummaryInProgress">0</b></div><div class="progress-summary-card"><span>NOT STARTED</span><b id="progressSummaryNotStarted">0</b></div><p id="progressSummaryDetail" class="progress-summary-detail">Save Officer progress to build this dashboard.</p></div>
     <div id="progressStatusFilters" class="notice" style="display:flex;gap:18px;flex-wrap:nowrap;align-items:center;margin-top:12px">
       <b>Show:</b>
       <label><input type="checkbox" class="progressStatusFilter" value="maxed" checked> MAXED</label>
@@ -878,6 +948,19 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <label><input type="checkbox" class="compareStatusFilter" value="maxed" checked> MAXED</label>
       <label><input type="checkbox" class="compareStatusFilter" value="progress" checked> IN PROGRESS</label>
       <label><input type="checkbox" class="compareStatusFilter" value="notStarted" checked> NOT STARTED</label>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+      <label for="compareProgressSortOrder"><b>Sort Officers:</b></label>
+      <select id="compareProgressSortOrder" aria-label="Sort Compare Officer list">
+        <option value="recommended">Recommended order</option>
+        <option value="season" selected>Season — newest first</option>
+        <option value="rarity-legendary">Legendary Officers</option>
+        <option value="rarity-epic">Epic Officers</option>
+        <option value="rarity-elite">Elite Officers</option>
+        <option value="role">Role</option>
+        <option value="progress">Progress — highest first</option>
+        <option value="priority">Upgrade priority — lowest first</option>
+      </select>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:nowrap;margin-bottom:12px">
       <button type="button" id="compareProgressSelectAll" class="app-action-secondary">Select All</button>
@@ -1362,7 +1445,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 <section id="releases" class="view">
 <article class="card" id="futureOfficerForecastCard">
   <h2>🔮 Future Officer Cost Forecast</h2>
-  <p class="muted">Forecast basis: the latest confirmed seasonal Officer costs in the Officer Database. The selected growth rate is compounded for each future release; projected values remain estimates until confirmed.</p>
+  <p class="muted">Forecast estimate: starting cost is 720 ORV per Badge and 360 SRV per Exclusive Star, with 20% compounded per future Officer release. These are estimates, not confirmed release costs.</p>
 
   <div class="two">
     <div>
@@ -2995,7 +3078,11 @@ function savedOfficerProgressData(){
  }
  return officers.map(o=>{
   const p=profileForOfficer(o)||{},displayName=o?.name||'',season=o?.season||'';
-  const skillFlags=Array.isArray(p.skills)?p.skills.slice(0,36):[],paidSkillUpgrades=Math.min(36,skillFlags.filter(Boolean).length);
+  const rawSkillFlags=Array.isArray(p.skills)?p.skills:[],skillFlags=Array(36).fill(false);
+  if(rawSkillFlags.length<=16){for(let strand=0;strand<4;strand++)for(let step=0;step<4;step++)skillFlags[strand*9+step]=!!rawSkillFlags[strand*4+step];}
+  else{for(let i=0;i<36;i++)skillFlags[i]=!!rawSkillFlags[i];}
+  const skillLevels=Array.from({length:4},(_,strand)=>{let paid=0;for(let step=0;step<9;step++){if(skillFlags[strand*9+step])paid++;else break;}return 1+paid;});
+  const paidSkillUpgrades=Math.min(36,skillFlags.filter(Boolean).length);
   const skillCosts=skillCostsForOfficer(o),promotionTotal=promotionBadgeTotal(o);
   const skillSpent=paidSkillUpgrades>=36?promotionTotal:skillCosts.slice(0,paidSkillUpgrades).reduce((a,b)=>a+b,0);
   const training=Math.max(0,Math.min(180,Number(p.training)||0)),officerMaxBadges=maxBadgesForOfficer(o);
@@ -3009,15 +3096,12 @@ function savedOfficerProgressData(){
   const dev=developmentComplete?100:savedPct(developmentUsed,developmentRequired);
   const currentStar=Math.max(0,Math.min(5,Number(p.currentStar)||0)),starValue=STAR_CUM[currentStar]||0;
   const starShort=currentStar>=5?0:Math.max(0,MAX_STAR-starValue),stars=currentStar>=5?100:savedPct(starValue,MAX_STAR);
-  const level=Math.max(0,Math.min(70,Number(p.currentLevel)||0)),xpUsed=level>=70?MAX_XP:cumulativeXp(Math.max(1,level||1));
+  const level=Math.max(1,Math.min(70,Number(p.currentLevel)||1)),xpUsed=level>=70?MAX_XP:cumulativeXp(level);
   const xpShort=level>=70?0:Math.max(0,MAX_XP-xpUsed),xp=level>=70?100:savedPct(xpUsed,MAX_XP);
   const maxed=developmentComplete&&currentStar>=5&&level>=70,overall=maxed?100:Math.round(((dev+stars+xp)/3)*10)/10;
   const hasProgress=badgesUsed>0||paidSkillUpgrades>0||currentStar>0||level>1,notStarted=!maxed&&!hasProgress,status=maxed?'MAXED':hasProgress?'IN PROGRESS':'NOT STARTED';
-  return {name:displayName,season,releaseOrder:officers.indexOf(o),rarity:officerRarity(o),role:officerRole(o),overall,dev,stars,xp,badgeShort,officerBadgeShort,skillBadgeShort,starShort,xpShort,maxed,notStarted,status};
- }).sort((a,b)=>{
-  const statusRank=r=>r.maxed?0:(r.notStarted?2:1),seasonRank=s=>{const v=String(s||'').trim().toLowerCase();if(v==='original')return 0;const m=v.match(/^s(\d+)$/);return m?Number(m[1]):0;};
-  const officerDbIndex=name=>officers.findIndex(o=>String(o.name||'').trim()===String(name||'').trim());
-  return statusRank(a)-statusRank(b)||seasonRank(b.season)-seasonRank(a.season)||officerDbIndex(a.name)-officerDbIndex(b.name)||String(a.name).localeCompare(String(b.name));
+  const xpUsedForDetail=level>=70?MAX_XP:cumulativeXp(Math.max(1,level||1));
+  return {key:profileKeyForOfficer(o),name:displayName,season,releaseOrder:officers.indexOf(o),rarity:officerRarity(o),role:officerRole(o),overall,dev,stars,xp,badgeShort,officerBadgeShort,skillBadgeShort,starShort,xpShort,maxed,notStarted,status,unlocked:!!p.unlocked,skillLevels,paidSkillUpgrades,training,currentLevel:level,currentStar,developmentUsed:badgesUsed,developmentRequired:officerMaxBadges,skillBadgesUsed:skillSpent,skillBadgesRequired:promotionTotal,xpUsed:xpUsedForDetail};
  });
 }
 function sortSavedOfficerProgressRows(rows,mode='recommended'){
@@ -3025,27 +3109,69 @@ function sortSavedOfficerProgressRows(rows,mode='recommended'){
  const rarityRank=r=>({Legendary:0,Epic:1,Elite:2})[r]??3;
  const statusRank=r=>r.maxed?0:(r.notStarted?2:1);
  const byName=(a,b)=>String(a.name).localeCompare(String(b.name));
- const byRelease=(a,b)=>(Number(a.releaseOrder)||0)-(Number(b.releaseOrder)||0);
+ const release=(a,b)=>(Number(a.releaseOrder)||0)-(Number(b.releaseOrder)||0)||byName(a,b);
  return rows.slice().sort((a,b)=>{
-  if(mode==='season')return seasonRank(b.season)-seasonRank(a.season)||byRelease(a,b)||byName(a,b);
-  if(mode==='rarity')return rarityRank(a.rarity)-rarityRank(b.rarity)||byRelease(a,b)||byName(a,b);
-  if(mode==='progress')return b.overall-a.overall||byRelease(a,b)||byName(a,b);
-  if(mode==='priority')return Number(a.maxed)-Number(b.maxed)||a.overall-b.overall||byRelease(a,b)||byName(a,b);
-  return statusRank(a)-statusRank(b)||byRelease(a,b)||byName(a,b);
+  if(mode==='season')return seasonRank(b.season)-seasonRank(a.season)||release(a,b);
+  if(mode==='rarity')return rarityRank(a.rarity)-rarityRank(b.rarity)||release(a,b);
+  if(mode==='rarity-legendary'||mode==='rarity-epic'||mode==='rarity-elite'){
+   const target=mode==='rarity-legendary'?'Legendary':mode==='rarity-epic'?'Epic':'Elite';
+   return Number(b.rarity===target)-Number(a.rarity===target)||release(a,b);
+  }
+  if(mode==='role')return String(a.role||'').localeCompare(String(b.role||''))||release(a,b);
+  if(mode==='progress')return b.overall-a.overall||release(a,b);
+  if(mode==='priority')return Number(a.maxed)-Number(b.maxed)||a.overall-b.overall||release(a,b);
+  return statusRank(a)-statusRank(b)||release(a,b);
  });
+}
+let expandedSavedOfficerKey=null;
+function savedOfficerProgressDetailMarkup(r){
+ const skillRows=r.skillLevels.map((level,index)=>'<div class="progress-detail-skill"><div><b>Skill '+(index+1)+'</b><span>Level '+level+' / 10'+(level===1?' · Free starting level':'')+'</span></div></div>').join('')+'<div class="progress-detail-skill-shared"><div><b>Shared skill upgrades</b><span>'+fmt(r.paidSkillUpgrades)+' / 36 paid upgrades · '+Math.round(r.paidSkillUpgrades/36*100)+'%</span></div>'+meter(r.paidSkillUpgrades/36*100)+'</div>';
+ const progressStat=(label,value,detail)=>'<div class="progress-detail-stat"><span>'+label+'</span><b>'+value+'</b><small>'+detail+'</small></div>';
+ const officerIndex=officers.findIndex(o=>String(o.season||'').trim()+'|'+String(o.name||'').trim()===r.key);
+ return '<tr class="progress-detail-row"><td colspan="13"><section class="progress-detail-panel" id="progress-detail-'+officerIndex+'" aria-label="'+esc(r.name)+' development details"><div class="progress-detail-heading"><div><strong>'+esc(r.name)+'</strong><span>'+esc(r.season||'Original')+' · '+esc(r.rarity)+' · '+esc(r.role)+'</span></div><span class="progress-detail-status '+(r.maxed?'status-ready':r.notStarted?'':'status-progress')+'">'+r.status+'</span></div><div class="progress-detail-stats">'+
+ progressStat('Overall progress',r.overall+'%','Development, Stars and XP')+
+ progressStat('Development',r.dev+'%',fmt(r.developmentUsed)+' / '+fmt(r.developmentRequired)+' Officer Badges')+
+ progressStat('Stars',r.currentStar+' / 5',fmt(r.currentStar>=5?MAX_STAR:STAR_CUM[r.currentStar]||0)+' / '+fmt(MAX_STAR)+' Officer Star value')+
+ progressStat('Officer level','Level '+r.currentLevel+' / 70',fmt(r.xpUsed)+' / '+fmt(MAX_XP)+' XP')+
+ '</div><div class="progress-detail-section"><b>Primary skills</b><div class="progress-detail-skills">'+skillRows+'</div><p class="progress-detail-footnote">'+(r.unlocked?'Officer unlocked':'Officer not yet unlocked')+' · Training '+fmt(r.training)+' / 180 · Skill Badges '+fmt(r.skillBadgesUsed)+' / '+fmt(r.skillBadgesRequired)+' used</p></div><div class="progress-detail-shortfalls"><span>Officer Badges required: <b>'+fmt(r.officerBadgeShort)+'</b></span><span>Skill Badges required: <b>'+fmt(r.skillBadgeShort)+'</b></span><span>Stars remaining: <b>'+fmt(r.starShort)+'</b></span><span>XP remaining: <b>'+fmt(r.xpShort)+'</b></span></div></section></td></tr>';
 }
 function renderSavedOfficerProgress(){
  const body=document.getElementById('savedOfficerProgressRows'),summary=document.getElementById('savedOfficerProgressSummary');
  if(!body||!summary)return;
  const allRows=savedOfficerProgressData();
- if(!allRows.length){body.innerHTML='';summary.textContent='No saved Officer profiles yet. Use Save Officer Progress to add Officers to this overview.';return;}
- const ready=allRows.filter(x=>x.maxed),closest=allRows.slice().sort((a,b)=>b.overall-a.overall)[0];
- const sortMode=document.getElementById('progressSortOrder')?.value||'recommended';
- const rows=sortSavedOfficerProgressRows(allRows.filter(progressStatusAllowed),sortMode);
- summary.innerHTML='<b>'+allRows.length+' saved Officer'+(allRows.length===1?'':'s')+'</b> · <b>'+ready.length+' MAXED</b> · <b>Highest progress:</b> '+esc(closest.name)+' ('+closest.overall+'%)'+(rows.length!==allRows.length?' · <b>Showing '+rows.length+'</b>':'');
- body.innerHTML=rows.length?rows.map(r=>'<tr><td><div class="progress-officer-cell"><img class="progress-officer-portrait" data-progress-portrait="'+esc(r.name)+'" alt="'+esc(r.name)+' portrait"><b>'+esc(r.name)+'</b></div></td><td>'+esc(r.season||'Original')+'</td><td>'+esc(r.rarity)+'</td><td>'+esc(r.role)+'</td><td>'+meter(r.overall)+'</td><td>'+meter(r.dev)+'</td><td>'+meter(r.stars)+'</td><td>'+meter(r.xp)+'</td><td>'+fmt(r.officerBadgeShort)+'</td><td>'+fmt(r.skillBadgeShort)+'</td><td>'+fmt(r.starShort)+'</td><td>'+fmt(r.xpShort)+'</td><td class="'+(r.maxed?'status-ready':r.notStarted?'':'status-progress')+'">'+r.status+'</td></tr>').join(''):'<tr><td colspan="13" class="muted">No saved Officers match the selected status filters.</td></tr>';
+ const rows=sortSavedOfficerProgressRows(allRows.filter(progressStatusAllowed),document.getElementById('progressSortOrder')?.value||'recommended');
+ const counts={
+  total:rows.length,
+  maxed:rows.filter(x=>x.maxed).length,
+  inProgress:rows.filter(x=>!x.maxed&&!x.notStarted).length,
+  notStarted:rows.filter(x=>x.notStarted).length
+ };
+ const setCount=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=fmt(value);};
+ setCount('progressSummaryTotal',counts.total);
+ setCount('progressSummaryMaxed',counts.maxed);
+ setCount('progressSummaryInProgress',counts.inProgress);
+ setCount('progressSummaryNotStarted',counts.notStarted);
+ const detail=document.getElementById('progressSummaryDetail');
+ if(detail){
+  if(!allRows.length)detail.textContent='No saved Officer profiles yet. Use Save Officer Progress to add Officers to this overview.';
+  else if(!rows.length)detail.textContent='No saved Officers match the selected status filters.';
+  else{
+   const closest=rows.slice().sort((a,b)=>b.overall-a.overall)[0];
+   detail.textContent='Showing '+counts.total+' of '+allRows.length+' Officers · Highest progress in this filtered view: '+closest.name+' ('+closest.overall+'%).';
+  }
+ }
+ body.innerHTML=rows.length?rows.map(r=>{
+  const expanded=expandedSavedOfficerKey===r.key;
+  return '<tr class="saved-progress-officer-row"><td><button type="button" class="progress-officer-toggle" data-progress-toggle="'+esc(r.key)+'" aria-expanded="'+(expanded?'true':'false')+'" aria-controls="progress-detail-'+esc(String(officers.findIndex(o=>String(o.season||'').trim()+'|'+String(o.name||'').trim()===r.key)))+'"><span class="progress-officer-cell"><img class="progress-officer-portrait" data-progress-portrait="'+esc(r.name)+'" alt="" style="display:block"><b>'+esc(r.name)+'</b></span><span class="progress-expand-indicator" aria-hidden="true">'+(expanded?'−':'＋')+'</span></button></td><td>'+esc(r.season||'Original')+'</td><td>'+esc(r.rarity)+'</td><td>'+esc(r.role)+'</td><td>'+meter(r.overall)+'</td><td>'+meter(r.dev)+'</td><td>'+meter(r.stars)+'</td><td>'+meter(r.xp)+'</td><td>'+fmt(r.officerBadgeShort)+'</td><td>'+fmt(r.skillBadgeShort)+'</td><td>'+fmt(r.starShort)+'</td><td>'+fmt(r.xpShort)+'</td><td class="'+(r.maxed?'status-ready':r.notStarted?'':'status-progress')+'">'+r.status+'</td></tr>'+(expanded?savedOfficerProgressDetailMarkup(r):'');
+ }).join(''):'<tr><td colspan="13" class="muted">No saved Officers match the selected status filters.</td></tr>';
  body.querySelectorAll('img[data-progress-portrait]').forEach(img=>setPortraitWithFallback(img,null,officerPortraitCandidates(img.dataset.progressPortrait)));
 }
+document.getElementById('savedOfficerProgressRows')?.addEventListener('click',event=>{
+ const toggle=event.target.closest('[data-progress-toggle]');if(!toggle)return;
+ const key=toggle.dataset.progressToggle;
+ expandedSavedOfficerKey=expandedSavedOfficerKey===key?null:key;
+ renderSavedOfficerProgress();
+});
 document.addEventListener('DOMContentLoaded',()=>{restoreStatusFilterState();setTimeout(renderSavedOfficerProgress,0)});
 function progressStatusAllowed(r){
  const boxes=[...document.querySelectorAll('.progressStatusFilter')];
@@ -3065,16 +3191,8 @@ function compareStatusAllowed(r){
 }
 function renderProgressCompareChoices(){
  const box=document.getElementById('compareProgressChoices'); if(!box)return;
- const seasonRank=s=>{
-   const v=String(s||'').trim().toLowerCase();
-   if(v==='original')return 0;
-   const m=v.match(/^s(\d+)$/);
-   return m?Number(m[1]):999;
- };
- const rows=savedOfficerProgressData().filter(compareStatusAllowed).slice().sort((a,b)=>
-   seasonRank(b.season)-seasonRank(a.season) ||
-   String(a.name).localeCompare(String(b.name))
- );
+ const mode=document.getElementById('compareProgressSortOrder')?.value||'season';
+ const rows=sortSavedOfficerProgressRows(savedOfficerProgressData().filter(compareStatusAllowed),mode);
  box.innerHTML=rows.length?rows.map((r,i)=>`<label style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #4a3a12;border-radius:8px"><input type="checkbox" class="progressComparePick" value="${i}"> <span>${esc(r.name)}</span></label>`).join(''):'No saved Officer profiles.';
  box.dataset.compareRows=JSON.stringify(rows);restoreComparePickState();
 }
@@ -3082,14 +3200,14 @@ function runProgressComparison(){
  const box=document.getElementById('compareProgressChoices');let all=[];
  try{all=JSON.parse(box?.dataset.compareRows||'[]')}catch{}
  if(!all.length)all=savedOfficerProgressData();
- const picks=[...document.querySelectorAll('.progressComparePick:checked')].map(x=>all[Number(x.value)]).filter(Boolean);
+ const selected=[...document.querySelectorAll('.progressComparePick:checked')].map(x=>all[Number(x.value)]).filter(Boolean);
  const wrap=document.getElementById('compareProgressResultsWrap'),body=document.getElementById('compareProgressResults'),rec=document.getElementById('compareProgressRecommendation');
- if(picks.length<2){wrap.style.display='none';rec.style.display='block';rec.textContent='Select at least 2 saved Officers to compare.';return;}
- picks.sort((a,b)=>Number(b.maxed)-Number(a.maxed)||b.overall-a.overall||a.name.localeCompare(b.name));
+ if(selected.length<2){wrap.style.display='none';rec.style.display='block';rec.textContent='Select at least 2 saved Officers to compare.';return;}
+ const picks=sortSavedOfficerProgressRows(selected,document.getElementById('compareProgressSortOrder')?.value||'season');
  body.innerHTML=picks.map(r=>'<tr><td><b>'+esc(r.name)+'</b></td><td>'+meter(r.overall)+'</td><td>'+meter(r.dev)+'</td><td>'+meter(r.stars)+'</td><td>'+meter(r.xp)+'</td><td>'+fmt(r.officerBadgeShort)+'</td><td>'+fmt(r.skillBadgeShort)+'</td><td>'+fmt(r.starShort)+'</td><td>'+fmt(r.xpShort)+'</td><td class="'+(r.maxed?'status-ready':r.notStarted?'':'status-progress')+'">'+r.status+'</td></tr>').join('');
- const best=picks[0];rec.style.display='block';
+ const best=selected.slice().sort((a,b)=>Number(b.maxed)-Number(a.maxed)||b.overall-a.overall||a.name.localeCompare(b.name))[0];rec.style.display='block';
  if(best.maxed)rec.innerHTML='<b>'+esc(officerDisplayName(best))+'</b> is already MAXED.';
- else if(picks.every(r=>r.notStarted))rec.innerHTML='<b>No selected Officer has been started yet.</b>';
+ else if(selected.every(r=>r.notStarted))rec.innerHTML='<b>No selected Officer has been started yet.</b>';
  else rec.innerHTML='<b>Highest actual progress:</b> '+esc(officerDisplayName(best))+' at '+best.overall+'%.';
  wrap.style.display='block';
 }
@@ -3108,6 +3226,10 @@ document.addEventListener('DOMContentLoaded',()=>{
  document.querySelectorAll('.progressStatusFilter').forEach(x=>x.addEventListener('change',()=>{
    saveStatusFilterState();renderSavedOfficerProgress();
  }));
+ document.getElementById('compareProgressSortOrder')?.addEventListener('change',()=>{
+   renderProgressCompareChoices();
+   if(document.getElementById('compareProgressResultsWrap')?.style.display!=='none')runProgressComparison();
+ });
  document.querySelectorAll('.compareStatusFilter').forEach(x=>x.addEventListener('change',()=>{
    saveStatusFilterState();renderProgressCompareChoices();
    const wrap=document.getElementById('compareProgressResultsWrap');
@@ -3742,7 +3864,7 @@ document.addEventListener("click",function(e){
       var f=bridge.releaseForecast(steps);
       return {orv:f.orvPerBadge,srv:f.srvPerStar,source:f.source+' · '+steps+' future release step'+(steps===1?'':'s'),pct:f.growth};
     }
-    return {orv:720,srv:360,source:'Test forecast starting cost (720 ORV / 360 SRV)',pct:20};
+    return {orv:720,srv:360,source:'Forecast starting cost (720 ORV / 360 SRV)',pct:20};
   }
 function projectedResourceHtml(projected,inv,mode){
     var box=document.getElementById('kowProjectedResourceForecast');if(!box)return;
