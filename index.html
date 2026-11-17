@@ -3019,6 +3019,14 @@ function renderSavedOfficerProgress(){
  body.innerHTML=rows.length?rows.map(r=>'<tr><td><b>'+esc(r.name)+'</b></td><td>'+meter(r.overall)+'</td><td>'+meter(r.dev)+'</td><td>'+meter(r.stars)+'</td><td>'+meter(r.xp)+'</td><td>'+fmt(r.officerBadgeShort)+'</td><td>'+fmt(r.skillBadgeShort)+'</td><td>'+fmt(r.starShort)+'</td><td>'+fmt(r.xpShort)+'</td><td class="'+(r.maxed?'status-ready':r.notStarted?'':'status-progress')+'">'+r.status+'</td></tr>').join(''):'<tr><td colspan="10" class="muted">No saved Officers match the selected status filters.</td></tr>';
 }
 document.addEventListener('DOMContentLoaded',()=>{restoreStatusFilterState();setTimeout(renderSavedOfficerProgress,0)});
+function progressStatusAllowed(r){
+ const boxes=[...document.querySelectorAll('.progressStatusFilter')];
+ if(!boxes.length)return true;
+ const selected=new Set(boxes.filter(x=>x.checked).map(x=>x.value));
+ if(r.maxed)return selected.has('maxed');
+ if(r.notStarted)return selected.has('notStarted');
+ return selected.has('progress');
+}
 function compareStatusAllowed(r){
  const boxes=[...document.querySelectorAll('.compareStatusFilter')];
  if(!boxes.length)return true;
