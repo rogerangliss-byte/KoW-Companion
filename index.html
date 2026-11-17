@@ -171,7 +171,7 @@ input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px
 .progress-meter>span{display:block;height:100%;background:var(--gold2);border-radius:999px}
 .status-ready{font-weight:800;color:#79d98c}.status-progress{font-weight:700;color:var(--gold2)}
 .progress-officer-cell{display:flex;align-items:center;gap:9px;min-width:150px;text-align:left}.progress-officer-portrait{display:none;width:42px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line);flex:0 0 auto}
-@media(max-width:760px){#savedOfficerProgressTable{min-width:1250px}}
+@media(max-width:760px){#savedOfficerProgressTable,#compareProgressResultsTable{min-width:1250px}}
 @media(max-width:760px){#savedOfficerProgressTable{min-width:980px}}
 
 /* Expandable Officer Progress detail rows */
@@ -977,8 +977,8 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
     <div id="compareProgressChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px"></div>
     <div id="compareProgressRecommendation" class="notice" style="display:none;margin-top:12px"></div>
     <div class="table-wrap" id="compareProgressResultsWrap" style="display:none;margin-top:12px">
-      <table>
-        <thead><tr><th>Officer</th><th>Overall progress</th><th>Development</th><th>Stars</th><th>XP</th><th>Officer Badges Needed</th><th>Skill Badges Needed</th><th>Stars Needed</th><th>XP Needed</th><th>Status</th></tr></thead>
+      <table id="compareProgressResultsTable">
+        <thead><tr><th>Officer</th><th>Season</th><th>Rarity</th><th>Role</th><th>Overall progress</th><th>Development</th><th>Stars</th><th>XP</th><th>Officer Badge shortfall</th><th>Skill Badge shortfall</th><th>Star shortfall</th><th>XP shortfall</th><th>Status</th></tr></thead>
         <tbody id="compareProgressResults"></tbody>
       </table>
     </div>
@@ -3205,7 +3205,8 @@ function renderProgressCompareChoices(){
  const box=document.getElementById('compareProgressChoices'); if(!box)return;
  const mode=document.getElementById('compareProgressSortOrder')?.value||'season';
  const rows=sortSavedOfficerProgressRows(savedOfficerProgressData().filter(compareStatusAllowed),mode);
- box.innerHTML=rows.length?rows.map((r,i)=>`<label style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #4a3a12;border-radius:8px"><input type="checkbox" class="progressComparePick" value="${i}"> <span>${esc(r.name)}</span></label>`).join(''):'No saved Officer profiles.';
+ box.innerHTML=rows.length?rows.map((r,i)=>`<label style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #4a3a12;border-radius:8px"><input type="checkbox" class="progressComparePick" value="${i}"> <img class="progress-officer-portrait" data-compare-portrait="${esc(r.name)}" alt="${esc(r.name)} portrait" style="display:block;width:34px;height:42px;object-fit:cover;border-radius:5px;flex:0 0 auto"> <span>${esc(r.name)}</span></label>`).join(''):'No saved Officer profiles.';
+ box.querySelectorAll('img[data-compare-portrait]').forEach(img=>setPortraitWithFallback(img,null,officerPortraitCandidates(img.dataset.comparePortrait)));
  box.dataset.compareRows=JSON.stringify(rows);restoreComparePickState();
 }
 function runProgressComparison(){
@@ -3216,7 +3217,8 @@ function runProgressComparison(){
  const wrap=document.getElementById('compareProgressResultsWrap'),body=document.getElementById('compareProgressResults'),rec=document.getElementById('compareProgressRecommendation');
  if(selected.length<2){wrap.style.display='none';rec.style.display='block';rec.textContent='Select at least 2 saved Officers to compare.';return;}
  const picks=sortSavedOfficerProgressRows(selected,document.getElementById('compareProgressSortOrder')?.value||'season');
- body.innerHTML=picks.map(r=>'<tr><td><b>'+esc(r.name)+'</b></td><td>'+meter(r.overall)+'</td><td>'+meter(r.dev)+'</td><td>'+meter(r.stars)+'</td><td>'+meter(r.xp)+'</td><td>'+fmt(r.officerBadgeShort)+'</td><td>'+fmt(r.skillBadgeShort)+'</td><td>'+fmt(r.starShort)+'</td><td>'+fmt(r.xpShort)+'</td><td class="'+(r.maxed?'status-ready':r.notStarted?'':'status-progress')+'">'+r.status+'</td></tr>').join('');
+ body.innerHTML=picks.map(r=>'<tr><td><div class="progress-officer-cell"><img class="progress-officer-portrait" data-compare-result-portrait="'+esc(r.name)+'" alt="'+esc(r.name)+' portrait" style="display:block"><b>'+esc(r.name)+'</b></div></td><td>'+esc(r.season||'Original')+'</td><td>'+esc(r.rarity)+'</td><td>'+esc(r.role)+'</td><td>'+meter(r.overall)+'</td><td>'+meter(r.dev)+'</td><td>'+meter(r.stars)+'</td><td>'+meter(r.xp)+'</td><td>'+fmt(r.officerBadgeShort)+'</td><td>'+fmt(r.skillBadgeShort)+'</td><td>'+fmt(r.starShort)+'</td><td>'+fmt(r.xpShort)+'</td><td class="'+(r.maxed?'status-ready':r.notStarted?'':'status-progress')+'">'+r.status+'</td></tr>').join('');
+ body.querySelectorAll('img[data-compare-result-portrait]').forEach(img=>setPortraitWithFallback(img,null,officerPortraitCandidates(img.dataset.compareResultPortrait)));
  const best=selected.slice().sort((a,b)=>Number(b.maxed)-Number(a.maxed)||b.overall-a.overall||a.name.localeCompare(b.name))[0];rec.style.display='block';
  if(best.maxed)rec.innerHTML='<b>'+esc(officerDisplayName(best))+'</b> is already MAXED.';
  else if(selected.every(r=>r.notStarted))rec.innerHTML='<b>No selected Officer has been started yet.</b>';
