@@ -943,24 +943,31 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
   <article class="card">
     <h2>🔎 Compare Officer Progress</h2>
     <p class="notice">Choose any saved Officers to compare their actual saved progress. Shared inventory is not counted as completed progress.</p>
-    <div id="compareStatusFilters" class="notice" style="display:flex;gap:18px;flex-wrap:nowrap;align-items:center;margin-bottom:12px">
-      <b>Compare:</b>
-      <label><input type="checkbox" class="compareStatusFilter" value="maxed" checked> MAXED</label>
-      <label><input type="checkbox" class="compareStatusFilter" value="progress" checked> IN PROGRESS</label>
-      <label><input type="checkbox" class="compareStatusFilter" value="notStarted" checked> NOT STARTED</label>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
-      <label for="compareProgressSortOrder"><b>Sort Officers:</b></label>
-      <select id="compareProgressSortOrder" aria-label="Sort Compare Officer list">
-        <option value="recommended">Recommended order</option>
-        <option value="season" selected>Season — newest first</option>
-        <option value="rarity-legendary">Legendary Officers</option>
-        <option value="rarity-epic">Epic Officers</option>
-        <option value="rarity-elite">Elite Officers</option>
-        <option value="role">Role</option>
-        <option value="progress">Progress — highest first</option>
-        <option value="priority">Upgrade priority — lowest first</option>
-      </select>
+    <div id="compareStatusFilters" class="notice" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,260px);gap:12px 22px;align-items:center;margin-bottom:12px">
+      <div style="min-width:0">
+        <div style="font-weight:700;margin-bottom:7px">Compare filters</div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 12px;align-items:center">
+          <label style="display:inline-flex;align-items:center;gap:6px;margin:0"><input type="checkbox" class="compareStatusFilter" value="maxed" checked style="width:auto"> MAXED</label>
+          <label style="display:inline-flex;align-items:center;gap:6px;margin:0"><input type="checkbox" class="compareStatusFilter" value="progress" checked style="width:auto"> IN PROGRESS</label>
+          <label style="display:inline-flex;align-items:center;gap:6px;margin:0"><input type="checkbox" class="compareStatusFilter" value="notStarted" checked style="width:auto"> NOT STARTED</label>
+        </div>
+        <div style="font-weight:700;margin:9px 0 7px">Rarity</div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 12px;align-items:center">
+          <label style="display:inline-flex;align-items:center;gap:6px;margin:0"><input type="checkbox" class="compareRarityFilter" value="Legendary" checked style="width:auto"> LEGENDARY</label>
+          <label style="display:inline-flex;align-items:center;gap:6px;margin:0"><input type="checkbox" class="compareRarityFilter" value="Epic" checked style="width:auto"> EPIC</label>
+          <label style="display:inline-flex;align-items:center;gap:6px;margin:0"><input type="checkbox" class="compareRarityFilter" value="Elite" checked style="width:auto"> ELITE</label>
+        </div>
+      </div>
+      <div style="min-width:0">
+        <label for="compareProgressSortOrder" style="margin:0 0 6px"><b>Sort Officers:</b></label>
+        <select id="compareProgressSortOrder" aria-label="Sort Compare Officer list" style="width:100%">
+          <option value="recommended">Recommended order</option>
+          <option value="season" selected>Season — newest first</option>
+          <option value="role">Role</option>
+          <option value="progress">Progress — highest first</option>
+          <option value="priority">Upgrade priority — lowest first</option>
+        </select>
+      </div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:nowrap;margin-bottom:12px">
       <button type="button" id="compareProgressSelectAll" class="app-action-secondary">Select All</button>
@@ -1603,12 +1610,12 @@ function restoreOfficerFilterState(){
 }
 function saveStatusFilterState(){
  const map=sel=>Object.fromEntries([...document.querySelectorAll(sel)].map(x=>[x.value,!!x.checked]));
- saveUiState({progressFilters:map('.progressStatusFilter'),compareFilters:map('.compareStatusFilter')});
+ saveUiState({progressFilters:map('.progressStatusFilter'),compareFilters:map('.compareStatusFilter'),compareRarityFilters:map('.compareRarityFilter')});
 }
 function restoreStatusFilterState(){
  const st=getUiState();
  const apply=(sel,map)=>{if(!map)return;document.querySelectorAll(sel).forEach(x=>{if(Object.prototype.hasOwnProperty.call(map,x.value))x.checked=!!map[x.value]})};
- apply('.progressStatusFilter',st.progressFilters);apply('.compareStatusFilter',st.compareFilters);
+ apply('.progressStatusFilter',st.progressFilters);apply('.compareStatusFilter',st.compareFilters);apply('.compareRarityFilter',st.compareRarityFilters);
 }
 function saveComparePickState(){
  const names=[...document.querySelectorAll('.progressComparePick:checked')].map(x=>String(x.closest('label')?.querySelector('span')?.textContent||'').trim()).filter(Boolean);
@@ -3182,12 +3189,17 @@ function progressStatusAllowed(r){
  return selected.has('progress');
 }
 function compareStatusAllowed(r){
- const boxes=[...document.querySelectorAll('.compareStatusFilter')];
- if(!boxes.length)return true;
- const selected=new Set(boxes.filter(x=>x.checked).map(x=>x.value));
- if(r.maxed)return selected.has('maxed');
- if(r.notStarted)return selected.has('notStarted');
- return selected.has('progress');
+ const statusBoxes=[...document.querySelectorAll('.compareStatusFilter')];
+ const selectedStatus=new Set(statusBoxes.filter(x=>x.checked).map(x=>x.value));
+ const statusAllowed=!statusBoxes.length||(
+  r.maxed?selectedStatus.has('maxed'):
+  r.notStarted?selectedStatus.has('notStarted'):
+  selectedStatus.has('progress')
+ );
+ const rarityBoxes=[...document.querySelectorAll('.compareRarityFilter')];
+ const selectedRarity=new Set(rarityBoxes.filter(x=>x.checked).map(x=>x.value));
+ const rarityAllowed=!rarityBoxes.length||selectedRarity.has(r.rarity);
+ return statusAllowed&&rarityAllowed;
 }
 function renderProgressCompareChoices(){
  const box=document.getElementById('compareProgressChoices'); if(!box)return;
@@ -3230,7 +3242,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    renderProgressCompareChoices();
    if(document.getElementById('compareProgressResultsWrap')?.style.display!=='none')runProgressComparison();
  });
- document.querySelectorAll('.compareStatusFilter').forEach(x=>x.addEventListener('change',()=>{
+ document.querySelectorAll('.compareStatusFilter,.compareRarityFilter').forEach(x=>x.addEventListener('change',()=>{
    saveStatusFilterState();renderProgressCompareChoices();
    const wrap=document.getElementById('compareProgressResultsWrap');
    const rec=document.getElementById('compareProgressRecommendation');
