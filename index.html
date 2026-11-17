@@ -850,6 +850,15 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
       <label><input type="checkbox" class="progressStatusFilter" value="maxed" checked> MAXED</label>
       <label><input type="checkbox" class="progressStatusFilter" value="progress" checked> IN PROGRESS</label>
       <label><input type="checkbox" class="progressStatusFilter" value="notStarted" checked> NOT STARTED</label>
+      <label for="progressSortOrder" style="margin-left:auto">Sort:
+        <select id="progressSortOrder" style="width:auto;min-width:190px">
+          <option value="recommended">Recommended order</option>
+          <option value="season">Season (newest first)</option>
+          <option value="rarity">Rarity</option>
+          <option value="progress">Progress (highest first)</option>
+          <option value="priority">Upgrade priority (lowest first)</option>
+        </select>
+      </label>
     </div>
     <div class="table-wrap" style="margin-top:12px">
       <table id="savedOfficerProgressTable">
@@ -3002,11 +3011,24 @@ function savedOfficerProgressData(){
   const xpShort=level>=70?0:Math.max(0,MAX_XP-xpUsed),xp=level>=70?100:savedPct(xpUsed,MAX_XP);
   const maxed=developmentComplete&&currentStar>=5&&level>=70,overall=maxed?100:Math.round(((dev+stars+xp)/3)*10)/10;
   const hasProgress=badgesUsed>0||paidSkillUpgrades>0||currentStar>0||level>1,notStarted=!maxed&&!hasProgress,status=maxed?'MAXED':hasProgress?'IN PROGRESS':'NOT STARTED';
-  return {name:displayName,season,overall,dev,stars,xp,badgeShort,officerBadgeShort,skillBadgeShort,starShort,xpShort,maxed,notStarted,status};
+  return {name:displayName,season,rarity:officerRarity(o),role:officerRole(o),overall,dev,stars,xp,badgeShort,officerBadgeShort,skillBadgeShort,starShort,xpShort,maxed,notStarted,status};
  }).sort((a,b)=>{
   const statusRank=r=>r.maxed?0:(r.notStarted?2:1),seasonRank=s=>{const v=String(s||'').trim().toLowerCase();if(v==='original')return 0;const m=v.match(/^s(\d+)$/);return m?Number(m[1]):0;};
   const officerDbIndex=name=>officers.findIndex(o=>String(o.name||'').trim()===String(name||'').trim());
   return statusRank(a)-statusRank(b)||seasonRank(b.season)-seasonRank(a.season)||officerDbIndex(a.name)-officerDbIndex(b.name)||String(a.name).localeCompare(String(b.name));
+ });
+}
+function sortSavedOfficerProgressRows(rows,mode='recommended'){
+ const seasonRank=s=>{const v=String(s||'').trim().toLowerCase();if(v==='original')return 0;const m=v.match(/^s(\d+)$/);return m?Number(m[1]):0;};
+ const rarityRank=r=>({Legendary:0,Epic:1,Elite:2})[r]??3;
+ const statusRank=r=>r.maxed?0:(r.notStarted?2:1);
+ const byName=(a,b)=>String(a.name).localeCompare(String(b.name));
+ return rows.slice().sort((a,b)=>{
+  if(mode==='season')return seasonRank(b.season)-seasonRank(a.season)||rarityRank(a.rarity)-rarityRank(b.rarity)||byName(a,b);
+  if(mode==='rarity')return rarityRank(a.rarity)-rarityRank(b.rarity)||seasonRank(b.season)-seasonRank(a.season)||byName(a,b);
+  if(mode==='progress')return b.overall-a.overall||seasonRank(b.season)-seasonRank(a.season)||byName(a,b);
+  if(mode==='priority')return Number(a.maxed)-Number(b.maxed)||a.overall-b.overall||seasonRank(b.season)-seasonRank(a.season)||byName(a,b);
+  return statusRank(a)-statusRank(b)||seasonRank(b.season)-seasonRank(a.season)||byName(a,b);
  });
 }
 function renderSavedOfficerProgress(){
@@ -3014,7 +3036,9 @@ function renderSavedOfficerProgress(){
  if(!body||!summary)return;
  const allRows=savedOfficerProgressData();
  if(!allRows.length){body.innerHTML='';summary.textContent='No saved Officer profiles yet. Use Save Officer Progress to add Officers to this overview.';return;}
- const rows=allRows.filter(progressStatusAllowed),ready=allRows.filter(x=>x.maxed),closest=allRows[0];
+ const ready=allRows.filter(x=>x.maxed),closest=allRows.slice().sort((a,b)=>b.overall-a.overall)[0];
+ const sortMode=document.getElementById('progressSortOrder')?.value||'recommended';
+ const rows=sortSavedOfficerProgressRows(allRows.filter(progressStatusAllowed),sortMode);
  summary.innerHTML='<b>'+allRows.length+' saved Officer'+(allRows.length===1?'':'s')+'</b> · <b>'+ready.length+' MAXED</b> · <b>Highest progress:</b> '+esc(closest.name)+' ('+closest.overall+'%)'+(rows.length!==allRows.length?' · <b>Showing '+rows.length+'</b>':'');
  body.innerHTML=rows.length?rows.map(r=>'<tr><td><b>'+esc(r.name)+'</b></td><td>'+meter(r.overall)+'</td><td>'+meter(r.dev)+'</td><td>'+meter(r.stars)+'</td><td>'+meter(r.xp)+'</td><td>'+fmt(r.officerBadgeShort)+'</td><td>'+fmt(r.skillBadgeShort)+'</td><td>'+fmt(r.starShort)+'</td><td>'+fmt(r.xpShort)+'</td><td class="'+(r.maxed?'status-ready':r.notStarted?'':'status-progress')+'">'+r.status+'</td></tr>').join(''):'<tr><td colspan="10" class="muted">No saved Officers match the selected status filters.</td></tr>';
 }
@@ -3076,6 +3100,7 @@ function setupProgressComparison(){
 }
 document.addEventListener('DOMContentLoaded',()=>{restoreStatusFilterState();setupProgressComparison();document.addEventListener('change',e=>{if(e.target?.classList?.contains('progressComparePick'))saveComparePickState()})});
 document.addEventListener('DOMContentLoaded',()=>{
+ document.getElementById('progressSortOrder')?.addEventListener('change',renderSavedOfficerProgress);
  document.querySelectorAll('.progressStatusFilter').forEach(x=>x.addEventListener('change',()=>{
    saveStatusFilterState();renderSavedOfficerProgress();
  }));
