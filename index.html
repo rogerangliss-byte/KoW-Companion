@@ -2139,7 +2139,7 @@ function renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHel
  ];
  if(rarity==='Legendary'){
   const orvRemainder=readinessEligible&&o.orv>0?Math.max(0,orvHeld-badgesFromOrv*o.orv):0;
-  rows.push(['Officer Readiness Vouchers',readinessEligible?Math.max(0,Math.max(0,badgeTarget-badgesUsed-badgesHeld-badgesFromOrv)*o.orv-orvRemainder):0,orvRemainder]);
+  rows.push(['Officer Readiness Vouchers',readinessEligible?Math.max(0,Math.max(0,badgeTarget-badgesUsed-badgesHeld-badgesFromOrv)*o.orv-orvRemainder):0,readinessEligible?orvHeld:0]);
   rows.push(['Exclusive Stars',Math.ceil(Math.max(0,starTarget-starsUsed-legendaryHeld)/110),exclusiveFromSrv]);
   rows.push(['Star Readiness Vouchers',readinessEligible?Math.ceil(Math.max(0,starTarget-starsUsed-legendaryHeld)/110)*o.srv:0,readinessEligible?srvHeld:0]);
  }
