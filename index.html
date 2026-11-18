@@ -2101,7 +2101,7 @@ function calculate(){
  const orvRemainder=o.orv>0?orvHeld-badgesFromOrv*o.orv:orvHeld;
  const badgeTotal=badgesUsed+badgesHeld+universalBadgesAvailable+badgesFromOrv;
  const badgesRequired=Math.max(0,officerMaxBadges-badgeTotal);
- const orvRequired=readinessEligible?badgesRequired*o.orv:0;
+ const orvRequired=readinessEligible?Math.max(0,badgesRequired*o.orv-orvRemainder):0;
  $('trainingLabel').textContent=$('training').value;$('badgesUsed').textContent=fmt(badgesUsed);$('badgesFromOrv').textContent=fmt(badgesFromOrv);$('orvRemainder').textContent=fmt(orvRemainder);$('badgesRequired').textContent=fmt(badgesRequired);$('orvRequired').textContent=fmt(orvRequired);$('badgeBar').style.width=pct(badgeTotal,officerMaxBadges)+'%';
 
  let xpHeld=0;XP_DENOMS.forEach(v=>xpHeld+=(+($('xp'+v)?.value||0))*v);
@@ -2138,7 +2138,8 @@ function renderPlanner(o,cs,starsUsed,legendaryHeld,srvHeld,badgesUsed,badgesHel
  ['Officer Badges',Math.max(0,badgeTarget-badgesUsed),badgesHeld+badgesFromOrv]
  ];
  if(rarity==='Legendary'){
-  rows.push(['Officer Readiness Vouchers',readinessEligible?Math.max(0,badgeTarget-badgesUsed-badgesHeld-badgesFromOrv)*o.orv:0,readinessEligible?orvHeld:0]);
+  const orvRemainder=readinessEligible&&o.orv>0?Math.max(0,orvHeld-badgesFromOrv*o.orv):0;
+  rows.push(['Officer Readiness Vouchers',readinessEligible?Math.max(0,Math.max(0,badgeTarget-badgesUsed-badgesHeld-badgesFromOrv)*o.orv-orvRemainder):0,orvRemainder]);
   rows.push(['Exclusive Stars',Math.ceil(Math.max(0,starTarget-starsUsed-legendaryHeld)/110),exclusiveFromSrv]);
   rows.push(['Star Readiness Vouchers',readinessEligible?Math.ceil(Math.max(0,starTarget-starsUsed-legendaryHeld)/110)*o.srv:0,readinessEligible?srvHeld:0]);
  }
@@ -4094,7 +4095,7 @@ function calculate(){
  const req={badges:TOTAL.badges*count,stars:TOTAL.stars*count,xp:TOTAL.xp*count};
  const short={badges:Math.max(0,req.badges-held.badges),stars:Math.max(0,req.stars-held.stars),xp:Math.max(0,req.xp-held.xp)};
  const readiness=resourceReadiness(held,req),overall=readiness.average;
- const additionalOrvForBadgeShortfall=short.badges*fc.orvPerBadge,targetLabel=session==='next'?'Next Officer session':sessionLabel(session,year);
+ const additionalOrvForBadgeShortfall=Math.max(0,short.badges*fc.orvPerBadge-held.badgeParts.orvRemainder),targetLabel=session==='next'?'Next Officer session':sessionLabel(session,year);
  current={id:Date.now(),name:document.getElementById('scenarioName').value.trim()||defaultScenarioName(session,year),session,count,year,targetLabel,held,req,short,overall,limitingResource:readiness.limitingResource,limitingReadiness:readiness.limitingReadiness,forecast:fc};
  const invNote=held.savedAt?'Saved Central Inventory: '+new Date(held.savedAt).toLocaleString():'WARNING: Central Inventory has not been saved yet.';
  document.getElementById('scenarioResult').innerHTML='<b>'+current.name+'</b><br>Target: '+targetLabel+' · '+year+' · '+count+' projected Officer'+(count>1?'s':'')+'<br>'+
@@ -4139,7 +4140,7 @@ function render(){
    (badgeShort?'<b>Officer Badges: SHORT '+fmt(badgeShort)+'</b>':'<b>Officer Badges: READY</b>')+'<br>'+
    ((Number(s.short?.stars)||0)?'<b>Stars: SHORT '+fmt(s.short.stars)+'</b>':'<b>Stars: READY</b>')+'<br>'+
    ((Number(s.short?.xp)||0)?'<b>XP: SHORT '+fmt(s.short.xp)+'</b>':'<b>XP: READY</b>')+
-   (f.orv!==undefined?'<br>Additional ORV for badge shortfall: '+fmt(badgeShort*(Number(f.orvPerBadge)||720))+' FORECAST · SRV: '+fmt(f.srv)+' FORECAST':'')+
+   (f.orv!==undefined?'<br>Additional ORV for badge shortfall: '+fmt(Math.max(0,badgeShort*(Number(f.orvPerBadge)||720)-savedScenarioOrvRemainder(h,f)))+' FORECAST · SRV: '+fmt(f.srv)+' FORECAST':'')+
    '</small><br><button type="button" class="app-action-secondary" data-load-scenario="'+i+'">Load</button> <button type="button" class="app-action-danger" data-delete-scenario="'+i+'">Delete</button></div>';
  }).join('');
 }
