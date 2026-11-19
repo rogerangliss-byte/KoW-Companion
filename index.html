@@ -1306,7 +1306,7 @@ button:disabled,.app-action-primary:disabled,.app-action-save:disabled,.app-acti
 
 <div class="card" id="whatsNewV470" style="margin-bottom:16px">
   <h3 style="margin-top:0">✨ What’s New — v4.7.0</h3>
-  <div class="notice">v4.7.0 introduces the revised Officer Skill Progression and Training prerequisite rules.</div>
+  <div class="notice"><b>LIVE RELEASE.</b> v4.7.0 introduces the revised Officer Skill Progression and Training prerequisite rules.</div>
   <h4>🏅 New Skill Progression System</h4>
   <ul>
     <li>Each Officer has four primary Skill Strands, each progressing through Levels 1–10 (36 paid upgrades in total).</li>
@@ -3889,7 +3889,7 @@ document.addEventListener("click",function(e){
       var f=bridge.releaseForecast(steps);
       return {orv:f.orvPerBadge,srv:f.srvPerStar,source:f.source+' · '+steps+' future release step'+(steps===1?'':'s'),pct:f.growth};
     }
-    return {orv:720,srv:360,source:'Test forecast starting cost (720 ORV / 360 SRV)',pct:20};
+    return {orv:720,srv:360,source:'Forecast starting cost (720 ORV / 360 SRV)',pct:20};
   }
 function projectedResourceHtml(projected,inv,mode){
     var box=document.getElementById('kowProjectedResourceForecast');if(!box)return;
