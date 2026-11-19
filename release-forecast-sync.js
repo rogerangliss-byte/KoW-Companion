@@ -1,5 +1,5 @@
 /* KoW Companion v4.6.0 LIVE — data-driven future release forecast.
-   Uses the latest confirmed English Live Officer database release, then compounds growth by
+   Uses the confirmed English Live Officer data baseline, then compounds growth by
    future Officer release. All projected costs remain estimates until confirmed. */
 (()=>{
   'use strict';
