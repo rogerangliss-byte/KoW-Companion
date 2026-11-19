@@ -1,6 +1,6 @@
 /* KoW Companion v4.6.0 LIVE — clean feature layer
    Built against the stable v4.5.0 application code. This is the only v4.6.0
-   behaviour extension loaded by English Test. */
+   behaviour extension loaded by English Live. */
 (()=>{
   'use strict';
 
@@ -36,7 +36,7 @@
         '<b>Data version:</b> '+String(m.dataVersion||'—')+'<br>'+
         '<b>Officers:</b> '+String(m.officerCount??'—')+'<br>'+
         '<b>Published:</b> '+(m.publishedAt?new Date(m.publishedAt).toLocaleString():'—')+
-        '<br><span class="muted">English Test checks the published Officer dataset on load.</span>';
+        '<br><span class="muted">English Live checks the published Officer dataset on load.</span>';
     }catch(e){
       box.innerHTML='<b>Global Officer Data:</b> ⚠️ bundled/local fallback in use<br><span class="muted">Published Officer manifest could not be read.</span>';
     }
@@ -111,6 +111,13 @@
     if(training)training.value='180';
   }
 
+  function additionalOrvForBadgeShortfall(badgeShort,orvPerBadge,orvHeld){
+    const rate=Math.max(1,Number(orvPerBadge)||1);
+    const held=Math.max(0,Number(orvHeld)||0);
+    const remainder=held%rate;
+    return Math.max(0,Math.max(0,Number(badgeShort)||0)*rate-remainder);
+  }
+
   function syncTargetModeFromFields(){
     const mode=byId('v460TargetMode');
     if(!mode||mode.value!=='max')return;
@@ -152,6 +159,7 @@
     else if(rarity==='Epic') badgeAvailable+=val('universalEpicBadgeHeld');
     else badgeAvailable+=val('universalEliteBadgeHeld');
 
+    let orvHeldForBadgeCost=0;
     if(rarity==='Legendary'){
       const chestMode=byId('legendaryBadgeChestMode')?.value||'badge';
       const badgeChests=val('legendaryBadgeChestHeld');
@@ -161,6 +169,7 @@
       }
       let orvHeld=val('orvHeld');
       if(chestMode==='orv')orvHeld+=badgeChests*(typeof latestLegendaryOrvChestRate==='function'?latestLegendaryOrvChestRate():720);
+      orvHeldForBadgeCost=orvHeld;
       if(readiness&&Number(o.orv)>0)badgeAvailable+=Math.floor(orvHeld/Number(o.orv));
     }
 
@@ -171,7 +180,7 @@
 
     if(rarity==='Legendary'&&readiness&&Number(o.orv)>0){
       html+='<b>ORV cost per Officer Badge:</b> '+fmt(o.orv)+'<br>'+
-        '<b>Additional ORV equivalent for badge shortfall:</b> '+fmt(badgeShort*Number(o.orv))+'<br>';
+        '<b>Additional ORV equivalent for badge shortfall:</b> '+fmt(additionalOrvForBadgeShortfall(badgeShort,Number(o.orv),orvHeldForBadgeCost))+'<br>';
     }
 
     html+='<b>'+rarity+' Star points:</b> '+fmt(starNeed)+' required · '+fmt(starHeld)+' available · <b>'+fmt(starShort)+' shortfall</b><br>';
